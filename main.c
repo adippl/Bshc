@@ -108,8 +108,14 @@ main(int argc, char **argv){
 	gotoxy(23,23);
 	fb_free(p);
 
-	struct ship* s=ship_init(0,0);
-	ship_free(s);
+	//struct ship* s=ship_init(0,0);
+	//ship_free(&s);
+	//fprintf(stderr,"\n!%p!\n",(void*)s);
+	//struct ply* s=ply_init(1);
+	//ship_free(&s);
+	//fprintf(stderr,"\n!%p!\n",(void*)s);
+	struct state* s=ply_init(2);
+	state_free(&s);
 	fprintf(stderr,"\n!%p!\n",(void*)s);
 	c=getchar();
 

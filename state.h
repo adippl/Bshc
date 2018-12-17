@@ -31,10 +31,15 @@ struct ship{
 	struct ply* ply;	//pointer to player (owner)
 };
 
-struct ship* ship_init(int size, struct ply* ply_ptr);
-void ship_free(struct ship* sh_ptr);
+
+struct state* state_init(int nopl);
+void state_free(struct state** state_ptr);
 
 struct ply* ply_init(int pln);
+void ply_free(struct ply** ply_ptr);
+
+struct ship* ship_init(int size, struct ply* ply_ptr);
+void ship_free(struct ship** sh_ptr);
 
 #endif // STATE_H
 

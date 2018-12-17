@@ -32,19 +32,12 @@ ship_init(int size, struct ply* ply_ptr){
 	return(sh_ptr);
 }
 
-//void
-//ship_free(struct ship** sh_ptr){
-//	if(!sh_ptr)exit(EXIT_FAILURE);
-//	free((*sh_ptr)->hits);
-//	free(*sh_ptr);
-//	*sh_ptr=NULL;
-//}
 void
-ship_free(struct ship* sh_ptr){
+ship_free(struct ship** sh_ptr){
 	if(!sh_ptr)exit(EXIT_FAILURE);
-	free(sh_ptr->hits);
-	free(sh_ptr);
-	sh_ptr=NULL;
+	free((*sh_ptr)->hits);
+	free(*sh_ptr);
+	*sh_ptr=NULL;
 }
 
 struct ply*
@@ -82,18 +75,20 @@ ply_init(int pln){
 
 	return(ply_ptr);
 }
-
 void
-ply_free(struct ply* ply_ptr){
-	if(!ply_ptr)exit(EXIT_FAILURE);
-	free(ply_ptr->shtbl_ptr);
-	free(ply_ptr);
-	ply_ptr=NULL;
-	
+ply_free(struct ply** ply_ptr){
+	if(!*ply_ptr)exit(EXIT_FAILURE);
+	//struct ply* p=(struct ply**)*ply_ptr;
+	for(int i=0;i<( (*ply_ptr)->shtbl_size );i++){
+		ship_free(((*ply_ptr)->shtbl_ptr+i));
+	}
+	free(*ply_ptr);
+	*ply_ptr=NULL;
 }
 
 struct state*
 state_init(int nopl){ //Func input nopl - number of players
+	if(nopl<1)return(NULL);
 	
 	int mapsize=(SIZE_X*2+2)*(SIZE_Y*2+2);
 	struct state* state_ptr=malloc(sizeof(struct state));
@@ -118,4 +113,14 @@ state_init(int nopl){ //Func input nopl - number of players
 	state_ptr->state=0;
 	
 	return(state_ptr);
+}
+void
+state_free(struct state** state_ptr){
+	if(!state_ptr)exit(EXIT_FAILURE);
+
+	for(int i=0;i<(*state_ptr)->nopl;i++){
+		ply_free((*state_ptr)->ply_ptr+i);
+	}
+	free(*state_ptr);
+	*state_ptr==NULL;
 }
