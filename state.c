@@ -8,7 +8,7 @@
 
 
 struct ship*
-ship_init(int size, struct ply* ply_ptr){
+ship_init(int size){
 	struct ship* sh_ptr=malloc(sizeof(struct ship));
 	if(!sh_ptr) return(NULL);
 
@@ -27,8 +27,6 @@ ship_init(int size, struct ply* ply_ptr){
 		free(sh_ptr);
 		return(NULL);
 	}
-	sh_ptr->ply=ply_ptr;
-
 	return(sh_ptr);
 }
 
@@ -41,7 +39,7 @@ ship_free(struct ship** sh_ptr){
 }
 
 struct ply*
-ply_init(int pln){
+ply_init(struct state* state_ptr,int pln){
 	if(pln<1)return(NULL);
 
 	struct ply* ply_ptr=malloc(sizeof(struct ply));
@@ -58,19 +56,26 @@ ply_init(int pln){
 
 	int i_shn=0;	//ship number iterator
 	for(int j=0;j<MAX_NSH3;j++){
-		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH3,ply_ptr);
+		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH3);
 		if(!*(ply_ptr->shtbl_ptr+i_shn)) return(NULL);
 		i_shn++;
 	}
 	for(int j=0;j<MAX_NSH4;j++){
-		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH4,ply_ptr);
+		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH4);
 		if(!*(ply_ptr->shtbl_ptr+i_shn)) return(NULL);
 		i_shn++;
 	}
 	for(int j=0;j<MAX_NSH5;j++){
-		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH5,ply_ptr);
+		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH5);
 		if(!*(ply_ptr->shtbl_ptr+i_shn)) return(NULL);
 		i_shn++;
+	}
+
+	//ply_ptr->map_ptr=malloc(sizeof(struct shtbl_size*)*state_ptr->sizex*state_ptr->sizey);
+	ply_ptr->map_ptr=malloc(sizeof(struct ship*)*ply_ptr->map_size);
+	if(!ply_ptr->map_ptr) return(NULL);
+	for(int i=0;i<SIZE_X*SIZE_Y;i++){
+		*(ply_ptr->map_ptr+i)=NULL;
 	}
 
 	return(ply_ptr);
@@ -78,8 +83,7 @@ ply_init(int pln){
 void
 ply_free(struct ply** ply_ptr){
 	if(!*ply_ptr)exit(EXIT_FAILURE);
-	//struct ply* p=(struct ply**)*ply_ptr;
-	for(int i=0;i<( (*ply_ptr)->shtbl_size );i++){
+	for(int i=0;i<(*ply_ptr)->shtbl_size;i++){
 		ship_free(((*ply_ptr)->shtbl_ptr+i));
 	}
 	free(*ply_ptr);
@@ -90,24 +94,18 @@ struct state*
 state_init(int nopl){ //Func input nopl - number of players
 	if(nopl<1)return(NULL);
 	
-	int mapsize=(SIZE_X*2+2)*(SIZE_Y*2+2);
 	struct state* state_ptr=malloc(sizeof(struct state));
 	if(!state_ptr) return(NULL);
 
 	state_ptr->sizex=SIZE_X;
 	state_ptr->sizey=SIZE_Y;
-	state_ptr->map_ptr=malloc(sizeof(char*)*mapsize);
-	if(!state_ptr->map_ptr) return(NULL);
-	for(int i=0;i<SIZE_X*SIZE_Y;i++){
-		*(state_ptr->map_ptr+i)=NULL;
-	}
 
 	state_ptr->nopl=nopl;
 	state_ptr->ply_ptr=malloc(sizeof(struct ply*)*nopl);
 	if(!state_ptr->ply_ptr) return(NULL);
 
 	for(int i=0;i<nopl-1;i++){
-		*(state_ptr->ply_ptr+i)=ply_init(i);
+		*(state_ptr->ply_ptr+i)=ply_init(state_ptr,i);
 		if(!state_ptr->ply_ptr+i) return(NULL);
 	}
 	state_ptr->state=0;
@@ -123,4 +121,33 @@ state_free(struct state** state_ptr){
 	}
 	free(*state_ptr);
 	*state_ptr==NULL;
+}
+
+int
+ship_place(	struct state* state_ptr,
+		struct ply* ply_ptr,
+		struct ship* sh_ptr,
+		char x,
+		char y,
+		char length,
+		bool dir
+		){
+	if(!state_ptr)return(1);
+
+	sh_ptr->shsize=length;
+	sh_ptr->hp=length;
+	sh_ptr->shdir=dir;
+
+	if(dir){
+	//	if(x+length<=)		
+	}else{
+		
+	}
+
+	void* pln=ply_ptr->pln;
+
+
+
+//	*(state_ptr->ply_ptr+0);
+	return(0);
 }

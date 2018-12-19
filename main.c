@@ -108,15 +108,16 @@ main(int argc, char **argv){
 	gotoxy(23,23);
 	fb_free(p);
 
-	//struct ship* s=ship_init(0,0);
+	//struct ship* s=ship_init(0);
 	//ship_free(&s);
 	//fprintf(stderr,"\n!%p!\n",(void*)s);
-	//struct ply* s=ply_init(1);
+	//struct ply* s=ply_init(0,1);
 	//ship_free(&s);
 	//fprintf(stderr,"\n!%p!\n",(void*)s);
-	struct state* s=ply_init(2);
+	struct state* s=state_init(2);
+	fprintf(stderr,"\n!init!%p!\n",(void*)s);
 	state_free(&s);
-	fprintf(stderr,"\n!%p!\n",(void*)s);
+	fprintf(stderr,"\n!free!%p!\n",(void*)s);
 	c=getchar();
 
 	return(EXIT_SUCCESS);
