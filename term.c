@@ -65,7 +65,7 @@ fb_draw_map(struct chfb* chfb){
 	}
 	int k=0;
 	for(int j=0;j<chfb->sizex/2;j+=1){
-		*(chfb->fbtb_ptr+2+0*chfb->sizex+j*2)=j%10+48;	//+47 converts j into number
+		*(chfb->fbtb_ptr+2+0*chfb->sizex+j*2)=j%10+'0';	//+48 converts j into number
 		//*(chfb->fbtb_ptr+0*chfb->sizex+j)=j/2+47;	//+47 converts j into number
 		
 	}

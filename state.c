@@ -58,6 +58,11 @@ fld_init(char nopl){
 	return(fld);
 }
 
+void fld_free(struct fld** fld_ptr){
+	if(!*fld_ptr)exit(EXIT_FAILURE);
+	free((*fld_ptr)->shotby);
+	free(*fld_ptr);
+}
 
 
 

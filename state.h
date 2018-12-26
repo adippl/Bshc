@@ -42,6 +42,7 @@ struct ply* ply_init(int pln);
 void ply_free(struct ply** ply_ptr);
 
 struct ply* fld_init(char nopl);
+void fld_free(struct fld** fld_ptr);
 
 struct ship* ship_init(int size, struct ply* ply_ptr);
 void ship_free(struct ship** sh_ptr);
