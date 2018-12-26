@@ -42,7 +42,7 @@ ship_free(struct ship** sh_ptr){
 //	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
 //};
 
-struct ply*
+struct fld*
 fld_init(char nopl){
 	if(nopl<1)return(NULL);
 
@@ -116,16 +116,17 @@ struct state*
 state_init(int nopl){ 
 	if(nopl<1)return(NULL);
 	
-	int mapsize=(SIZE_X)*(SIZE_Y);
 	struct state* state_ptr=malloc(sizeof(struct state));
 	if(!state_ptr) return(NULL);
 
 	state_ptr->sizex=SIZE_X;
 	state_ptr->sizey=SIZE_Y;
-	state_ptr->map_ptr=malloc(sizeof(char*)*mapsize);
+	state_ptr->marea=(SIZE_X)*(SIZE_Y);
+	
+	state_ptr->map_ptr=malloc(sizeof(struct fld*)*state_ptr->marea);
 	if(!state_ptr->map_ptr) return(NULL);
 	for(int i=0;i<SIZE_X*SIZE_Y;i++){
-		*(state_ptr->map_ptr+i)=NULL;
+		*(state_ptr->map_ptr+i)=fld_init(nopl);
 	}
 
 	state_ptr->nopl=nopl;
@@ -143,6 +144,10 @@ state_init(int nopl){
 void
 state_free(struct state** state_ptr){
 	if(!*state_ptr)exit(EXIT_FAILURE);
+
+	for(int i=0;i<(*state_ptr)->marea;i++){
+		fld_free((*state_ptr)->map_ptr+i);
+	}
 	
 	for(int i=0;i<(*state_ptr)->nopl;i++){
 		ply_free((*state_ptr)->ply_ptr+i);

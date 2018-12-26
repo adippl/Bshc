@@ -6,7 +6,8 @@
 struct state{
 	int sizex;		//mapsize
 	int sizey;		//mapsize
-	struct ship** map_ptr; 	//pointer to 2d array of pointers to ships
+	int marea;		//map area
+	struct fld** map_ptr; 	//pointer to 2d array of pointers to fields 
 	char nopl;		//number of player
 	struct ply** ply_ptr;	//pointer to array of player(s) structs
 	int state;		//game state
@@ -41,7 +42,7 @@ void state_free(struct state** state_ptr);
 struct ply* ply_init(int pln);
 void ply_free(struct ply** ply_ptr);
 
-struct ply* fld_init(char nopl);
+struct fld* fld_init(char nopl);
 void fld_free(struct fld** fld_ptr);
 
 struct ship* ship_init(int size, struct ply* ply_ptr);

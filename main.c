@@ -47,4 +47,5 @@ main(int argc, char **argv){
 	printf("\nlel\n");
 	c=getchar();
 	printf("%d",c);
+	
 }
