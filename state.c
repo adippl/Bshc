@@ -36,6 +36,31 @@ ship_free(struct ship** sh_ptr){
 	*sh_ptr=NULL;
 }
 
+//struct fld{	//map consists of fields
+//	int state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
+//	struct ply** shotby;	//array of pointer to player who shot this field. 
+//	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
+//};
+
+struct ply*
+fld_init(char nopl){
+	if(nopl<1)return(NULL);
+
+	struct fld* fld=malloc(sizeof(struct fld));
+	if(!fld)return(NULL);
+
+	fld->shotby=malloc(sizeof(struct ply*)*nopl);
+	if(!fld->shotby){free(fld);return(NULL);}
+	for(int i=0;i<nopl;i++) *(fld->shotby+i)=NULL;
+
+	fld->ship_ptr=NULL;
+	
+	return(fld);
+}
+
+
+
+
 struct ply*
 ply_init(int pln){
 	if(pln<0)return(NULL);

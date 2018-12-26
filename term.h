@@ -3,6 +3,8 @@
 
 #include "conf.h"
 
+const int32_t FRAMECHARS[11];	//utf-8 box drawing characters
+
 struct	chfb { //char frame buffer
 	int sizex;	//frame size x
 	int sizey;	//frame size y
@@ -10,8 +12,9 @@ struct	chfb { //char frame buffer
 	int msizex;	//map size x
 	int msizey;	//map size y
 	int marea;	//map area
-	char* fbtb_ptr;	//char buffer table pointer
+	int32_t* fbtb_ptr;	//utf-8 character buffer table pointer 
 };
+
 
 void clear();	//clears terminal (prints to stdout)
 void gotoxy(int x,int y);	//changes cursor position (prints to stdout)

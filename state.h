@@ -19,6 +19,11 @@ struct ply{
 	int shtbl_size;	//size of ship tbl
 	struct ship** shtbl_ptr;//array of pointers to players ships
 };
+struct fld{	//map consists of fields
+	int state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
+	struct ply** shotby;	//array of pointer to player who shot this field. 
+	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
+};
 struct ship{
 	bool shdir;	//ship direction 0=vertical 1=horizontal
 	char shsize;	//ship size
@@ -28,12 +33,6 @@ struct ship{
 	char* hits;	//hits
 	struct ply* ply;	//pointer to player (owner)
 };
-struct field{	//map consists of fields
-	int state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
-	struct ply** shotby;	//array of pointer to player who shot this field. 
-	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
-	
-};
 
 
 struct state* state_init(int nopl);
@@ -41,6 +40,8 @@ void state_free(struct state** state_ptr);
 
 struct ply* ply_init(int pln);
 void ply_free(struct ply** ply_ptr);
+
+struct ply* fld_init(char nopl);
 
 struct ship* ship_init(int size, struct ply* ply_ptr);
 void ship_free(struct ship** sh_ptr);
