@@ -4,12 +4,12 @@
 #include "conf.h"
 
 struct state{
-	int sizex; 		//mapsize
-	int sizey;	 	//mapsize
+	int sizex;		//mapsize
+	int sizey;		//mapsize
 	struct ship** map_ptr; 	//pointer to 2d array of pointers to ships
 	char nopl;		//number of player
 	struct ply** ply_ptr;	//pointer to array of player(s) structs
-	int state; 		//game state
+	int state;		//game state
 };
 struct ply{
 	char pln;	//player number
@@ -17,7 +17,7 @@ struct ply{
 	char nsh4;	//number of their ships (sh4)
 	char nsh5;	//number of their ships (sh5)
 	int shtbl_size;	//size of ship tbl
-	struct ship** shtbl_ptr; //array of pointers to players ships
+	struct ship** shtbl_ptr;//array of pointers to players ships
 };
 struct ship{
 	bool shdir;	//ship direction 0=vertical 1=horizontal
@@ -27,6 +27,12 @@ struct ship{
 	char hp;	//100% hp == shsize	0 --> destroyed
 	char* hits;	//hits
 	struct ply* ply;	//pointer to player (owner)
+};
+struct field{	//map consists of fields
+	int state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
+	struct ply** shotby;	//array of pointer to player who shot this field. 
+	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
+	
 };
 
 

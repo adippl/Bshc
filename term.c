@@ -2,9 +2,16 @@
 #include "conf.h"
 #include "term.h"
 
+void
+clear(){ fprintf(stdout,"\033[H\033[J");}
+void
+gotoxy(int x,int y){fprintf(stdout,"\033[%d;%dH",y,x);}
+void
+resizexy(int x,int y){fprintf(stdout,"\033[8;%d;%dt",y,x);}
+
 struct chfb*
 fb_init(){
-	struct chfb* chfb=malloc(sizeof(struct chfb*));
+	struct chfb* chfb=malloc(sizeof(struct chfb));
 	if(!chfb)return(NULL);
 
 	chfb->sizex=SIZE_X*2+1;
@@ -18,6 +25,15 @@ fb_init(){
 	}
 	return(chfb);
 }
+void
+fb_free(struct chfb** chfb){
+	if(!*chfb)exit(11);
+	free((*chfb)->fbtb_ptr);
+	free(*chfb);
+	*chfb=NULL;
+}
+
+
 struct chfb*
 fb_draw_map(struct chfb* chfb){
 	if(!chfb)return(NULL);
@@ -26,6 +42,7 @@ fb_draw_map(struct chfb* chfb){
 		for(int j=0;j<chfb->sizex;j++){
 			if(i%2==1&&j%2==1){
 				*(chfb->fbtb_ptr+i*chfb->sizex+j)='+';
+				//*(chfb->fbtb_ptr+i*chfb->sizex+j)='┼';
 			}else if(j%2==0&&i%2==1){
 				*(chfb->fbtb_ptr+i*chfb->sizex+j)='-';
 			}else if(j%2==1&&i%2==0){
@@ -50,6 +67,7 @@ fb_draw_map(struct chfb* chfb){
 void
 fb_screen_draw(struct chfb* chfb){
 	if(!chfb)exit(11);
+	resizexy(FSIZE_X,FSIZE_Y);
 
 	for(int i=0;i<chfb->sizey;i++){
 		for(int j=0;j<chfb->sizex;j++){
@@ -57,12 +75,5 @@ fb_screen_draw(struct chfb* chfb){
 		}
 		fprintf(stdout,"\n");
 	}
-}
-void
-fb_free(struct chfb** chfb){	//frees memory of chfb struct; changes pointer to null
-	if(!*chfb)exit(11);
-	free((*chfb)->fbtb_ptr);
-	free(*chfb);
-	*chfb=NULL;
 }
 
