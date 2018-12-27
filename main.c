@@ -48,5 +48,12 @@ main(int argc, char **argv){
 	printf("%d",c);
 	prtnch('a',2,31,1);
 	prtnch('a',1,31);
+	prtnch(0x2693,2,34,1);
+
+	struct state* st_p=state_init(2);
+	//	(*st_p->pln+0)->shtbl_size+0
+	ship_place(st_p,(*st_p->ply_ptr+0)->shtbl_ptr+0,0,0,0);
+	char test=ship_placecheck(st_p,(*st_p->ply_ptr+0)->shtbl_ptr+0,0,0,0);
+	printf("test=%d",test);
 	
-}
+} 	

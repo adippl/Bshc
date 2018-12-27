@@ -59,32 +59,33 @@ fb_draw_map(struct chfb* chfb){
 	for(int i=0;i<(chfb->msizey);i++){
 		for(int j=0;j<chfb->msizex;j++){
 			if(i%2==1&&j%2==1){
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)='+';
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)=FRAMECHARS[10];
 				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[10];
+				
+				//(*frmt_ptr_cstd)[i][j][0]=36;
+				//(*frmt_ptr_cstd)[i][j][1]=1;
 			}else if(j%2==0&&i%2==1){
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)='-';
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)=FRAMECHARS[0];
 				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[0];
+
+				//(*frmt_ptr_cstd)[i][j][0]=36;
+				//(*frmt_ptr_cstd)[i][j][1]=1;
 			}else if(j%2==1&&i%2==0){
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)='|';
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)=FRAMECHARS[1];
 				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[1];
+
+				//(*frmt_ptr_cstd)[i][j][0]=36;
+				//(*frmt_ptr_cstd)[i][j][1]=1;
 			}
 			else{
-				//*(chfb->fbtb_ptr+i*chfb->msizex+j)=' ';
 				(*fbtb_ptr_cstd)[i][j]=' ';
 			}
 		}
 	}
 	for(int j=0;j<chfb->msizex/2;j+=1){
-		//*(chfb->fbtb_ptr+2+0*chfb->msizex+j*2)=j%10+'0';	//+48 converts j into number
 		(*fbtb_ptr_cstd)[0][j*2+2]=j%10+'0';
+		(*frmt_ptr_cstd)[0][j*2+2][0]=(j/10>0)?30+j/10:37;
 
 		
 	}
 	for(int i=2;i<chfb->msizey;i+=2){
-		//*(chfb->fbtb_ptr+i*chfb->msizex+0)=i/2+47+49;	//+47 converts i into number, +49 converts it into a letter
 		(*fbtb_ptr_cstd)[i][0]=i/2+47+49;
 	}
 
@@ -143,13 +144,13 @@ void prtnch(int32_t chr, unsigned char nofarg,...){
 
 	switch(nofarg){
 		case 1:
-			fprintf(stdout,"\033[%dm%c\033[0m",va_arg(vl,int),chr);
+			fprintf(stdout,"\033[%dm%lc\033[0m",va_arg(vl,int),chr);
 		break;
 		case 2:
-			fprintf(stdout,"\033[%d;%dm%c\033[0m",va_arg(vl,int),va_arg(vl,int),chr);
+			fprintf(stdout,"\033[%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),chr);
 		break;
 		case 3:
-			fprintf(stdout,"\033[%d;%d;%dm%c\033[0m",va_arg(vl,int),va_arg(vl,int),va_arg(vl,int),chr);
+			fprintf(stdout,"\033[%d;%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),va_arg(vl,int),chr);
 		break;
 	} 
 	va_end(vl);

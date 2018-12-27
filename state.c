@@ -78,6 +78,7 @@ ply_init(int pln){
 	if(!ply_ptr) return(NULL);
 
 	ply_ptr->pln=pln;
+	ply_ptr->pcol=DPLYCOL[pln];
 	ply_ptr->nsh3=MAX_NSH3;
 	ply_ptr->nsh4=MAX_NSH4;
 	ply_ptr->nsh5=MAX_NSH5;
@@ -158,4 +159,66 @@ state_free(struct state** state_ptr){
 	}
 	free(*state_ptr);
 	*state_ptr=NULL;
+}
+
+char
+ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot){
+	if(!state_ptr)return(2);
+	if(!ship_ptr)return(2);
+	if(xpos>state_ptr->sizex)return(3);
+	if(ypos>state_ptr->sizey)return(3);
+
+	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
+
+	//ship_ptr->sax=xpos;
+	//ship_ptr->say=ypos;
+	//ship_ptr->shdir=rot;
+
+	for(int i=0;i<ship_ptr->shsize;i++){
+		if(rot){
+			if( (*fld_ptr_cst)[ypos+i][xpos]->ship_ptr!=NULL || (*fld_ptr_cst)[ypos+i][xpos]->state==2 ){
+				return(1);
+			}
+		}else{
+			if( (*fld_ptr_cst)[ypos][xpos+i]->ship_ptr!=NULL || (*fld_ptr_cst)[ypos][xpos+i]->state==2 ){
+				return(1);
+			}
+			
+		}
+	}
+
+
+	return(0);
+}
+
+char
+ship_place(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot){
+	if(!state_ptr)return(2);
+	if(!ship_ptr)return(2);
+	if(xpos>state_ptr->sizex)return(3);
+	if(ypos>state_ptr->sizey)return(3);
+
+	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
+
+	ship_ptr->sax=xpos;
+	ship_ptr->say=ypos;
+	ship_ptr->shdir=rot;
+
+	for(int i=0;i<ship_ptr->shsize;i++){
+		if(rot){
+			(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
+			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos+i][xpos];			//risky //FIXIT
+
+
+			(*fld_ptr_cst)[ypos+i][xpos]->state=2;
+		}else{
+			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
+			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos][xpos+i];			//risky //FIXIT
+			
+			(*fld_ptr_cst)[ypos][xpos+i]->state=2;
+		}
+	}
+
+
+	return(0);
 }

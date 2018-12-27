@@ -14,6 +14,7 @@ struct state{
 };
 struct ply{
 	char pln;	//player number
+	unsigned char pcol;	//player colour
 	char nsh3;	//number of their ships (sh3)
 	char nsh4;	//number of their ships (sh4)
 	char nsh5;	//number of their ships (sh5)
@@ -31,7 +32,7 @@ struct ship{
 	char sax;	//anchor x cord (Ship Anchor x)
 	char say;	//anchor y cord
 	char hp;	//100% hp == shsize	0 --> destroyed
-	struct field** sgmnts;	//pointer to an array of pointer to fls (fields) with ship segments
+	struct fld** sgmnts;	//pointer to an array of pointer to fls (fields) with ship segments
 	struct ply* ply;	//pointer to player (owner)
 };
 
@@ -47,6 +48,11 @@ void fld_free(struct fld** fld_ptr);
 
 struct ship* ship_init(int size, struct ply* ply_ptr);
 void ship_free(struct ship** sh_ptr);
+
+
+char ship_place(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot);
+char ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot);
+
 
 #endif // STATE_H
 
