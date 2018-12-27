@@ -31,7 +31,7 @@ struct ship{
 	char sax;	//anchor x cord (Ship Anchor x)
 	char say;	//anchor y cord
 	char hp;	//100% hp == shsize	0 --> destroyed
-	char* hits;	//hits
+	struct field** sgmnts;	//pointer to an array of pointer to fls (fields) with ship segments
 	struct ply* ply;	//pointer to player (owner)
 };
 

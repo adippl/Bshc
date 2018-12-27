@@ -43,9 +43,10 @@ main(int argc, char **argv){
 	//}
 	//fprintf(stdout,"\nfield test\n");
 	//
-	getchar();
 	printf("\nlel\n");
 	c=getchar();
 	printf("%d",c);
+	prtnch('a',2,31,1);
+	prtnch('a',1,31);
 	
 }

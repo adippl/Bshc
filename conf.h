@@ -1,11 +1,12 @@
 #ifndef CONF_H
 #define CONF_H
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
 #include <stdint.h>
-#include <time.h>
 #include <stdbool.h>
+#include <time.h>
 #include <locale.h>
 
 

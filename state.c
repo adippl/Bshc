@@ -13,16 +13,18 @@ ship_init(int size, struct ply* ply_ptr){
 	sh_ptr->sax=0;
 	sh_ptr->say=0;
 	sh_ptr->hp=size;
-	sh_ptr->hits=malloc(sizeof(char)*size);
 
-	for(int i=0;i<size;i++){
-		*(sh_ptr->hits+i)=0;
-	}
 
-	if(!sh_ptr->hits){
+	sh_ptr->sgmnts=malloc(sizeof(struct fld*)*size);
+	if(!sh_ptr->sgmnts){
 		free(sh_ptr);
 		return(NULL);
 	}
+	for(int i=0;i<size;i++){
+		*(sh_ptr->sgmnts+i)=NULL;
+	}
+
+
 	sh_ptr->ply=ply_ptr;
 
 	return(sh_ptr);
@@ -31,7 +33,7 @@ ship_init(int size, struct ply* ply_ptr){
 void
 ship_free(struct ship** sh_ptr){
 	if(!sh_ptr)exit(EXIT_FAILURE);
-	free((*sh_ptr)->hits);
+	free((*sh_ptr)->sgmnts);
 	free(*sh_ptr);
 	*sh_ptr=NULL;
 }
@@ -48,6 +50,8 @@ fld_init(char nopl){
 
 	struct fld* fld=malloc(sizeof(struct fld));
 	if(!fld)return(NULL);
+
+	fld->state=0;
 
 	fld->shotby=malloc(sizeof(struct ply*)*nopl);
 	if(!fld->shotby){free(fld);return(NULL);}
