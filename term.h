@@ -4,7 +4,7 @@
 #include "conf.h"
 #include "state.h"
 
-const int32_t FRAMECHARS[11];	//utf-8 box drawing characters
+const uint32_t FRAMECHARS[11];	//utf-8 box drawing characters
 
 struct	chfb { //char frame buffer
 	int sizex;	//frame size x
@@ -23,7 +23,7 @@ struct	chfb { //char frame buffer
 void clear();	//clears terminal (prints to stdout)
 void gotoxy(int x,int y);	//changes cursor position (prints to stdout)
 void resizexy(int x,int y);	//resizes terminal window (prints to stdout)
-void prtnch(int32_t chr, unsigned char nofarg,...);	//prints utf8 char with ANSI escape code specific formating; 1=<nofarg=<3
+void prtnch(uint32_t chr, unsigned char nofarg,...);	//prints utf8 char with ANSI escape code specific formating; 1=<nofarg=<3
 
 struct chfb* fb_init();		//allocates chfb struct
 #define chfb() fb_init()	//"constructor"
