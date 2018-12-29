@@ -5,7 +5,7 @@
 
 //const char FRAMECHARS[]="─│┌┐└┘├┤┬┴┼"; // DOESN'T WORK
 
-const uint32_t FRAMECHARS[11]={0x2500,0x2502,0x250c,0x2510,0x2514,0x2518,0x251c,0x2525,0x252c,0x2534,0x253c};	// ─│┌┐└┘├┤┬┴┼
+const wchar_t FRAMECHARS[11]={0x2500,0x2502,0x250c,0x2510,0x2514,0x2518,0x251c,0x2525,0x252c,0x2534,0x253c};	// ─│┌┐└┘├┤┬┴┼
 
 void
 clear(){ fprintf(stdout,"\033[H\033[J");}
@@ -27,7 +27,7 @@ fb_init(){
         chfb_ptr->msizey=SIZE_Y*2+1;
         chfb_ptr->marea=chfb_ptr->msizex*chfb_ptr->msizey;
 	 
-	chfb_ptr->fbtb_ptr=malloc(sizeof(uint32_t)*chfb_ptr->area);
+	chfb_ptr->fbtb_ptr=malloc(sizeof(wchar_t)*chfb_ptr->area);
 	if(!chfb_ptr->fbtb_ptr)return(NULL);
 	for(int i=0;i<chfb_ptr->area;i++){
 		*(chfb_ptr->fbtb_ptr+i)=' ';
@@ -56,7 +56,7 @@ fb_free(struct chfb** chfb_ptr){
 struct chfb*
 fb_draw_map(struct chfb* chfb_ptr){
 	if(!chfb_ptr)return(NULL);
-	uint32_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
 	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 	
 	for(int i=0;i<(chfb_ptr->msizey);i++){
@@ -109,7 +109,7 @@ void
 fb_screen_draw(struct chfb* chfb_ptr){
 	if(!chfb_ptr)exit(11);
 	resizexy(FSIZE_X,FSIZE_Y);
-	uint32_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
 	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 
 	for(int i=0;i<chfb_ptr->sizey;i++){
@@ -137,7 +137,7 @@ fb_screen_draw(struct chfb* chfb_ptr){
 	}
 }
 
-void prtnch(uint32_t chr, unsigned char nofarg,...){
+void prtnch(wchar_t chr, unsigned char nofarg,...){
 	if(nofarg<1||nofarg>3)exit(EXIT_FAILURE);
 
 	va_list vl;
@@ -171,7 +171,7 @@ fb_fraw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 	if(!chfb_ptr)exit(EXIT_FAILURE);
 	if(!ship_ptr)exit(EXIT_FAILURE);
 	
-	uint32_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
 	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 
 color_code=31;	//TEMP, DELETE

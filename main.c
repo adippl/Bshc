@@ -1,9 +1,34 @@
+#include <wchar.h>
 
 #include "conf.h"
 #include "state.h"
 #include "term.h"
 
 
+void
+test_struct_inits(){
+	printf("\n");
+	
+	struct chfb* kkk=chfb();
+	kkk->free(&kkk);
+	printf("chfb %p\n",(void*)kkk);
+
+	struct ship* k=ship(3,(void*)0x0);
+	k->free(&k);
+	printf("ship %p \n",(void*)kkk);
+	
+	struct fld* f=fld(2);
+	f->free(&f);
+	printf("fld %p \n",(void*)f);
+
+	struct ply* pl=ply(1);
+	pl->free(&pl);
+	printf("ply %p \n",(void*)pl);
+
+	struct state* st=state(2);
+	st->free(&st);
+	printf("state %p \n",(void*)st);
+}
 
 
 int 
@@ -70,24 +95,6 @@ main(int argc, char **argv){
 
 	printf("test=%d\n",test);
 
-	struct chfb* kkk=chfb();
-	kkk->free(&kkk);
-	printf("chfb %p\n",(void*)kkk);
-
-	struct ship* k=ship(3,(void*)0x0);
-	k->free(&k);
-	printf("ship %p \n",(void*)kkk);
-	
-	struct fld* f=fld(2);
-	f->free(&f);
-	printf("fld %p \n",(void*)f);
-
-	struct ply* pl=ply(1);
-	pl->free(&pl);
-	printf("ply %p \n",(void*)pl);
-
-	struct state* st=state(2);
-	st->free(&st);
-	printf("state %p \n",(void*)st);
+	//printf("wchar size= %li",sizeof(wchar_t));
 
 } 	
