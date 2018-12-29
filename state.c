@@ -27,6 +27,8 @@ ship_init(int size, struct ply* ply_ptr){
 
 	sh_ptr->ply=ply_ptr;
 
+	sh_ptr->free=ship_free;
+
 	return(sh_ptr);
 }
 
@@ -48,24 +50,27 @@ struct fld*
 fld_init(char nopl){
 	if(nopl<1)return(NULL);
 
-	struct fld* fld=malloc(sizeof(struct fld));
-	if(!fld)return(NULL);
+	struct fld* fld_ptr=malloc(sizeof(struct fld));
+	if(!fld_ptr)return(NULL);
 
-	fld->state=0;
+	fld_ptr->state=0;
 
-	fld->shotby=malloc(sizeof(struct ply*)*nopl);
-	if(!fld->shotby){free(fld);return(NULL);}
-	for(int i=0;i<nopl;i++) *(fld->shotby+i)=NULL;
+	fld_ptr->shotby=malloc(sizeof(struct ply*)*nopl);
+	if(!fld_ptr->shotby){free(fld_ptr);return(NULL);}
+	for(int i=0;i<nopl;i++) *(fld_ptr->shotby+i)=NULL;
 
-	fld->ship_ptr=NULL;
+	fld_ptr->ship_ptr=NULL;
+
+	fld_ptr->free=fld_free;
 	
-	return(fld);
+	return(fld_ptr);
 }
 
 void fld_free(struct fld** fld_ptr){
 	if(!*fld_ptr)exit(EXIT_FAILURE);
 	free((*fld_ptr)->shotby);
 	free(*fld_ptr);
+	*fld_ptr=NULL;
 }
 
 
@@ -89,21 +94,23 @@ ply_init(int pln){
 
 	int i_shn=0;	//ship number iterator
 	for(int j=0;j<MAX_NSH3;j++){
-		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH3,ply_ptr);
+		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(SH3L,ply_ptr);
 		if(!*(ply_ptr->shtbl_ptr+i_shn)) return(NULL);
 		i_shn++;
 	}
 	for(int j=0;j<MAX_NSH4;j++){
-		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH4,ply_ptr);
+		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(SH4L,ply_ptr);
 		if(!*(ply_ptr->shtbl_ptr+i_shn)) return(NULL);
 		i_shn++;
 	}
 	for(int j=0;j<MAX_NSH5;j++){
-		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(MAX_NSH5,ply_ptr);
+		*(ply_ptr->shtbl_ptr+i_shn)=ship_init(SH5L,ply_ptr);
 		if(!*(ply_ptr->shtbl_ptr+i_shn)) return(NULL);
 		i_shn++;
 	}
-
+	
+	ply_ptr->free=ply_free;
+	
 	return(ply_ptr);
 }
 void
@@ -143,6 +150,8 @@ state_init(int nopl){
 		if(!(state_ptr->ply_ptr+i)) return(NULL);
 	}
 	state_ptr->state=0;
+
+	state_ptr->free=state_free;
 	
 	return(state_ptr);
 }
@@ -170,12 +179,12 @@ ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, unsigned char xp
 
 	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
 
-	//ship_ptr->sax=xpos;
-	//ship_ptr->say=ypos;
-	//ship_ptr->shdir=rot;
+//	ship_ptr->sax=xpos;
+//	ship_ptr->say=ypos;
+//	ship_ptr->shdir=rot;
 
 	for(int i=0;i<ship_ptr->shsize;i++){
-		if(rot){
+		if(!rot){
 			if( (*fld_ptr_cst)[ypos+i][xpos]->ship_ptr!=NULL || (*fld_ptr_cst)[ypos+i][xpos]->state==2 ){
 				return(1);
 			}
@@ -203,9 +212,10 @@ ship_place(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, u
 	ship_ptr->sax=xpos;
 	ship_ptr->say=ypos;
 	ship_ptr->shdir=rot;
+//	int kek=ship_ptr->shsize;
 
 	for(int i=0;i<ship_ptr->shsize;i++){
-		if(rot){
+		if(!rot){
 			(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
 			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos+i][xpos];			//risky //FIXIT
 

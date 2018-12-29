@@ -1,6 +1,7 @@
 
 #include "conf.h"
 #include "term.h"
+#include "state.h"
 
 //const char FRAMECHARS[]="─│┌┐└┘├┤┬┴┼"; // DOESN'T WORK
 
@@ -15,49 +16,51 @@ resizexy(int x,int y){fprintf(stdout,"\033[8;%d;%dt",y,x);}
 
 struct chfb*
 fb_init(){
-	struct chfb* chfb=malloc(sizeof(struct chfb));
-	if(!chfb)return(NULL);
+	struct chfb* chfb_ptr=malloc(sizeof(struct chfb));
+	if(!chfb_ptr)return(NULL);
 
-	chfb->sizex=FSIZE_X;
-        chfb->sizey=FSIZE_Y-1;
-        chfb->area=chfb->sizex*chfb->sizey;
+	chfb_ptr->sizex=FSIZE_X;
+        chfb_ptr->sizey=FSIZE_Y-2;
+        chfb_ptr->area=chfb_ptr->sizex*chfb_ptr->sizey;
 	
-	chfb->msizex=SIZE_X*2+1;
-        chfb->msizey=SIZE_Y*2+1;
-        chfb->marea=chfb->msizex*chfb->msizey;
+	chfb_ptr->msizex=SIZE_X*2+1;
+        chfb_ptr->msizey=SIZE_Y*2+1;
+        chfb_ptr->marea=chfb_ptr->msizex*chfb_ptr->msizey;
 	 
-	chfb->fbtb_ptr=malloc(sizeof(int32_t)*chfb->area);
-	if(!chfb->fbtb_ptr)return(NULL);
-	for(int i=0;i<chfb->area;i++){
-		*(chfb->fbtb_ptr+i)=' ';
+	chfb_ptr->fbtb_ptr=malloc(sizeof(int32_t)*chfb_ptr->area);
+	if(!chfb_ptr->fbtb_ptr)return(NULL);
+	for(int i=0;i<chfb_ptr->area;i++){
+		*(chfb_ptr->fbtb_ptr+i)=' ';
 	}
 
-	chfb->frmt_ptr=malloc(sizeof(unsigned char)*chfb->area*3);
-	if(!chfb->frmt_ptr)return(NULL);
-	for(int j=0;j<chfb->area*3;j++){
-		*(chfb->frmt_ptr+j)=0;
+	chfb_ptr->frmt_ptr=malloc(sizeof(unsigned char)*chfb_ptr->area*3);
+	if(!chfb_ptr->frmt_ptr)return(NULL);
+	for(int j=0;j<chfb_ptr->area*3;j++){
+		*(chfb_ptr->frmt_ptr+j)=0;
 	}
 
-	return(chfb);
+	chfb_ptr->free=fb_free;
+
+	return(chfb_ptr);
 }
 void
-fb_free(struct chfb** chfb){
-	if(!*chfb)exit(11);
-	free((*chfb)->fbtb_ptr);
-	free((*chfb)->frmt_ptr);
-	free(*chfb);
-	*chfb=NULL;
+fb_free(struct chfb** chfb_ptr){
+	if(!*chfb_ptr)exit(11);
+	free((*chfb_ptr)->fbtb_ptr);
+	free((*chfb_ptr)->frmt_ptr);
+	free(*chfb_ptr);
+	*chfb_ptr=NULL;
 }
 
 
 struct chfb*
-fb_draw_map(struct chfb* chfb){
-	if(!chfb)return(NULL);
-	int32_t (*fbtb_ptr_cstd)[chfb->sizey][chfb->sizex]=(void*)chfb->fbtb_ptr;	//risky
-	unsigned char (*frmt_ptr_cstd)[chfb->sizey][chfb->sizex][3]=(void*)chfb->frmt_ptr;	//risky
+fb_draw_map(struct chfb* chfb_ptr){
+	if(!chfb_ptr)return(NULL);
+	int32_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 	
-	for(int i=0;i<(chfb->msizey);i++){
-		for(int j=0;j<chfb->msizex;j++){
+	for(int i=0;i<(chfb_ptr->msizey);i++){
+		for(int j=0;j<chfb_ptr->msizex;j++){
 			if(i%2==1&&j%2==1){
 				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[10];
 				
@@ -79,40 +82,38 @@ fb_draw_map(struct chfb* chfb){
 			}
 		}
 	}
-	for(int j=0;j<chfb->msizex/2;j+=1){
+	for(int j=0;j<chfb_ptr->msizex/2;j+=1){
 		(*fbtb_ptr_cstd)[0][j*2+2]=j%10+'0';
 		(*frmt_ptr_cstd)[0][j*2+2][0]=(j/10>0)?30+j/10:37;
-
 		
 	}
-	for(int i=2;i<chfb->msizey;i+=2){
+	for(int i=2;i<chfb_ptr->msizey;i+=2){
 		(*fbtb_ptr_cstd)[i][0]=i/2+47+49;
 	}
-
-
-	return(chfb);
+	return(chfb_ptr);
 }
+
 void
-fb_screen_draw_bw(struct chfb* chfb){
-	if(!chfb)exit(11);
+fb_screen_draw_bw(struct chfb* chfb_ptr){	//backup, legacy font
+	if(!chfb_ptr)exit(11);
 	resizexy(FSIZE_X,FSIZE_Y);
 
-	for(int i=0;i<chfb->sizey;i++){
-		for(int j=0;j<chfb->sizex;j++){
-			fprintf(stdout,"%lc",*(chfb->fbtb_ptr+i*chfb->sizex+j));
+	for(int i=0;i<chfb_ptr->sizey;i++){
+		for(int j=0;j<chfb_ptr->sizex;j++){
+			fprintf(stdout,"%lc",*(chfb_ptr->fbtb_ptr+i*chfb_ptr->sizex+j));
 		}
 		fprintf(stdout,"\n");
 	}
 }
 void
-fb_screen_draw(struct chfb* chfb){
-	if(!chfb)exit(11);
+fb_screen_draw(struct chfb* chfb_ptr){
+	if(!chfb_ptr)exit(11);
 	resizexy(FSIZE_X,FSIZE_Y);
-	int32_t (*fbtb_ptr_cstd)[chfb->sizey][chfb->sizex]=(void*)chfb->fbtb_ptr;	//risky
-	unsigned char (*frmt_ptr_cstd)[chfb->sizey][chfb->sizex][3]=(void*)chfb->frmt_ptr;	//risky
+	int32_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 
-	for(int i=0;i<chfb->sizey;i++){
-		for(int j=0;j<chfb->sizex;j++){
+	for(int i=0;i<chfb_ptr->sizey;i++){
+		for(int j=0;j<chfb_ptr->sizex;j++){
 			//fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
 
 			if((*frmt_ptr_cstd)[i][j][0]==0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
@@ -154,5 +155,42 @@ void prtnch(int32_t chr, unsigned char nofarg,...){
 		break;
 	} 
 	va_end(vl);
+}
+
+//void
+//fb_draw_ships(struct chfb* chfb_ptr,struct ply* ply_ptr){
+//	if(!ply_ptr)exit(NULL);
+//
+//
+////	return(chfb_ptr);
+//}
+
+//void*
+void
+fb_fraw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code){
+	if(!chfb_ptr)exit(EXIT_FAILURE);
+	if(!ship_ptr)exit(EXIT_FAILURE);
+	
+	int32_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
+
+color_code=31;	//TEMP, DELETE
+
+//2+ move from the edge if the screen; i*2 allign to the grid
+	if(!ship_ptr->shdir){
+		for(int i=0;i<ship_ptr->shsize;i++){
+			(*fbtb_ptr_cstd)[2+ship_ptr->say+i*2][2+ship_ptr->sax]='#';		
+			(*frmt_ptr_cstd)[2+ship_ptr->say+i*2][2+ship_ptr->sax][0]=color_code;
+		}
+		
+	}else{
+		for(int i=0;i<ship_ptr->shsize;i++){
+			(*fbtb_ptr_cstd)[2+ship_ptr->say][2+ship_ptr->sax+i*2]='#';
+			(*frmt_ptr_cstd)[2+ship_ptr->say][2+ship_ptr->sax+i*2][0]=color_code;
+			
+		}
+	}
+	
+	//return((void*)0x1);
 }
 

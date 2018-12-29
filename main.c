@@ -43,17 +43,51 @@ main(int argc, char **argv){
 	//}
 	//fprintf(stdout,"\nfield test\n");
 	//
-	printf("\nlel\n");
-	c=getchar();
-	printf("%d",c);
-	prtnch('a',2,31,1);
-	prtnch('a',1,31);
-	prtnch(0x2693,2,34,1);
+	//printf("\nlel\n");
+	//c=getchar();
+	//printf("%d",c);
+	//prtnch('a',2,31,1);
+	//prtnch('a',1,31);
+	//prtnch(0x2693,2,34,1);
 
-	struct state* st_p=state_init(2);
-	//	(*st_p->pln+0)->shtbl_size+0
-	ship_place(st_p,(*st_p->ply_ptr+0)->shtbl_ptr+0,0,0,0);
-	char test=ship_placecheck(st_p,(*st_p->ply_ptr+0)->shtbl_ptr+0,0,0,0);
+
+	struct state* state_ptr=state_init(2);
+	//	(*state_ptr->pln+0)->shtbl_size+0
+	ship_place(state_ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0,0,0);
+
+	ship_place(state_ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0,0,1);
+	char test=ship_placecheck(state_ptr,*(*state_ptr->ply_ptr+0)->shtbl_ptr+0,2,1,0);
 	printf("test=%d",test);
 	
+	struct chfb* ptr=fb_draw_map(fb_init());
+	fb_fraw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
+	fb_fraw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0);
+	clear();
+	gotoxy(0,0);
+	fb_screen_draw(ptr);
+	gotoxy(0,55);
+	fb_free(&ptr);
+
+	printf("test=%d\n",test);
+
+	struct chfb* kkk=chfb();
+	kkk->free(&kkk);
+	printf("chfb %p\n",(void*)kkk);
+
+	struct ship* k=ship(3,(void*)0x0);
+	k->free(&k);
+	printf("ship %p \n",(void*)kkk);
+	
+	struct fld* f=fld(2);
+	f->free(&f);
+	printf("fld %p \n",(void*)f);
+
+	struct ply* pl=ply(1);
+	pl->free(&pl);
+	printf("ply %p \n",(void*)pl);
+
+	struct state* st=state(2);
+	st->free(&st);
+	printf("state %p \n",(void*)st);
+
 } 	
