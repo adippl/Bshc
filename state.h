@@ -35,10 +35,10 @@ struct fld{	//map consists of fields
 };
 struct ship{
 	bool shdir;	//ship direction 0=vertical 1=horizontal
-	unsigned char shsize;	//ship size
-	unsigned char sax;	//anchor x cord (Ship Anchor x)
-	unsigned char say;	//anchor y cord
-	unsigned char hp;	//100% hp == shsize	0 --> destroyed
+	uint16_t shsize;	//ship size
+	uint16_t sax;	//anchor x cord (Ship Anchor x)
+	uint16_t say;	//anchor y cord
+	uint16_t hp;	//100% hp == shsize	0 --> destroyed
 	struct fld** sgmnts;	//pointer to an array of pointer to fls (fields) with ship segments
 	struct ply* ply;	//pointer to player (owner)
 
@@ -64,8 +64,8 @@ struct ship* ship_init(int size, struct ply* ply_ptr);
 void ship_free(struct ship** sh_ptr);
 
 
-char ship_place(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot);
-char ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot);
+char ship_place(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot);
+char ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot);
 
 
 #endif // STATE_H

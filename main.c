@@ -46,7 +46,7 @@ main(int argc, char **argv){
 	//clear();
 	gotoxy(0,0);
 	fb_screen_draw(p);
-	gotoxy(1,SIZE_Y*2+1+1);
+	gotoxy(1,SIZE_Y*2+1+1+1);
 	c=getchar();
 	}while(c!='q');
 	fb_free(&p);
@@ -85,16 +85,20 @@ main(int argc, char **argv){
 	printf("test=%d",test);
 	
 	struct chfb* ptr=fb_draw_map(fb_init());
-	fb_fraw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
-	fb_fraw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0);
+	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
+	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0);
 	clear();
 	gotoxy(0,0);
 	fb_screen_draw(ptr);
-	gotoxy(0,55);
+	gotoxy(0,52);
 	fb_free(&ptr);
 
 	printf("test=%d\n",test);
 
-	//printf("wchar size= %li",sizeof(wchar_t));
+
+	struct chfb* chfb_ptr=chfb();
+	//fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln){
+	char* kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
+	printf("\n%p",(void*)kek);
 
 } 	

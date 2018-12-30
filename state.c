@@ -171,7 +171,7 @@ state_free(struct state** state_ptr){
 }
 
 char
-ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot){
+ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 	if(!state_ptr)return(2);
 	if(!ship_ptr)return(2);
 	if(xpos>state_ptr->sizex)return(3);
@@ -201,7 +201,7 @@ ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, unsigned char xp
 }
 
 char
-ship_place(struct state* state_ptr, struct ship* ship_ptr, unsigned char xpos, unsigned char ypos, bool rot){
+ship_place(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 	if(!state_ptr)return(2);
 	if(!ship_ptr)return(2);
 	if(xpos>state_ptr->sizex)return(3);

@@ -35,6 +35,7 @@ void fb_screen_draw(struct chfb* chfb);		//draws screen with formatting
 struct chfb* fb_draw_map(struct chfb* chfb);	//draws map on framebuffer 
 
 void fb_draw_ships(struct chfb*);	//d
-void fb_fraw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code);
+void fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code);
 
+char* fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln);
 #endif	//SCREEN_H
