@@ -41,6 +41,8 @@ fb_init(){
 
 	chfb_ptr->free=fb_free;
 
+	chfb_ptr->draw_map=fb_draw_map;
+	chfb_ptr->cleanm=fb_clear_and_map;
 	return(chfb_ptr);
 }
 void
@@ -52,6 +54,15 @@ fb_free(struct chfb** chfb_ptr){
 	*chfb_ptr=NULL;
 }
 
+void
+fb_clear_and_map(struct chfb* chfb_ptr){
+	for(int i=0;i<chfb_ptr->area;i++){
+		*(chfb_ptr->frmt_ptr+i+0)=0; //zero char
+		*(chfb_ptr->frmt_ptr+i+1)=0; //zero format
+		*(chfb_ptr->frmt_ptr+i+2)=0; //zero format
+		*(chfb_ptr->frmt_ptr+i+3)=0; //zero format
+	}
+}
 
 struct chfb*
 fb_draw_map(struct chfb* chfb_ptr){
@@ -116,6 +127,7 @@ void
 fb_screen_draw(struct chfb* chfb_ptr){
 	if(!chfb_ptr)exit(11);
 	resizexy(FSIZE_X,FSIZE_Y);
+	gotoxy(0,0);
 	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
 	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 

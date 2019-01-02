@@ -14,7 +14,7 @@ conf.o:	conf.c
 	$(CC) -c conf.c
 term.o:	term.c
 	$(CC) -c term.c
-ui.o:	ui.o
+ui.o:	ui.c
 	$(CC) -c ui.c
 
 cl:

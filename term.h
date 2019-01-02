@@ -17,6 +17,9 @@ struct	chfb { //char frame buffer
 	unsigned char* frmt_ptr;	//pointer to an array of text formatting arguments max 3; eatch dimension is another argument
 
 	void (*free)(struct chfb**);		//"destructor" self_ptr->free(&self_self);
+	void (*cleanm)(struct chfb*);		//clears fb and redraws the map self_ptr->free(&self_self);
+
+	struct chfb* (*draw_map)(struct chfb*);		//draw map self_ptr->draw_map(&self_self);
 };
 
 
@@ -33,6 +36,7 @@ void fb_screen_draw_bw(struct chfb* chfb);	//draws screen, chars only
 void fb_screen_draw(struct chfb* chfb);		//draws screen with formatting
 
 struct chfb* fb_draw_map(struct chfb* chfb);	//draws map on framebuffer 
+void fb_clear_and_map(struct chfb* chfb_ptr);	//clears fb and redraws the map
 
 void fb_draw_ships(struct chfb*);	//d
 void fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code);

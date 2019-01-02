@@ -93,13 +93,14 @@ main(int argc, char **argv){
 	gotoxy(0,52);
 	fb_free(&ptr);
 
-	printf("test=%d\n",test);
-
 
 	struct chfb* chfb_ptr=chfb();
+	fb_draw_map(chfb_ptr);
+
+	fb_screen_draw(chfb_ptr);
 	//fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln){
-	char* kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
-	printf("\n%p",(void*)kek);
+	char kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
+	printf("\n%d",(int)kek);
 	
 	printf("\n\n%ld!%ld",sizeof(wchar_t),sizeof(uint16_t));
 	
