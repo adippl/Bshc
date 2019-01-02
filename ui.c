@@ -26,6 +26,7 @@ input_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax,stru
 		fprintf(stdout,"Ship number %d\tShip's length=%d \nInput ship's X=(intiger) Y=(char) and direction (0 vertical, 1 horizontal)\n",*i,ship_ptr->shsize);
 		if(scanf("%hu %lc %hu",&ix,&cy,&id)!=3){
 			fprintf(stderr,"INPUT ERROR"); 
+			fprintf(stderr,"%ld",ftell(stdin));
 			fscanf(stdin,"%lc",&discard); 
 			sleep(1);
 			continue;
@@ -33,7 +34,7 @@ input_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax,stru
 		
 		if(cy>='a'&&cy<=ymax+'a'){
 			iy=cy-'a';
-		}
+		}else{fprintf(stderr,"Input error\n");sleep(1);continue;}
 
 		if(ix>-1&&ix<xmax&& iy>-1&&iy<ymax&& id<2){break;}
                 else{fprintf(stderr,"Input error\n");}
@@ -63,10 +64,26 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln
 		x=0;y=0;d=0;
 		ship_arr[i]=ship( (*(ship_arr_org+i))->shsize, NULL);
 		
-
-//		input_coord  uint16_t*       x, uint16_t* y      , bool* d            , uint16_t xmax   , uint16_t ymax   ,struct ship* ship_ptr, int* i);
 		//input_coord( &ship_arr[i]->sax, &ship_arr[i]->say, &ship_arr[i]->shdir, state_ptr->sizex, state_ptr->sizex, ship_arr[i],&i);
+
+		//state.c:ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
+		
+		for(;;){
 		input_coord(&x,&y,&d, state_ptr->sizex, state_ptr->sizex, ship_arr[i],&i);
+			if(ship_placecheck(state_ptr, ship_arr[i], x,y,d)==0){
+				ship_arr[i]->sax=x;
+				ship_arr[i]->say=y;
+				ship_arr[i]->shdir=d;
+
+				break;
+
+				fprintf(stderr,"\nship input successful\n");
+			}else{
+				fprintf(stderr,"\n!%d %d %d!\n",x,y,(int)d);
+				fprintf(stderr,"\nFAIL\n");
+				continue;
+			}
+		}
 
 		fb_screen_draw(chfb_ptr);
 

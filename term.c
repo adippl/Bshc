@@ -57,10 +57,10 @@ fb_free(struct chfb** chfb_ptr){
 void
 fb_clear_and_map(struct chfb* chfb_ptr){
 	for(int i=0;i<chfb_ptr->area;i++){
-		*(chfb_ptr->frmt_ptr+i+0)=0; //zero char
-		*(chfb_ptr->frmt_ptr+i+1)=0; //zero format
-		*(chfb_ptr->frmt_ptr+i+2)=0; //zero format
-		*(chfb_ptr->frmt_ptr+i+3)=0; //zero format
+		*(chfb_ptr->fbtb_ptr+i)=0; //zero char
+	}
+	for(int i=0;i<chfb_ptr->area*3;i++ ){
+		*(chfb_ptr->frmt_ptr+i)=0; //zero format
 	}
 }
 
@@ -208,4 +208,10 @@ color_code=31;	//TEMP, DELETE
 	//return((void*)0x1);
 }
 
-
+void 
+fb_draw_ships(struct chfb* chfb_ptr, struct ship** ship_ptr, int nosh){
+	if(!chfb_ptr)exit(EXIT_FAILURE);
+	if(!ship_ptr)exit(EXIT_FAILURE);
+	
+	
+}

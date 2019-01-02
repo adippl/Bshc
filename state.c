@@ -171,6 +171,7 @@ state_free(struct state** state_ptr){
 }
 
 char
+//ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 	if(!state_ptr)return(2);
 	if(!ship_ptr)return(2);
@@ -179,13 +180,10 @@ ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, u
 
 	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
 
-//	ship_ptr->sax=xpos;
-//	ship_ptr->say=ypos;
-//	ship_ptr->shdir=rot;
-
 	for(int i=0;i<ship_ptr->shsize;i++){
 		if(!rot){
 			if( (*fld_ptr_cst)[ypos+i][xpos]->ship_ptr!=NULL || (*fld_ptr_cst)[ypos+i][xpos]->state==2 ){
+			//fprintf(stderr,"@@ %d # %p @@",(int)(*fld_ptr_cst)[ypos+i][xpos]->state,(void*)(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr);	//debug
 				return(1);
 			}
 		}else{

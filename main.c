@@ -52,10 +52,10 @@ main(int argc, char **argv){
 	fb_free(&p);
 
 
-	struct state* s=state_init(2);
-	fprintf(stderr,"\n!init=%p!\n",(void*)s);
-	state_free(&s);
-	fprintf(stderr,"\n!free=%p!\n",(void*)s);
+//	struct state* s=state_init(2);
+//	fprintf(stderr,"\n!init=%p!\n",(void*)s);
+//	state_free(&s);
+//	fprintf(stderr,"\n!free=%p!\n",(void*)s);
 	
 	//void* ptr=(void*)fld_init(2);
 	//fprintf(stderr,"init=%p\n",ptr);
@@ -78,11 +78,11 @@ main(int argc, char **argv){
 
 	struct state* state_ptr=state_init(2);
 	//	(*state_ptr->pln+0)->shtbl_size+0
-	ship_place(state_ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0,0,0);
-
-	ship_place(state_ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0,0,1);
-	char test=ship_placecheck(state_ptr,*(*state_ptr->ply_ptr+0)->shtbl_ptr+0,2,1,0);
-	printf("test=%d",test);
+//	ship_place(state_ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0,0,0);
+//
+//	ship_place(state_ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0,0,1);
+//	char test=ship_placecheck(state_ptr,*(*state_ptr->ply_ptr+0)->shtbl_ptr+0,2,1,0);
+//	printf("test=%d",test);
 	
 	struct chfb* ptr=fb_draw_map(fb_init());
 	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
