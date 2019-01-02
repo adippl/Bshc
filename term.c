@@ -88,7 +88,9 @@ fb_draw_map(struct chfb* chfb_ptr){
 	}
 	for(int i=2;i<chfb_ptr->msizey;i+=2){
 		(*fbtb_ptr_cstd)[i][0]=i/2+47+49;
+		(*frmt_ptr_cstd)[i][0][0]=(i/6>0)?30+i/6:37;
 	}
+	
 
 	//draw bottom border
 	for(int i=0;i<chfb_ptr->sizex;i++){
@@ -121,7 +123,7 @@ fb_screen_draw(struct chfb* chfb_ptr){
 		for(int j=0;j<chfb_ptr->sizex;j++){
 			//fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
 			
-			// ifs below arre checkinf for number of formatting variables assigned to the char
+			// IFs below are check format_tabel for number of formatting variables assigned to the char
 			// 0-empty 1-presetn()
 			//	000
 			//	100
@@ -129,19 +131,15 @@ fb_screen_draw(struct chfb* chfb_ptr){
 			//	111
 
 			if((*frmt_ptr_cstd)[i][j][0]==0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
-
 				fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
 
 			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
-
 				prtnch((*fbtb_ptr_cstd)[i][j],1,(*frmt_ptr_cstd)[i][j][0]);
 
 			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]==0){
-
 				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1]);
 
 			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]!=0){
-
 				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1],(*frmt_ptr_cstd)[i][j][2]);
 			}
 		}
@@ -199,71 +197,3 @@ color_code=31;	//TEMP, DELETE
 }
 
 
-void
-screen_clear_area(uint16_t x, uint16_t y, uint16_t xm, uint16_t ym){
-	gotoxy(x,y);
-	for(int j=0;j<ym;j++){
-		for(int i=0;i<xm;i++){
-			fprintf(stdout," ");
-		}
-		fprintf(stdout,"\n");
-	}
-}
-
-void
-input_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax,struct ship* ship_ptr, int* i){
-	unsigned short int ix=0,iy=0,id=0;
-	
-	for(;;){
-		screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
-		gotoxy(0,51);
-		fprintf(stdout,"Ship number %d\tShip's length=%d \nInput ship's X Y and direction (0 vertical, 1 horizontal)\n",*i,ship_ptr->shsize);
-		scanf("%hu %hu %hu",&ix,&iy,&id);
-		fprintf(stdout,"Your x=%d y=%d d=%d\n",ix,iy,id);
-		
-		if(ix<xmax&& iy<ymax&& id<2){break;}
-		else{fprintf(stderr,"Input error\n");}
-	}
-	*x=(uint16_t)ix;
-	*y=(uint16_t)iy;
-	*d=(uint16_t)id;
-}
-char*
-fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln){
-	if(!chfb_ptr)return(NULL);
-	if(!state_ptr)return(NULL);
-	if(0<pln||pln>state_ptr->nopl)return(NULL);
-
-	//uint16_t x=0,y=0;
-	//bool d=0;
-	
-	unsigned char noship=(*(state_ptr->ply_ptr+pln))->shtbl_size;
-	struct ship** ship_arr_org=(*(state_ptr->ply_ptr+pln))->shtbl_ptr;
-
-
-	struct ship* ship_arr[noship];
-	//struct ship ship_arr=malloc(sizeof(struct ship*)*nosh);
-	
-	for(int i=0;i<noship;i++){
-//		x=0;y=0;d=0;
-		ship_arr[i]=ship( (*(ship_arr_org+i))->shsize, NULL);
-		
-		//input_coord(&x,&y,&d,state_ptr->msizex,state_ptr->msizex);
-		
-
-		input_coord(&ship_arr[i]->sax,&ship_arr[i]->say,&ship_arr[i]->shdir,state_ptr->sizex,state_ptr->sizex,ship_arr[i],&i);
-
-
-		//x=0;y=0;d=0;
-	}
-
-//	printf("\ninput x y d");
-
-	//input_coord(&x,&y,&d,state_ptr->msizex,state_ptr->msizex);
-
-
-	for(int i=0;i<noship;i++){
-		ship_arr[i]->free(&ship_arr[i]);
-	}
-	return((char*)0x1);
-}

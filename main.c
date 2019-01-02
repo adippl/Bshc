@@ -3,6 +3,7 @@
 #include "conf.h"
 #include "state.h"
 #include "term.h"
+#include "ui.h"
 
 
 void
@@ -36,7 +37,6 @@ main(int argc, char **argv){
 //	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
-//	resizexy(80,24);
 	int32_t c=0;
 
 	struct chfb* p=fb_draw_map(fb_init());
@@ -100,5 +100,7 @@ main(int argc, char **argv){
 	//fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln){
 	char* kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
 	printf("\n%p",(void*)kek);
-
-} 	
+	
+	printf("\n\n%ld!%ld",sizeof(wchar_t),sizeof(uint16_t));
+	
+}
