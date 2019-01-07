@@ -95,11 +95,12 @@ fb_draw_map(struct chfb* chfb_ptr){
 	}
 	for(int j=0;j<chfb_ptr->msizex/2;j+=1){
 		(*fbtb_ptr_cstd)[0][j*2+2]=j%10+'0';
-		(*frmt_ptr_cstd)[0][j*2+2][0]=(j/10>0)?30+j/10:37;	//if j>10 colour numer set by line above
+		(*frmt_ptr_cstd)[0][j*2+2][0]=(j/10>0)?30+j/10:37;	//if j>10 colour numer set by line above //37 is white
 	}
 	for(int i=2;i<chfb_ptr->msizey;i+=2){
 		(*fbtb_ptr_cstd)[i][0]=i/2+47+49;
-		(*frmt_ptr_cstd)[i][0][0]=(i/6>0)?30+i/6:37;
+		//(*frmt_ptr_cstd)[i][0][0]=(i/6>0)?30+i/6:37;
+		(*frmt_ptr_cstd)[i+2][0][0]=(i/6>0)?30+i/6:37;
 	}
 	
 
@@ -190,18 +191,18 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 
 color_code=31;	//TEMP, DELETE
 
-	//2+ move from the edge if the screen; i*2 allign to the grid
+	//2+ move from the edge if the screen; (x or y)*2+i*2  *2 alligns to the grid
 	if(ship_ptr->shdir){
 		for(int i=0;i<ship_ptr->shsize;i++){
-			(*fbtb_ptr_cstd)[2+ship_ptr->say][2+ship_ptr->sax+i*2]='#';
-			(*frmt_ptr_cstd)[2+ship_ptr->say][2+ship_ptr->sax+i*2][0]=color_code;
+			(*fbtb_ptr_cstd)[2+ship_ptr->say*2][2+ship_ptr->sax*2+i*2]='#';
+			(*frmt_ptr_cstd)[2+ship_ptr->say*2][2+ship_ptr->sax*2+i*2][0]=color_code;
 			
 		}
 		
 	}else{
 		for(int j=0;j<ship_ptr->shsize;j++){
-			(*fbtb_ptr_cstd)[2+ship_ptr->say+j*2][2+ship_ptr->sax]='#';		
-			(*frmt_ptr_cstd)[2+ship_ptr->say+j*2][2+ship_ptr->sax][0]=color_code;
+			(*fbtb_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2]='#';		
+			(*frmt_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2][0]=color_code;
 		}
 	}
 	

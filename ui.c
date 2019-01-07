@@ -75,6 +75,7 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln
 				ship_arr[i]->say=y;
 				ship_arr[i]->shdir=d;
 
+				fb_draw_ship_single(chfb_ptr, ship_arr[i], 37 ); // 37  is a color code
 				break;
 
 				fprintf(stderr,"\nship input successful\n");
