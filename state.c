@@ -171,7 +171,6 @@ state_free(struct state** state_ptr){
 }
 
 char
-//ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 	if(!state_ptr)return(2);
 	if(!ship_ptr)return(2);
@@ -199,34 +198,29 @@ ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, u
 }
 
 char
-ship_place(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
+ship_place_str_pos(struct state* state_ptr, struct ship* ship_ptr){
 	if(!state_ptr)return(2);
 	if(!ship_ptr)return(2);
+
+	uint16_t xpos=ship_ptr->sax;
+	uint16_t ypos=ship_ptr->say;
+	bool dir=ship_ptr->shdir;
+	
 	if(xpos>state_ptr->sizex)return(3);
 	if(ypos>state_ptr->sizey)return(3);
 
 	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
 
-	ship_ptr->sax=xpos;
-	ship_ptr->say=ypos;
-	ship_ptr->shdir=rot;
-//	int kek=ship_ptr->shsize;
-
 	for(int i=0;i<ship_ptr->shsize;i++){
-		if(!rot){
+		if(!dir){
 			(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
 			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos+i][xpos];			//risky //FIXIT
-
-
 			(*fld_ptr_cst)[ypos+i][xpos]->state=2;
 		}else{
 			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
 			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos][xpos+i];			//risky //FIXIT
-			
 			(*fld_ptr_cst)[ypos][xpos+i]->state=2;
 		}
 	}
-
-
 	return(0);
 }

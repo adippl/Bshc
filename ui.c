@@ -2,6 +2,8 @@
 #include "state.h"
 #include "term.h"
 
+#include <string.h>
+
 
 void
 screen_clear_area(uint16_t x, uint16_t y, uint16_t xm, uint16_t ym){
@@ -58,23 +60,23 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln
 	unsigned char noship=(*(state_ptr->ply_ptr+pln))->shtbl_size;
 	struct ship** ship_arr_org=(*(state_ptr->ply_ptr+pln))->shtbl_ptr;
 
+	struct state* tempstate_ptr = state(1);
+	if(!tempstate_ptr)exit(10);
+
 	struct ship* ship_arr[noship];
 	
 	for(int i=0;i<noship;i++){
 		x=0;y=0;d=0;
 		ship_arr[i]=ship( (*(ship_arr_org+i))->shsize, NULL);
 		
-		//input_coord( &ship_arr[i]->sax, &ship_arr[i]->say, &ship_arr[i]->shdir, state_ptr->sizex, state_ptr->sizex, ship_arr[i],&i);
-
-		//state.c:ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
-		
 		for(;;){
-		input_coord(&x,&y,&d, state_ptr->sizex, state_ptr->sizex, ship_arr[i],&i);
-			if(ship_placecheck(state_ptr, ship_arr[i], x,y,d)==0){
+		input_coord(&x,&y,&d, state_ptr->sizex, state_ptr->sizey, ship_arr[i],&i);
+			if(ship_placecheck(tempstate_ptr, ship_arr[i], x,y,d)==0){
 				ship_arr[i]->sax=x;
 				ship_arr[i]->say=y;
 				ship_arr[i]->shdir=d;
-
+				
+				ship_place_str_pos(tempstate_ptr,ship_arr[i]);
 				fb_draw_ship_single(chfb_ptr, ship_arr[i], 37 ); // 37  is a color code
 				break;
 
@@ -92,6 +94,11 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln
 		//x=0;y=0;d=0;
 	}
 
+	for(int i=0;i<noship;i++){
+		memcpy(*(ship_arr_org+i),ship_arr[i],sizeof(bool)+sizeof(uint32_t)*4);
+		ship_place_str_pos(state_ptr,*(ship_arr_org+i));
+	}
+	tempstate_ptr->free(&tempstate_ptr);
 	for(int i=0;i<noship;i++){
 		ship_arr[i]->free(&ship_arr[i]);
 	}

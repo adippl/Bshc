@@ -65,6 +65,7 @@ void ship_free(struct ship** sh_ptr);
 
 
 char ship_place(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot);
+char ship_place_str_pos(struct state* state_ptr, struct ship* ship_ptr);
 char ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot);
 
 
