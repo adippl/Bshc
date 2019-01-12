@@ -38,7 +38,7 @@ input_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax,stru
 			iy=cy-'a';
 		}else{fprintf(stderr,"Input error\n");sleep(1);continue;}
 
-		if(ix>-1&&ix<xmax&& iy>-1&&iy<ymax&& id<2){break;}
+		if(ix>-1&&ix<xmax-ship_ptr->shsize+1&& iy>-1&&iy<ymax-ship_ptr->shsize+1&& id<2){break;}
                 else{fprintf(stderr,"Input error\n");}
 	}
 	*x=(uint16_t)ix&0xffff;	//bitwise AND
@@ -49,7 +49,7 @@ input_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax,stru
 }
 
 char
-fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln){
+fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char pln){
 	if(!chfb_ptr)return(1);
 	if(!state_ptr)return(1);
 	if(0<pln||pln>state_ptr->nopl)return(1);
@@ -77,13 +77,14 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, char pln
 				ship_arr[i]->shdir=d;
 				
 				ship_place_str_pos(tempstate_ptr,ship_arr[i]);
-				fb_draw_ship_single(chfb_ptr, ship_arr[i], 37 ); // 37  is a color code
+				fb_draw_ship_single(chfb_ptr, ship_arr[i], PLAYER_COL[pln][0] ); // 37  is a color code
 				break;
 
 				fprintf(stderr,"\nship input successful\n");
 			}else{
 				fprintf(stderr,"\n!%d %d %d!\n",x,y,(int)d);
 				fprintf(stderr,"\nFAIL\n");
+				sleep(1);
 				continue;
 			}
 		}

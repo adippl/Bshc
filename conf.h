@@ -17,7 +17,10 @@ extern const int SIZE_X,SIZE_Y;		//map size
 extern const int SH3L,SH4L,SH5L;	//ship length
 extern const int MAX_NSH3,MAX_NSH4,MAX_NSH5;	//max ammount of ships
 
-const char DPLYCOL[4];	//default player col
+extern const char DPLYCOL[4];	//default player col
+
+extern const char SPREAD_DEF;
+extern const char SH3_NOSH,SH4_NOSH,SH5_NOSH;
 
 #endif // CONF_H
 

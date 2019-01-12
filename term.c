@@ -7,6 +7,8 @@
 
 const wchar_t FRAMECHARS[11]={0x2500,0x2502,0x250c,0x2510,0x2514,0x2518,0x251c,0x2525,0x252c,0x2534,0x253c};	// ─│┌┐└┘├┤┬┴┼
 
+const unsigned char PLAYER_COL[2][3]={{31,0,0},{32,0,0}};
+
 void
 clear(){ fprintf(stdout,"\033[H\033[J");}
 void
@@ -189,7 +191,7 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
 	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 
-color_code=31;	//TEMP, DELETE
+//color_code=31;	//TEMP, DELETE
 
 	//2+ move from the edge if the screen; (x or y)*2+i*2  *2 alligns to the grid
 	if(ship_ptr->shdir){

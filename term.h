@@ -4,7 +4,9 @@
 #include "conf.h"
 #include "state.h"
 
-const wchar_t FRAMECHARS[11];	//utf-8 box drawing characters
+const wchar_t FRAMECHARS[11];	//utf box drawing characters
+
+const unsigned char PLAYER_COL[2][3];
 
 struct	chfb { //char frame buffer
 	int sizex;	//frame size x

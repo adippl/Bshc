@@ -45,6 +45,7 @@ struct ship{
 	void (*free)(struct ship**);		//"destructor" self_ptr->free(&self_self);
 };
 
+
 	//"destructor" self_ptr->free(&self_self);
 
 struct state* state_init(int nopl);
@@ -68,6 +69,19 @@ char ship_place(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, u
 char ship_place_str_pos(struct state* state_ptr, struct ship* ship_ptr);
 char ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot);
 
+void ply_calc_ships_hp(struct ply* starte_ptr);
+
+struct shot{
+	uint16_t noshells;	//number of points	//number of shells fiered
+	int16_t* shots_ptr;	//2d array of shots (*shots)[noshells][dimension]	dimensions x=0;y=1;	size=noshells*2
+	void (*free)(struct shot**);	//"destructor" self_ptr->free(&self_self);
+};
+
+struct shot* shot_init(unsigned char noshells);	//allocates shot vla;	argument number of shells
+#define shot(nosh) shot_init(nosh)		//"constructor"
+void shot_free(struct shot** shot_ptr);	//frees shot vla
+
+struct shot* shot_gen(char shsize);	//allocates shot struct and generates shells
 
 #endif // STATE_H
 

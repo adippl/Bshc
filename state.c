@@ -170,6 +170,10 @@ state_free(struct state** state_ptr){
 	*state_ptr=NULL;
 }
 
+//void fld_debug(struct fld** fld_ptr,uint16_t sizey,uint16_t sizex){
+//	
+//}
+
 char
 ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 	if(!state_ptr)return(2);
@@ -177,16 +181,17 @@ ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, u
 	if(xpos>state_ptr->sizex)return(3);
 	if(ypos>state_ptr->sizey)return(3);
 
-	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
+	struct fld* (*fld_ptr_cst)[state_ptr->sizey][state_ptr->sizex]=(void*)state_ptr->map_ptr;
 
 	for(int i=0;i<ship_ptr->shsize;i++){
 		if(!rot){
 			if( (*fld_ptr_cst)[ypos+i][xpos]->ship_ptr!=NULL || (*fld_ptr_cst)[ypos+i][xpos]->state==2 ){
-			//fprintf(stderr,"@@ %d # %p @@",(int)(*fld_ptr_cst)[ypos+i][xpos]->state,(void*)(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr);	//debug
+//			fprintf(stderr,"@y=%d x=%d@ %d # %p @@",ypos+i,xpos,(int)(*fld_ptr_cst)[ypos+i][xpos]->state, (void*)(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr);	//debug
 				return(1);
 			}
 		}else{
 			if( (*fld_ptr_cst)[ypos][xpos+i]->ship_ptr!=NULL || (*fld_ptr_cst)[ypos][xpos+i]->state==2 ){
+//			fprintf(stderr,"@y=%d x=%d@ %d # %p @@",ypos,xpos+i,(int)(*fld_ptr_cst)[ypos][xpos+i]->state,(void*)(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr);	//debug
 				return(1);
 			}
 			
@@ -209,7 +214,7 @@ ship_place_str_pos(struct state* state_ptr, struct ship* ship_ptr){
 	if(xpos>state_ptr->sizex)return(3);
 	if(ypos>state_ptr->sizey)return(3);
 
-	struct fld* (*fld_ptr_cst)[ypos>state_ptr->sizey][xpos>state_ptr->sizex]=(void*)state_ptr->map_ptr;
+	struct fld* (*fld_ptr_cst)[state_ptr->sizey][state_ptr->sizex]=(void*)state_ptr->map_ptr;
 
 	for(int i=0;i<ship_ptr->shsize;i++){
 		if(!dir){
@@ -223,4 +228,112 @@ ship_place_str_pos(struct state* state_ptr, struct ship* ship_ptr){
 		}
 	}
 	return(0);
+}
+
+void ship_calc_hp(struct ship* ship_ptr){
+	if(!ship_ptr)exit(920);
+	uint16_t hp=0;
+//	struct fld* (*fld_ptr_arr)[ship_ptr->shsize]=(struct fld* (*)[ship_ptr->shsize] )ship_ptr->sgmnts;	//risky FIXIT
+	struct fld* (*fld_ptr_arr)[ship_ptr->shsize]=(void*)ship_ptr->sgmnts;	//risky FIXIT
+
+
+	for(int i=0;i<ship_ptr->shsize;i++){
+		if((*fld_ptr_arr)[i]->state){
+			hp++;
+		}
+	}
+	ship_ptr->hp=hp;
+}
+void ply_calc_ships_hp(struct ply* ply_ptr){
+	if(!ply_ptr)exit(921);
+	
+	struct ship* (*ship_ptr_arr)[ply_ptr->shtbl_size]=(void*)ply_ptr->shtbl_ptr;
+
+	for(int i=0;i<ply_ptr->shtbl_size;i++){
+		ship_calc_hp((*ship_ptr_arr)[i]);
+	}
+}
+
+//shot{
+//	uint16_t noshells;	//number of points	//number of shells fiered
+//	uint16_t* shots		//2d array of shots (*shots)[noshells][dimension]	dimensions x=1;y=0	size=noshells*2
+//};
+
+struct shot*
+shot_init(unsigned char noshells){
+	struct shot* shot_ptr=malloc(sizeof(struct shot));
+	if(!shot_ptr)exit(922);
+	
+	shot_ptr->shots_ptr=malloc(sizeof(uint16_t)*2*noshells);
+	if(!shot_ptr)exit(922);
+	
+	shot_ptr->free=shot_free;
+	
+	return(shot_ptr);
+}
+
+void
+shot_free(struct shot** shot_ptr){
+	free((*shot_ptr)->shots_ptr);
+	free(*shot_ptr);
+}
+
+char
+rand_gen(char shsize){
+	int v=1+SPREAD_DEF;	//SPREAD_DEF=1 by def
+	switch(shsize){
+		case 3:
+			v+=0;
+			break;;
+		case 4:
+			v+=1;
+			break;;
+		case 5:
+			v+=2;
+			break;;
+	}
+
+//	time_t tt;		//FIXIT
+//	srand(time(&tt));	//FIXIT
+	int rd=0;
+	
+	rd=0;
+	rd=rand()%v;	//value
+	if(rand()%2){	// + - sigh change
+		rd=rd*(-1);
+	}
+	return(rd);
+}
+
+
+struct shot*
+shot_gen(char shsize){
+	if(3>shsize||shsize>5)exit(924);
+	
+	uint16_t noshells=0;	//number of shels
+	switch(shsize){
+		case 3:
+			noshells=SH3_NOSH;
+			break;;
+		case 4:
+			noshells=SH4_NOSH;
+			break;;
+		case 5:
+			noshells=SH5_NOSH;
+			break;;
+	}
+	struct shot* shot_ptr=shot(noshells);
+	if(!shot_ptr)exit(923);
+	
+//	int16_t (*shot_arr)[noshells][2]=(uint16_t (*)[noshells][2])shot_ptr->shots_ptr;	//risky FIXIT
+	int16_t (*shots_arr)[noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT
+	
+	time_t tt;		//FIXIT
+	srand(time(&tt));	//FIXIT
+	for(int i=0;i<noshells;i++){
+		(*shots_arr)[i][0]=rand_gen(shsize);
+		(*shots_arr)[i][1]=rand_gen(shsize);
+		fprintf(stderr,"shell nr=%d\tx=%d\ty=%d\t\n",i,(*shots_arr)[i][0],(*shots_arr)[i][1]);
+	}
+	return(shot_ptr);
 }
