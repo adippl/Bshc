@@ -40,12 +40,6 @@ ship_free(struct ship** sh_ptr){
 	*sh_ptr=NULL;
 }
 
-//struct fld{	//map consists of fields
-//	int state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
-//	struct ply** shotby;	//array of pointer to player who shot this field. 
-//	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
-//};
-
 struct fld*
 fld_init(char nopl){
 	if(nopl<1)return(NULL);
@@ -170,10 +164,6 @@ state_free(struct state** state_ptr){
 	*state_ptr=NULL;
 }
 
-//void fld_debug(struct fld** fld_ptr,uint16_t sizey,uint16_t sizex){
-//	
-//}
-
 char
 ship_placecheck(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool rot){
 	if(!state_ptr)return(2);
@@ -254,11 +244,6 @@ void ply_calc_ships_hp(struct ply* ply_ptr){
 	}
 }
 
-//shot{
-//	uint16_t noshells;	//number of points	//number of shells fiered
-//	uint16_t* shots		//2d array of shots (*shots)[noshells][dimension]	dimensions x=1;y=0	size=noshells*2
-//};
-
 struct shot*
 shot_init(unsigned char noshells){
 	struct shot* shot_ptr=malloc(sizeof(struct shot));
@@ -293,8 +278,6 @@ rand_gen(char shsize){
 			break;;
 	}
 
-//	time_t tt;		//FIXIT
-//	srand(time(&tt));	//FIXIT
 	int rd=0;
 	
 	rd=0;
@@ -337,3 +320,36 @@ shot_gen(char shsize){
 	}
 	return(shot_ptr);
 }
+
+void 
+state_shot_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16_t ypos, uint16_t xpos){
+	if(!state_ptr)exit(925);
+	if(!shot_ptr)exit(926);
+	
+	int16_t (*shots_arr)[shot_ptr->noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT
+	struct fld* (*fld_ptr_cst)[state_ptr->sizey][state_ptr->sizex]=(void*)state_ptr->map_ptr;
+
+	//(*fld_ptr_cst)[ypos+(*shots_arr)[i][1]][xpos+(*shots_arr)[i][0]]
+
+	for(int i=0;i<shot_ptr->noshells;i++){
+		switch((*fld_ptr_cst)[ypos+(*shots_arr)[i][1]][xpos+(*shots_arr)[i][0]]->state){
+			case 0:
+				(*fld_ptr_cst)[ypos+(*shots_arr)[i][1]][xpos+(*shots_arr)[i][0]]->state=1;
+			break;;
+			case 1:
+				//donothing
+			break;;
+			case 2:
+				(*fld_ptr_cst)[ypos+(*shots_arr)[i][1]][xpos+(*shots_arr)[i][0]]->state=3;
+				
+			break;;
+			case 3:
+				//donothing
+			break;;
+		}
+	}
+	shot_ptr->free(&shot_ptr);
+}
+
+
+

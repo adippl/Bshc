@@ -1,6 +1,7 @@
-#CC=gcc -std=c11 -g -Wall -Werror -pedantic
-CC=gcc-8.2.0 -std=c18 -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake
-CLANG_CC=clang-6.0 -std=c17 -Wall
+#CC=gcc-7.3.0	-std=c11 -g -Wall -Werror -pedantic
+#CC=gcc-8.2.0	-std=c18 -g -Wall -Werror -pedantic
+CC=gcc-8.2.0	-std=c18 -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake
+#CC=clang-6.0	-std=c17 -Wall
 
 output:	main.o state.o conf.o term.o ui.o
 	$(CC) -o bsh main.o state.o conf.o term.o ui.o
@@ -23,7 +24,7 @@ nk:	cl
 	rm bsh
 
 
-#//clang:
-#//	CC=$(CLANG_CC)
-#//	#output:
-#//	
+#clang:
+#	#CC=$(CLANG_CC)
+#	#output:
+#	

@@ -30,32 +30,46 @@ test_struct_inits(){
 	st->free(&st);
 	printf("state %p \n",(void*)st);
 }
+void
+test_shot(){
+	wchar_t c=0;
+	struct shot* a=NULL;
+	
+	do{
+		//gotoxy(1,SIZE_Y*2+3);
+		//screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
+		fprintf(stdout,"shell spread test, enter q to exit");
+		a=shot_gen(5);
+		a->free(&a);
+		c=getchar();
+	}while(c!='q');
+}
 
 
 int 
 main(int argc, char **argv){
+	time_t tt;		//FIXIT
+	srand(time(&tt));	//FIXIT
 //	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
-	int32_t c=0;
+	//int32_t c=0;
 
-	struct chfb* p=fb_draw_map(fb_init());
-	
-	struct shot* a=NULL;
+	//struct chfb* p=fb_draw_map(fb_init());
+	//
 
-	clear();
-	do{
-	gotoxy(0,0);
-	fb_screen_draw(p);
-	gotoxy(1,SIZE_Y*2+3);
-	screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
-	fprintf(stdout,"shell spread test, enter q to exit");
-	a=shot_gen(5);
-	a->free(&a);
-	c=getchar();
-	}while(c!='q');
-	fb_free(&p);
+	//clear();
+	//do{
+	//gotoxy(0,0);
+	//fb_screen_draw(p);
+	//gotoxy(1,SIZE_Y*2+3);
+	//screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
+	//fprintf(stdout,"shell spread test, enter q to exit");
+	//c=getchar();
+	//}while(c!='q');
+	//fb_free(&p);
 
+	test_shot();
 
 	struct state* state_ptr=state_init(2);
 	
