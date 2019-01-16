@@ -29,6 +29,9 @@ test_struct_inits(){
 	struct state* st=state(2);
 	st->free(&st);
 	printf("state %p \n",(void*)st);
+	
+	struct shot* shot_ptr=shot(10);
+	shot_ptr->free(&shot_ptr);
 }
 void
 test_shot(){
@@ -53,6 +56,8 @@ main(int argc, char **argv){
 //	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
+
+
 	//int32_t c=0;
 
 	//struct chfb* p=fb_draw_map(fb_init());

@@ -311,8 +311,8 @@ shot_gen(char shsize){
 //	int16_t (*shot_arr)[noshells][2]=(uint16_t (*)[noshells][2])shot_ptr->shots_ptr;	//risky FIXIT
 	int16_t (*shots_arr)[noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT
 	
-	time_t tt;		//FIXIT
-	srand(time(&tt));	//FIXIT
+	//time_t tt;		//FIXIT
+	//srand(time(&tt));	//FIXIT
 	for(int i=0;i<noshells;i++){
 		(*shots_arr)[i][0]=rand_gen(shsize);
 		(*shots_arr)[i][1]=rand_gen(shsize);
@@ -322,7 +322,7 @@ shot_gen(char shsize){
 }
 
 void 
-state_shot_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16_t ypos, uint16_t xpos){
+state_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16_t ypos, uint16_t xpos){
 	if(!state_ptr)exit(925);
 	if(!shot_ptr)exit(926);
 	
@@ -351,5 +351,9 @@ state_shot_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16
 	shot_ptr->free(&shot_ptr);
 }
 
+//state_ship_move_ship(state state* state_ptr,struct ship ship_ptr, ){
+//	
+//	
+//}
 
 
