@@ -81,7 +81,7 @@ struct shot* shot_init(unsigned char noshells);	//allocates shot vla;	argument n
 #define shot(nosh) shot_init(nosh)		//"constructor"
 void shot_free(struct shot** shot_ptr);	//frees shot vla
 
-struct shot* shot_gen(char shsize);	//allocates shot struct and generates shells
+struct shot* shot_gen(uint16_t shsize);	//allocates shot struct and generates shells
 void state_shot_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16_t ypos, uint16_t xpos);	//function takes ptr to shot and changes states of appropriate fields		//probably doesn't work, I HAVEN'T TESTED IT YET
 
 #endif // STATE_H

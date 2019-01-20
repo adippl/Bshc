@@ -119,8 +119,6 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 				ship_place_str_pos(tempstate_ptr,ship_arr[i]);
 				fb_draw_ship_single(chfb_ptr, ship_arr[i], PLAYER_COL[pln][0] ); // 37  is a color code
 				break;
-
-				fprintf(stderr,"\nship input successful\n");
 			}else{
 				fprintf(stderr,"\n!%d %d %d!\n",x,y,(int)d);
 				fprintf(stderr,"\nFAIL\n");
@@ -128,13 +126,9 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 				continue;
 			}
 		}
-
 		fb_screen_draw(chfb_ptr);
-
-
 		//x=0;y=0;d=0;
 	}
-
 	for(int i=0;i<noship;i++){
 		memcpy(*(ship_arr_org+i),ship_arr[i],sizeof(bool)+sizeof(uint32_t)*4);
 		ship_place_str_pos(state_ptr,*(ship_arr_org+i));

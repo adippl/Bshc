@@ -290,7 +290,7 @@ rand_gen(char shsize){
 
 
 struct shot*
-shot_gen(char shsize){
+shot_gen(uint16_t shsize){
 	if(3>shsize||shsize>5)exit(924);
 	
 	uint16_t noshells=0;	//number of shels
@@ -322,8 +322,11 @@ shot_gen(char shsize){
 }
 
 void 
-state_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16_t ypos, uint16_t xpos){
+state_shoot_and_mark(struct state* state_ptr, struct ply* ply_ptr, uint16_t ypos, uint16_t xpos){
 	if(!state_ptr)exit(925);
+
+//	struct shot* shot_ptr=shot_gen(ply_ptr->size);
+	struct shot* shot_ptr=shot_gen(3);	//FIXIT 
 	if(!shot_ptr)exit(926);
 	
 	int16_t (*shots_arr)[shot_ptr->noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT

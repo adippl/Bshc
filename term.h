@@ -40,7 +40,7 @@ void fb_screen_draw(struct chfb* chfb);		//draws screen with formatting
 struct chfb* fb_draw_map(struct chfb* chfb);	//draws map on framebuffer 
 void fb_clear_and_map(struct chfb* chfb_ptr);	//clears fb and redraws the map
 
-void fb_draw_ships(struct chfb* chfb_ptr, struct ship** ship_ptr, int nosh);	//d
-void fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code);
+void fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code);	//draws single ship on buffer passed to it via chfb_ptr
+void fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noarg, ...);	//draws all ships belonging to the player (ply_ptr) on chfb_ptr. noarg - number of players to draw, min 1, must be > than state_ptr->nopl, ... - numbers of players to draw
 
 #endif	//SCREEN_H

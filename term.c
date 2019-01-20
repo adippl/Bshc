@@ -198,7 +198,6 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 		for(int i=0;i<ship_ptr->shsize;i++){
 			(*fbtb_ptr_cstd)[2+ship_ptr->say*2][2+ship_ptr->sax*2+i*2]='#';
 			(*frmt_ptr_cstd)[2+ship_ptr->say*2][2+ship_ptr->sax*2+i*2][0]=color_code;
-			
 		}
 		
 	}else{
@@ -212,9 +211,26 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 }
 
 void 
-fb_draw_ships(struct chfb* chfb_ptr, struct ship** ship_ptr, int nosh){
+fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noarg, ...){
 	if(!chfb_ptr)exit(EXIT_FAILURE);
-	if(!ship_ptr)exit(EXIT_FAILURE);
+	if(!state_ptr)exit(EXIT_FAILURE);
+	if(noarg<1||noarg>state_ptr->nopl)exit(EXIT_FAILURE);
+
+	va_list vl;
+	va_start(vl, noarg);
 	
+	struct ply* (*ply_ptr_cst)[state_ptr->nopl]=(void*)state_ptr->ply_ptr;
+
+	for(int i=0;i<noarg;i++){
+		uint8_t arg=va_arg(vl,int);
+		
+		struct ship* (*ship_ptr_cst)[ (*ply_ptr_cst)[arg]->shtbl_size ] = (void*) (*ply_ptr_cst)[arg]->shtbl_ptr;
+
+		fprintf(stderr,"\n\nSIZE WHY IT'S WRONG=%d\n\n", (*ply_ptr_cst)[arg]->shtbl_size );
+		for(int j=0;j<(*ply_ptr_cst)[arg]->shtbl_size;j++){
+			fb_draw_ship_single(chfb_ptr, (*ship_ptr_cst)[j], (*ply_ptr_cst)[arg]->pcol);
+		}
+	}
+	va_end(vl);
 	
 }

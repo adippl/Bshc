@@ -92,6 +92,10 @@ main(int argc, char **argv){
 
 	fb_screen_draw(chfb_ptr);
 	char kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
+	
+	fb_draw_ships(chfb_ptr, state_ptr,1,0);
+	fb_screen_draw(chfb_ptr);
+	kek=getchar();
 	printf("\n%d",(int)kek);
 	
 	printf("\n\n%ld!%ld",sizeof(wchar_t),sizeof(uint16_t));
