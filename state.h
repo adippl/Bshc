@@ -4,29 +4,29 @@
 #include "conf.h"
 
 struct state{
-	int sizex;		//mapsize
-	int sizey;		//mapsize
-	int marea;		//map area
+	uint16_t sizex;		//mapsize
+	uint16_t sizey;		//mapsize
+	uint16_t marea;		//map area
 	struct fld** map_ptr; 	//pointer to 2d array of pointers to fields 
 	char nopl;		//number of player
 	struct ply** ply_ptr;	//pointer to array of player(s) structs
-	int state;		//game state
+	uint8_t state;		//game state
 
 	void (*free)(struct state**);		//"destructor" self_ptr->free(&self_self);
 };
 struct ply{
-	char pln;	//player number
+	uint8_t pln;	//player number
 	unsigned char pcol;	//player colour
 	char nsh3;	//number of their ships (sh3)
 	char nsh4;	//number of their ships (sh4)
 	char nsh5;	//number of their ships (sh5)
-	int shtbl_size;	//size of ship tbl
+	uint8_t shtbl_size;	//size of ship tbl
 	struct ship** shtbl_ptr;//array of pointers to players ships
 
 	void (*free)(struct ply**);		//"destructor" self_ptr->free(&self_self);
 };
 struct fld{	//map consists of fields
-	int state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
+	uint8_t state;	//field state; 0=empty; 1=shot_miss; 2=ship; 3=destroyed ship;
 	struct ply** shotby;	//array of pointer to player who shot this field. 
 	struct ship* ship_ptr;	//pointer to ship, if empty ship_ptr==NULL
 
@@ -83,6 +83,11 @@ void shot_free(struct shot** shot_ptr);	//frees shot vla
 
 struct shot* shot_gen(uint16_t shsize);	//allocates shot struct and generates shells
 void state_shot_shoot_and_mark(struct state* state_ptr, struct shot* shot_ptr, uint16_t ypos, uint16_t xpos);	//function takes ptr to shot and changes states of appropriate fields		//probably doesn't work, I HAVEN'T TESTED IT YET
+
+void ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr);
+//void ply_do_f_for_all_ships(struct state* state_ptr, struct ply* ply_ptr, void (*func_ptr)(void*, void*));
+void ply_do_f_for_all_ships(void (*func_ptr)(void* state_ptr, void* ply_ptr), struct state* state_ptr, struct ply* ply_ptr);
+
 
 #endif // STATE_H
 

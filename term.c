@@ -188,10 +188,9 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 	if(!chfb_ptr)exit(EXIT_FAILURE);
 	if(!ship_ptr)exit(EXIT_FAILURE);
 	
-	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
+	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//framebuffer_table_pointer_casted
 	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
 
-//color_code=31;	//TEMP, DELETE
 
 	//2+ move from the edge if the screen; (x or y)*2+i*2  *2 alligns to the grid
 	if(ship_ptr->shdir){
@@ -202,12 +201,10 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 		
 	}else{
 		for(int j=0;j<ship_ptr->shsize;j++){
-			(*fbtb_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2]='#';		
+			(*fbtb_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2]='#';		//2+ align to the grid, 
 			(*frmt_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2][0]=color_code;
 		}
 	}
-	
-	//return((void*)0x1);
 }
 
 void 
@@ -215,22 +212,23 @@ fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noar
 	if(!chfb_ptr)exit(EXIT_FAILURE);
 	if(!state_ptr)exit(EXIT_FAILURE);
 	if(noarg<1||noarg>state_ptr->nopl)exit(EXIT_FAILURE);
-
+	
 	va_list vl;
 	va_start(vl, noarg);
+	uint8_t arg=0;
 	
 	struct ply* (*ply_ptr_cst)[state_ptr->nopl]=(void*)state_ptr->ply_ptr;
 
 	for(int i=0;i<noarg;i++){
-		uint8_t arg=va_arg(vl,int);
-		
-		struct ship* (*ship_ptr_cst)[ (*ply_ptr_cst)[arg]->shtbl_size ] = (void*) (*ply_ptr_cst)[arg]->shtbl_ptr;
+		arg=va_arg(vl,int);
+		//fprintf to stderr easy debug
+//		fprintf(stderr,"arg %d = %d\n",i,arg);
+//		fprintf(stderr,"pln=%d %d\n", (*ply_ptr_cst)[arg]->pln, (*ply_ptr_cst)[arg]->shtbl_size);
 
-		fprintf(stderr,"\n\nSIZE WHY IT'S WRONG=%d\n\n", (*ply_ptr_cst)[arg]->shtbl_size );
 		for(int j=0;j<(*ply_ptr_cst)[arg]->shtbl_size;j++){
-			fb_draw_ship_single(chfb_ptr, (*ship_ptr_cst)[j], (*ply_ptr_cst)[arg]->pcol);
+//			fprintf(stderr,"ssss=%d\n",(*( (*ply_ptr_cst)[arg]->shtbl_ptr +j))->shsize );
+			fb_draw_ship_single(chfb_ptr, (*( (*ply_ptr_cst)[arg]->shtbl_ptr +j)), (*ply_ptr_cst)[arg]->pcol);
 		}
 	}
 	va_end(vl);
-	
 }

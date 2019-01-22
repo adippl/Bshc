@@ -308,11 +308,8 @@ shot_gen(uint16_t shsize){
 	struct shot* shot_ptr=shot(noshells);
 	if(!shot_ptr)exit(923);
 	
-//	int16_t (*shot_arr)[noshells][2]=(uint16_t (*)[noshells][2])shot_ptr->shots_ptr;	//risky FIXIT
 	int16_t (*shots_arr)[noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT
 	
-	//time_t tt;		//FIXIT
-	//srand(time(&tt));	//FIXIT
 	for(int i=0;i<noshells;i++){
 		(*shots_arr)[i][0]=rand_gen(shsize);
 		(*shots_arr)[i][1]=rand_gen(shsize);
@@ -354,9 +351,92 @@ state_shoot_and_mark(struct state* state_ptr, struct ply* ply_ptr, uint16_t ypos
 	shot_ptr->free(&shot_ptr);
 }
 
-//state_ship_move_ship(state state* state_ptr,struct ship ship_ptr, ){
+void
+ship_erase_from_map(struct state* state_ptr, struct ship* ship_ptr){
+	if(!state_ptr)exit(927);
+	if(!ship_ptr)exit(928);
+	
+	uint16_t xpos=ship_ptr->sax;
+	uint16_t ypos=ship_ptr->say;
+	bool dir=ship_ptr->shdir;
+	struct fld* (*fld_ptr_cst)[state_ptr->sizey][state_ptr->sizex]=(void*)state_ptr->map_ptr;
+
+	for(int i=0;i<ship_ptr->shsize;i++){
+		if(!dir){
+			//commented lines come from orginal ship placing function
+			//may be buggy
+			
+			
+			//(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
+			(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=NULL;	//risky //FIXIT
+			//*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos+i][xpos];			//risky //FIXIT
+			*(ship_ptr->sgmnts+i)=NULL;			//risky //FIXIT
+			//(*fld_ptr_cst)[ypos+i][xpos]->state=2;
+			(*fld_ptr_cst)[ypos+i][xpos]->state=0;
+		}else{
+			//(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
+			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=NULL;	//risky //FIXIT
+			//*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos][xpos+i];			//risky //FIXIT
+			*(ship_ptr->sgmnts+i)=NULL;			//risky //FIXIT
+			//(*fld_ptr_cst)[ypos][xpos+i]->state=2;
+			(*fld_ptr_cst)[ypos][xpos+i]->state=0;
+		}
+	}
+}
+
+//void
+//state_ship_move_ship(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos ){
+//	if(!state_ptr)exit(929);
+//	if(!ship_ptr)exit(930);
+//
+//	uint16_t xorg=ship_ptr->sax;
+//	uint16_t yorg=ship_ptr->say;
 //	
 //	
 //}
 
+
+
+
+
+void
+ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr){
+	if(!v_state_ptr)exit(927);
+	if(!v_ship_ptr)exit(928);
+	
+	struct state* state_ptr=v_state_ptr;
+	struct ship* ship_ptr=v_ship_ptr;
+
+	
+	uint16_t xpos=ship_ptr->sax;
+	uint16_t ypos=ship_ptr->say;
+	bool dir=ship_ptr->shdir;
+	struct fld* (*fld_ptr_cst)[state_ptr->sizey][state_ptr->sizex]=(void*)state_ptr->map_ptr;
+
+	for(int i=0;i<ship_ptr->shsize;i++){
+		if(!dir){
+			(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=NULL;
+			*(ship_ptr->sgmnts+i)=NULL;
+			(*fld_ptr_cst)[ypos+i][xpos]->state=0;
+		}else{
+			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=NULL;
+			*(ship_ptr->sgmnts+i)=NULL;
+			(*fld_ptr_cst)[ypos][xpos+i]->state=0;
+		}
+	}
+}
+
+void
+//ply_do_f_for_all_ships(struct state* state_ptr, struct ply* ply_ptr, void (*func_ptr)(void*, void*)){
+ply_do_f_for_all_ships(void (*func_ptr)(void* state_ptr, void* ply_ptr), struct state* state_ptr, struct ply* ply_ptr){
+	if(!state_ptr)exit(931);
+	if(!ply_ptr)exit(932);
+
+	struct ship* (*ship_ptr_cst)[ply_ptr->shtbl_size]=(void*)ply_ptr->shtbl_ptr;
+
+	for(int i=0;i<ply_ptr->shtbl_size;i++){
+
+		(*func_ptr)( (void*)state_ptr, (void*)(*ship_ptr_cst)[i]);
+	}
+}
 

@@ -76,7 +76,7 @@ main(int argc, char **argv){
 
 	test_shot();
 
-	struct state* state_ptr=state_init(2);
+	struct state* state_ptr=state_init(3);
 	
 	struct chfb* ptr=fb_draw_map(fb_init());
 	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
@@ -93,10 +93,17 @@ main(int argc, char **argv){
 	fb_screen_draw(chfb_ptr);
 	char kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
 	
-	fb_draw_ships(chfb_ptr, state_ptr,1,0);
+//	fb_draw_ships(chfb_ptr, state_ptr,1,0);
+	fb_draw_ships(chfb_ptr, state_ptr,3,0,1,2);
 	fb_screen_draw(chfb_ptr);
 	kek=getchar();
-	printf("\n%d",(int)kek);
+
+	//ply_do_f_for_all_ships(state_ptr, *(state_ptr->ply_ptr+0), &ship_erase_from_map_f((void*)state_ptr,(void*)*(state_ptr->ply_ptr+0)));
+//	ply_do_f_for_all_ships(&ship_erase_from_map_f, state_ptr, *(state_ptr->ply_ptr+0));
+//	fb_draw_ships(chfb_ptr, state_ptr,1,0);
+//	fb_screen_draw(chfb_ptr);
+	
+	printf("\nkkke%d\n",(int)kek);
 	
 	printf("\n\n%ld!%ld",sizeof(wchar_t),sizeof(uint16_t));
 	
