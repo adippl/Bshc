@@ -139,3 +139,95 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 	}
 	return(0);
 }
+
+//void input_int(char* arr, uint16_t* input_var){
+//	for(;;){
+//		gotoxy(0,0);
+//		fprintf(stdout,arr);
+//		if(scanf("%hu",input_var)!=1){
+//			fprintf(stderr,"INPUT ERROR"); 
+//			//fprintf(stderr,"%ld",ftell(stdin));
+//			//fscanf(stdin,"%lc",&discard); 
+//			fseek(stdin,0,SEEK_SET);
+//			//sleep(1);
+//			continue;
+//		}
+//	}
+//}
+
+uint16_t input_int(char* arr){
+	uint16_t ret_var=0;
+	wchar_t discard;
+	for(;;){
+		fprintf(stdout,arr);
+		if(scanf("%hu",&ret_var)!=1){
+			fprintf(stderr,"INPUT ERROR\n");
+			fscanf(stdin,"%lc",&discard);
+			//fseek(stdin,0,SEEK_END);
+			continue;
+		}
+		break;
+	}
+	return(ret_var);
+}
+uint16_t input_int_range(char* arr, uint16_t max){
+	uint16_t ret_var=0;
+	wchar_t discard;
+	for(;;){
+		fprintf(stdout,arr);
+		if(scanf("%hu",&ret_var)!=1){
+			fprintf(stderr,"INPUT ERROR\n");
+			fscanf(stdin,"%lc",&discard);
+			//fseek(stdin,0,SEEK_END);
+			continue;
+		}
+		if(ret_var<max)break;
+	}
+
+	while(input_int(*arr
+	return(ret_var);
+}
+
+state* state_game_intit(){
+	
+	clear();
+	state* state_ptr=state_init(input_int("input the number of players"));
+	for(int i=0;i<state_ptr->nopl;i++){
+		(*(state_ptr->ply_ptr+i))->pcol=input_int("input player's colour")&0xffff;
+	}
+
+
+
+	return(state_ptr);
+}
+
+//void
+//input_int(uint16_t* x, uint16_t* y, uint16_t xmax, uint16_t ymax){
+//	uint16_t ix=0,iy=0,id=0;
+//	wchar_t cy=0,discard;
+//	
+//	for(;;){
+//		ix=0;iy=0;id=0;cy=0;
+//		screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
+//		gotoxy(0,51);
+//		fprintf(stdout,"Input X and Y to aim and shoot.( X=(intiger) Y=(char)) \n");
+//		if(scanf("%hu %lc %hu",&ix,&cy,&id)!=3){
+//			fprintf(stderr,"INPUT ERROR"); 
+//			fprintf(stderr,"%ld",ftell(stdin));
+//			fscanf(stdin,"%lc",&discard); 
+//			sleep(1);
+//			continue;
+//			}
+//		
+//		if(cy>='a'&&cy<=ymax+'a'){
+//			iy=cy-'a';
+//		}else{fprintf(stderr,"Input error\n");sleep(1);continue;}
+//
+//		//if(ix>-1&&ix<xmax-ship_ptr->shsize+1&& iy>-1&&iy<ymax-ship_ptr->shsize+1&& id<2){break;}
+//                //else{fprintf(stderr,"Input error\n");}
+//	}
+//	*x=(uint16_t)ix&0xffff;	//bitwise AND
+//	*y=(uint16_t)iy&0xffff;
+//	
+//	return(0);
+//}

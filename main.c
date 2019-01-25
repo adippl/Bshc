@@ -49,6 +49,7 @@ test_shot(){
 }
 
 
+
 int 
 main(int argc, char **argv){
 	time_t tt;		//FIXIT
@@ -56,7 +57,8 @@ main(int argc, char **argv){
 //	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
-
+uint16_t test = input_int("kekekek");
+printf("%hu",test);
 
 	//int32_t c=0;
 

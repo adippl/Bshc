@@ -51,11 +51,7 @@ struct coords{
 	bool d;		//ship's direction 0-vertical 1 horizontal
 };
 
-typedef struct state state;
-typedef struct ply ply;
-typedef struct fld fld;
-typedef struct ship ship;
-typedef struct coords coords;
+typedef struct coords coords
 
 
 	//"destructor" self_ptr->free(&self_self);

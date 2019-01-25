@@ -319,16 +319,19 @@ shot_gen(uint16_t shsize){
 }
 
 void 
-state_shoot_and_mark(struct state* state_ptr, struct ply* ply_ptr, uint16_t ypos, uint16_t xpos){
+state_shoot_and_mark(struct state* state_ptr, struct ply* ply_ptr, struct ship* ship_ptr, uint16_t ypos, uint16_t xpos){
 	if(!state_ptr)exit(925);
+	if(!ply_ptr)exit(934);
+	if(!ship_ptr)exit(935);
 
-//	struct shot* shot_ptr=shot_gen(ply_ptr->size);
-	struct shot* shot_ptr=shot_gen(3);	//FIXIT 
-	if(!shot_ptr)exit(926);
-	
-	int16_t (*shots_arr)[shot_ptr->noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT
 	struct fld* (*fld_ptr_cst)[state_ptr->sizey][state_ptr->sizex]=(void*)state_ptr->map_ptr;
 
+	//struct shot* shot_ptr=shot_gen(ply_ptr->size);
+	//struct shot* shot_ptr=shot_gen(3);	//FIXIT 
+	struct shot* shot_ptr=shot_gen(ship_ptr->shsize);	//FIXIT 
+	if(!shot_ptr)exit(926);
+	int16_t (*shots_arr)[shot_ptr->noshells][2]=(void*)shot_ptr->shots_ptr;	//risky FIXIT
+	
 	//(*fld_ptr_cst)[ypos+(*shots_arr)[i][1]][xpos+(*shots_arr)[i][0]]
 
 	for(int i=0;i<shot_ptr->noshells;i++){
@@ -367,40 +370,43 @@ ship_erase_from_map(struct state* state_ptr, struct ship* ship_ptr){
 			//may be buggy
 			
 			
-			//(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
 			(*fld_ptr_cst)[ypos+i][xpos]->ship_ptr=NULL;	//risky //FIXIT
-			//*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos+i][xpos];			//risky //FIXIT
 			*(ship_ptr->sgmnts+i)=NULL;			//risky //FIXIT
-			//(*fld_ptr_cst)[ypos+i][xpos]->state=2;
 			(*fld_ptr_cst)[ypos+i][xpos]->state=0;
 		}else{
-			//(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
 			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=NULL;	//risky //FIXIT
-			//*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos][xpos+i];			//risky //FIXIT
 			*(ship_ptr->sgmnts+i)=NULL;			//risky //FIXIT
-			//(*fld_ptr_cst)[ypos][xpos+i]->state=2;
 			(*fld_ptr_cst)[ypos][xpos+i]->state=0;
 		}
 	}
 }
 
-//void
-//state_ship_move_ship(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos ){
-//	if(!state_ptr)exit(929);
-//	if(!ship_ptr)exit(930);
-//
-//	uint16_t xorg=ship_ptr->sax;
-//	uint16_t yorg=ship_ptr->say;
-//	
-//	
-//}
+void
+state_ship_move_ship(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool d){
+	if(!state_ptr)exit(929);
+	if(!ship_ptr)exit(930);
+
+	ship_erase_from_map(state_ptr, ship_ptr);
+	ship_ptr->sax=xpos;
+	ship_ptr->say=ypos;
+	ship_ptr->shdir=d;
+	
+	ship_place_str_pos(state_ptr,ship_ptr);
+}
+
+
+
+
+
+
+
 
 
 
 
 
 void
-ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr){
+ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr, void* arg_ptr){
 	if(!v_state_ptr)exit(927);
 	if(!v_ship_ptr)exit(928);
 	
@@ -424,6 +430,20 @@ ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr){
 			(*fld_ptr_cst)[ypos][xpos+i]->state=0;
 		}
 	}
+}
+void
+ship_calc_hp_f(struct ship* ship_ptr){
+	if(!ship_ptr)exit(920);
+	uint16_t hp=0;
+	struct fld* (*fld_ptr_arr)[ship_ptr->shsize]=(void*)ship_ptr->sgmnts;	//risky FIXIT
+
+
+	for(int i=0;i<ship_ptr->shsize;i++){
+		if((*fld_ptr_arr)[i]->state){
+			hp++;
+		}
+	}
+	ship_ptr->hp=hp;
 }
 
 void

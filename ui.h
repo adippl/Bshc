@@ -10,4 +10,6 @@ uint16_t aim_and_shoot(struct state* state_ptr);
 
 char fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr,unsigned char pln);
 
+//void  input_int(char* arr, uint16_t* input_var);
+uint16_t input_int(char* arr);
 #endif // UI_H
