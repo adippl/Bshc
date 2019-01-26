@@ -130,7 +130,7 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 		//x=0;y=0;d=0;
 	}
 	for(int i=0;i<noship;i++){
-		memcpy(*(ship_arr_org+i),ship_arr[i],sizeof(bool)+sizeof(uint32_t)*4);
+		memcpy(*(ship_arr_org+i),ship_arr[i],sizeof(bool)+sizeof(uint16_t)*4);
 		ship_place_str_pos(state_ptr,*(ship_arr_org+i));
 	}
 	tempstate_ptr->free(&tempstate_ptr);
@@ -172,19 +172,10 @@ uint16_t input_int(char* arr){
 }
 uint16_t input_int_range(char* arr, uint16_t max){
 	uint16_t ret_var=0;
-	wchar_t discard;
-	for(;;){
-		fprintf(stdout,arr);
-		if(scanf("%hu",&ret_var)!=1){
-			fprintf(stderr,"INPUT ERROR\n");
-			fscanf(stdin,"%lc",&discard);
-			//fseek(stdin,0,SEEK_END);
-			continue;
-		}
-		if(ret_var<max)break;
-	}
+	do{
+		ret_var=input_int(arr);
+	}while(!(ret_var<max));
 
-	while(input_int(*arr
 	return(ret_var);
 }
 

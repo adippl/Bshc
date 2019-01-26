@@ -57,6 +57,8 @@ typedef struct fld fld;
 typedef struct ship ship;
 typedef struct coords coords;
 
+struct pnt{uint16_t x; uint16_t y;};
+typedef struct pnt pnt;
 
 	//"destructor" self_ptr->free(&self_self);
 
@@ -95,12 +97,14 @@ void shot_free(struct shot** shot_ptr);	//frees shot vla
 
 struct shot* shot_gen(uint16_t shsize);	//allocates shot struct and generates shells
 void state_shoot_and_mark(struct state* state_ptr, struct ply* ply_ptr, struct ship* ship_ptr, uint16_t ypos, uint16_t xpos);	//function takes ptr to shot and changes states of appropriate fields		//probably doesn't work, I HAVEN'T TESTED IT YET
+void state_ship_move_ship(struct state* state_ptr, struct ship* ship_ptr, uint16_t xpos, uint16_t ypos, bool d);
 
 
 //functional programming test
 void ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr, void* arg_ptr);
 //void ply_do_f_for_all_ships(struct state* state_ptr, struct ply* ply_ptr, void (*func_ptr)(void*, void*));
-void ply_do_f_for_all_ships(void (*func_ptr)(void* state_ptr, void* ply_ptr), struct state* state_ptr, struct ply* ply_ptr);
+void ply_do_f_for_all_ships(void (*func_ptr)(), struct state* state_ptr, struct ply* ply_ptr, void* arg);
+
 
 
 #endif // STATE_H

@@ -56,15 +56,6 @@ fb_free(struct chfb** chfb_ptr){
 	*chfb_ptr=NULL;
 }
 
-void
-fb_clear_and_map(struct chfb* chfb_ptr){
-	for(int i=0;i<chfb_ptr->area;i++){
-		*(chfb_ptr->fbtb_ptr+i)=0; //zero char
-	}
-	for(int i=0;i<chfb_ptr->area*3;i++ ){
-		*(chfb_ptr->frmt_ptr+i)=0; //zero format
-	}
-}
 
 struct chfb*
 fb_draw_map(struct chfb* chfb_ptr){
@@ -112,6 +103,18 @@ fb_draw_map(struct chfb* chfb_ptr){
 	}
 
 	return(chfb_ptr);
+}
+
+void
+fb_clear_and_map(struct chfb* chfb_ptr){
+
+	for(int i=0;i<chfb_ptr->area;i++){
+		*(chfb_ptr->fbtb_ptr+i)=0; //zero char
+	}
+	for(int i=0;i<chfb_ptr->area*3;i++ ){
+		*(chfb_ptr->frmt_ptr+i)=0; //zero format
+	}
+	fb_draw_map(chfb_ptr);
 }
 
 void
@@ -226,9 +229,38 @@ fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noar
 //		fprintf(stderr,"pln=%d %d\n", (*ply_ptr_cst)[arg]->pln, (*ply_ptr_cst)[arg]->shtbl_size);
 
 		for(int j=0;j<(*ply_ptr_cst)[arg]->shtbl_size;j++){
-//			fprintf(stderr,"ssss=%d\n",(*( (*ply_ptr_cst)[arg]->shtbl_ptr +j))->shsize );
 			fb_draw_ship_single(chfb_ptr, (*( (*ply_ptr_cst)[arg]->shtbl_ptr +j)), (*ply_ptr_cst)[arg]->pcol);
+			fprintf(stderr,"shsize=%d\n",(*( (*ply_ptr_cst)[arg]->shtbl_ptr +j))->shsize );
 		}
 	}
 	va_end(vl);
+}
+
+
+void
+fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_chfb_ptr){
+	if(!state_ptr)exit(EXIT_FAILURE);
+	if(!ship_ptr)exit(EXIT_FAILURE);
+	if(!v_chfb_ptr)exit(EXIT_FAILURE);
+
+	uint8_t color_code=ship_ptr->ply->pcol;
+
+	struct chfb* chfb_ptr=(struct chfb*)v_chfb_ptr;
+	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//framebuffer_table_pointer_casted
+	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
+
+
+	//2+ move from the edge if the screen; (x or y)*2+i*2  *2 alligns to the grid
+	if(ship_ptr->shdir){
+		for(int i=0;i<ship_ptr->shsize;i++){
+			(*fbtb_ptr_cstd)[2+ship_ptr->say*2][2+ship_ptr->sax*2+i*2]='#';
+			(*frmt_ptr_cstd)[2+ship_ptr->say*2][2+ship_ptr->sax*2+i*2][0]=color_code;
+		}
+		
+	}else{
+		for(int j=0;j<ship_ptr->shsize;j++){
+			(*fbtb_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2]='#';		//2+ align to the grid, 
+			(*frmt_ptr_cstd)[2+ship_ptr->say*2+j*2][2+ship_ptr->sax*2][0]=color_code;
+		}
+	}
 }

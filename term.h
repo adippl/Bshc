@@ -43,4 +43,5 @@ void fb_clear_and_map(struct chfb* chfb_ptr);	//clears fb and redraws the map
 void fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code);	//draws single ship on buffer passed to it via chfb_ptr
 void fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noarg, ...);	//draws all ships belonging to the player (ply_ptr) on chfb_ptr. noarg - number of players to draw, min 1, must be > than state_ptr->nopl, ... - numbers of players to draw
 
+void fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_chfb_ptr);
 #endif	//SCREEN_H

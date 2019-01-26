@@ -49,6 +49,9 @@ test_shot(){
 }
 
 
+void lol(state* str_p, ship* ship_p, void* arg){
+	fprintf(stdin, "shsize=%d", ship_p->shsize);
+}
 
 int 
 main(int argc, char **argv){
@@ -57,24 +60,6 @@ main(int argc, char **argv){
 //	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
-uint16_t test = input_int("kekekek");
-printf("%hu",test);
-
-	//int32_t c=0;
-
-	//struct chfb* p=fb_draw_map(fb_init());
-	//
-
-	//clear();
-	//do{
-	//gotoxy(0,0);
-	//fb_screen_draw(p);
-	//gotoxy(1,SIZE_Y*2+3);
-	//screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
-	//fprintf(stdout,"shell spread test, enter q to exit");
-	//c=getchar();
-	//}while(c!='q');
-	//fb_free(&p);
 
 	test_shot();
 
@@ -95,18 +80,18 @@ printf("%hu",test);
 	fb_screen_draw(chfb_ptr);
 	char kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
 	
-//	fb_draw_ships(chfb_ptr, state_ptr,1,0);
-	fb_draw_ships(chfb_ptr, state_ptr,3,0,1,2);
+	fb_draw_ships(chfb_ptr, state_ptr,1,0);
 	fb_screen_draw(chfb_ptr);
-	kek=getchar();
 
-	//ply_do_f_for_all_ships(state_ptr, *(state_ptr->ply_ptr+0), &ship_erase_from_map_f((void*)state_ptr,(void*)*(state_ptr->ply_ptr+0)));
-//	ply_do_f_for_all_ships(&ship_erase_from_map_f, state_ptr, *(state_ptr->ply_ptr+0));
-//	fb_draw_ships(chfb_ptr, state_ptr,1,0);
-//	fb_screen_draw(chfb_ptr);
-	
+		state_ship_move_ship(state_ptr, (*( (*(state_ptr->ply_ptr+0))->shtbl_ptr+0 )), 10, 10, 0);
+		ply_do_f_for_all_ships(&lol, state_ptr, (*(state_ptr->ply_ptr+0)), NULL);
+		fb_clear_and_map(chfb_ptr);
+//		fb_draw_ships(chfb_ptr, state_ptr,1,0);
+		ply_do_f_for_all_ships(&fb_draw_ship_single_f, NULL, (*(state_ptr->ply_ptr+0)) ,(void*)chfb_ptr);
+		fb_screen_draw(chfb_ptr);
+
+//fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_chfb_ptr){
+
 	printf("\nkkke%d\n",(int)kek);
-	
-	printf("\n\n%ld!%ld",sizeof(wchar_t),sizeof(uint16_t));
 	
 }

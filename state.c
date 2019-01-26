@@ -394,17 +394,6 @@ state_ship_move_ship(struct state* state_ptr, struct ship* ship_ptr, uint16_t xp
 	ship_place_str_pos(state_ptr,ship_ptr);
 }
 
-
-
-
-
-
-
-
-
-
-
-
 void
 ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr, void* arg_ptr){
 	if(!v_state_ptr)exit(927);
@@ -432,7 +421,7 @@ ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr, void* arg_ptr)
 	}
 }
 void
-ship_calc_hp_f(struct ship* ship_ptr){
+ship_calc_hp_f(state* state_ptr, ship* ship_ptr, void* arg){
 	if(!ship_ptr)exit(920);
 	uint16_t hp=0;
 	struct fld* (*fld_ptr_arr)[ship_ptr->shsize]=(void*)ship_ptr->sgmnts;	//risky FIXIT
@@ -447,16 +436,15 @@ ship_calc_hp_f(struct ship* ship_ptr){
 }
 
 void
-//ply_do_f_for_all_ships(struct state* state_ptr, struct ply* ply_ptr, void (*func_ptr)(void*, void*)){
-ply_do_f_for_all_ships(void (*func_ptr)(void* state_ptr, void* ply_ptr), struct state* state_ptr, struct ply* ply_ptr){
+ply_do_f_for_all_ships(void (*func_ptr)(), struct state* state_ptr, struct ply* ply_ptr, void* arg){
 	if(!state_ptr)exit(931);
 	if(!ply_ptr)exit(932);
 
 	struct ship* (*ship_ptr_cst)[ply_ptr->shtbl_size]=(void*)ply_ptr->shtbl_ptr;
 
 	for(int i=0;i<ply_ptr->shtbl_size;i++){
-
-		(*func_ptr)( (void*)state_ptr, (void*)(*ship_ptr_cst)[i]);
+		(*func_ptr)( (void*)state_ptr, (void*)(*ship_ptr_cst)[i], arg );
 	}
 }
+
 
