@@ -10,6 +10,7 @@
 #include <locale.h>
 #include <wchar.h>
 #include <unistd.h>
+#include <math.h>
 
 
 extern const int FSIZE_X,FSIZE_Y;	//frame size FSIZE_X=SIZE_X*2+1 FSIZE_Y=SIZE_Y*2+1+11

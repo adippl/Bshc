@@ -1,22 +1,26 @@
 #CC=gcc-7.3.0	-std=c11 -g -Wall -Werror -pedantic
 #CC=gcc-8.2.0	-std=c18 -g -Wall -Werror -pedantic
-CC=gcc-8.2.0	-std=c18 -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake
+CC=gcc-8.2.0	
 #CC=clang-6.0	-std=c17 -Wall
 
-output:	main.o state.o conf.o term.o ui.o
-	$(CC) -o bsh main.o state.o conf.o term.o ui.o
+CC_ARG= -std=c18 -lm -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake
+
+output:	main.o state.o conf.o term.o ui.o mth.o
+	$(CC) $(CC_ARG)  -o bsh main.o state.o conf.o term.o ui.o mth.o
 
 main.o:	main.c
-	$(CC) -c main.c
+	$(CC) $(CC_ARG)  -c main.c
 
 state.o: state.c
-	$(CC) -c state.c
+	$(CC) $(CC_ARG)  -c state.c
 conf.o:	conf.c
-	$(CC) -c conf.c
+	$(CC) $(CC_ARG)  -c conf.c
 term.o:	term.c
-	$(CC) -c term.c
+	$(CC) $(CC_ARG)  -c term.c
 ui.o:	ui.c
-	$(CC) -c ui.c
+	$(CC) $(CC_ARG)  -c ui.c
+mth.o:	mth.c
+	$(CC) $(CC_ARG)  -c mth.c
 
 cl:
 	rm *.o

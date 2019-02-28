@@ -1,6 +1,7 @@
-
 #include "conf.h"
+#include "mth.h"
 #include "state.h"
+
 
 
 struct ship*
@@ -446,5 +447,4 @@ ply_do_f_for_all_ships(void (*func_ptr)(), struct state* state_ptr, struct ply* 
 		(*func_ptr)( (void*)state_ptr, (void*)(*ship_ptr_cst)[i], arg );
 	}
 }
-
 

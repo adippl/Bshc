@@ -1,6 +1,7 @@
 #include <wchar.h>
 
 #include "conf.h"
+#include "mth.h"
 #include "state.h"
 #include "term.h"
 #include "ui.h"
@@ -52,6 +53,28 @@ test_shot(){
 void lol(state* str_p, ship* ship_p, void* arg){
 	fprintf(stdin, "shsize=%d", ship_p->shsize);
 }
+void test_ang(){
+//	vec p1={.x=0,.y=0};
+	vec p2={.x=3,.y=6};
+	float angle=vec_angle(&p2)*(180/3.14);
+	fprintf(stderr,"%f\n",angle);
+	
+	p2.x=1; p2.y=1;
+	angle=vec_angle(&p2)*(180/3.14);
+	fprintf(stderr,"%f\n",angle);
+	
+	p2.x=0.01; p2.y=0;
+	angle=vec_angle(&p2)*(180/3.14);
+	fprintf(stderr,"%f\n",angle);
+
+	p2.x=2; p2.y=-4;
+	angle=vec_angle(&p2)*(180/3.14);
+	fprintf(stderr,"%f\n",angle);
+
+	p2.x=-5; p2.y=-5;
+	angle=vec_angle(&p2)*(180/3.14);
+	fprintf(stderr,"%f\n",angle);
+}
 
 int 
 main(int argc, char **argv){
@@ -60,7 +83,10 @@ main(int argc, char **argv){
 //	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
+	float a =-1.1f;
+	printf("float %f float\n",a/0.1);
 
+	test_ang();
 	test_shot();
 
 	struct state* state_ptr=state_init(3);

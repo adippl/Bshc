@@ -55,10 +55,8 @@ typedef struct state state;
 typedef struct ply ply;
 typedef struct fld fld;
 typedef struct ship ship;
-typedef struct coords coords;
 
-struct pnt{uint16_t x; uint16_t y;};
-typedef struct pnt pnt;
+typedef struct coords coords;
 
 	//"destructor" self_ptr->free(&self_self);
 
@@ -104,7 +102,6 @@ void state_ship_move_ship(struct state* state_ptr, struct ship* ship_ptr, uint16
 void ship_erase_from_map_f(void* v_state_ptr, struct ship* v_ship_ptr, void* arg_ptr);
 //void ply_do_f_for_all_ships(struct state* state_ptr, struct ply* ply_ptr, void (*func_ptr)(void*, void*));
 void ply_do_f_for_all_ships(void (*func_ptr)(), struct state* state_ptr, struct ply* ply_ptr, void* arg);
-
 
 
 #endif // STATE_H
