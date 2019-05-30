@@ -29,13 +29,6 @@ vec_angle(vec* vec_p){
 //	else if(vec_p->x<0&vec_p->y>0)	{ quater=2; }
 //	else if(vec_p->x<0&vec_p->y>0)	{ quater=3; }
 //
-//	if(vec_p->x=0|vec_p->y=0){
-//		if(vec_p->x=0|vec_p->y=0)	{return(0);}
-//		if(vec_p->x>0|vec_p->y=0)	{return(M_PI/2;}
-//		if(vec_p->x=0|vec_p->y=0)	{}
-//		if(vec_p->x=0|vec_p->y=0)	{}
-//		if(vec_p->x=0|vec_p->y=0)	{}
-//
 //
 //		return(-99);
 //	}
@@ -44,9 +37,16 @@ vec_angle(vec* vec_p){
 //	else if(vec_p->x<0&vec_p->y>0)	{ quater=2; }
 //	else if(vec_p->x<0&vec_p->y>0)	{ quater=3; }
 
+	if((vec_p->x==0)||(vec_p->y==0)){
+		if((vec_p->x==0) && (vec_p->y==0))	{return(0);}	// unnesesary I'll probably change it to -1
+		if((vec_p->x==0) && (vec_p->y>0))	{return(0);}
+		if((vec_p->x>0) && (vec_p->y==0))	{return(90);}
+		if((vec_p->x==0) && (vec_p->y<0))	{return(180);}
+		if((vec_p->x>0) && (vec_p->y==0))	{return(270);}
+	}
+
 	int dx=vec_p->x;
 	int dy=vec_p->y;
-
 	ret_val=atanf(dy/dx);
 
 	return(ret_val);
