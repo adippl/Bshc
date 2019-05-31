@@ -4,7 +4,7 @@
 
 #include "conf.h"
 
-struct vec {uint16_t x; uint16_t y;};	//vector
+struct vec {int16_t x; int16_t y;};	//simple 2d intiger vector
 typedef struct vec vec;
 
 

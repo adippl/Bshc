@@ -54,26 +54,21 @@ void lol(state* str_p, ship* ship_p, void* arg){
 	fprintf(stdin, "shsize=%d", ship_p->shsize);
 }
 void test_ang(){
-//	vec p1={.x=0,.y=0};
-	vec p2={.x=3,.y=6};
+	vec p2={.x=0,.y=0};
 	float angle=vec_angle(&p2)*(180/3.14);
-	fprintf(stderr,"%f\n",angle);
-	
-	p2.x=1; p2.y=1;
-	angle=vec_angle(&p2)*(180/3.14);
-	fprintf(stderr,"%f\n",angle);
-	
-	p2.x=0.01; p2.y=0;
-	angle=vec_angle(&p2)*(180/3.14);
-	fprintf(stderr,"%f\n",angle);
+	fprintf(stderr,"1:%f\n",angle);
 
-	p2.x=2; p2.y=-4;
+	p2.x=1; p2.y=-1;
 	angle=vec_angle(&p2)*(180/3.14);
-	fprintf(stderr,"%f\n",angle);
+	fprintf(stderr,"9=%f\n",angle);
 
-	p2.x=-5; p2.y=-5;
+	p2.x=-1; p2.y=-1;
 	angle=vec_angle(&p2)*(180/3.14);
-	fprintf(stderr,"%f\n",angle);
+	fprintf(stderr,"9=%f\n",angle);
+
+	p2.x=-1; p2.y=1;
+	angle=vec_angle(&p2)*(180/3.14);
+	fprintf(stderr,"9=%f\n",angle);
 }
 
 int 

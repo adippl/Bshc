@@ -22,32 +22,40 @@ vec_from_points(vec* p1, vec* p2){
 float
 vec_angle(vec* vec_p){
 	float ret_val=0;
-//	int8_t quater=0;
+	int dx=0;
+	int dy=0;
+	int8_t quater=0;
 
-//	if(vec_p->x>0&vec_p->y>0)	{ quater=0; }
-//	else if(vec_p->x>0&vec_p->y<0)	{ quater=1; }
-//	else if(vec_p->x<0&vec_p->y>0)	{ quater=2; }
-//	else if(vec_p->x<0&vec_p->y>0)	{ quater=3; }
-//
-//
-//		return(-99);
-//	}
-//	     if(vec_p->x>0&vec_p->y>0)	{ quater=0; }
-//	else if(vec_p->x>0&vec_p->y<0)	{ quater=1; }
-//	else if(vec_p->x<0&vec_p->y>0)	{ quater=2; }
-//	else if(vec_p->x<0&vec_p->y>0)	{ quater=3; }
+	dx=vec_p->x;
+	dy=vec_p->y;
 
 	if((vec_p->x==0)||(vec_p->y==0)){
-		if((vec_p->x==0) && (vec_p->y==0))	{return(0);}	// unnesesary I'll probably change it to -1
-		if((vec_p->x==0) && (vec_p->y>0))	{return(0);}
-		if((vec_p->x>0) && (vec_p->y==0))	{return(90);}
-		if((vec_p->x==0) && (vec_p->y<0))	{return(180);}
-		if((vec_p->x>0) && (vec_p->y==0))	{return(270);}
+		     if((vec_p->x==0) && (vec_p->y==0))	{return(0);}
+		else if((vec_p->x==0) && (vec_p->y>0))	{return(0);}
+		else if((vec_p->x>0)  && (vec_p->y==0))	{return(M_PI_2);}
+		else if((vec_p->x==0) && (vec_p->y<0))	{return(M_PI);}
+		else if((vec_p->x>0)  && (vec_p->y==0))	{return(M_PI_2*3);}
 	}
 
-	int dx=vec_p->x;
-	int dy=vec_p->y;
+	     if((vec_p->x>=0)&(vec_p->y>=0))	{ quater=0; }
+	else if((vec_p->x>=0)&(vec_p->y<=0))	{ quater=1; }
+	else if((vec_p->x<=0)&(vec_p->y<=0))	{ quater=2; }
+	else if((vec_p->x<=0)&(vec_p->y>=0))	{ quater=3; }
+
 	ret_val=atanf(dy/dx);
+
+	switch(quater){
+		case 1:
+			ret_val=ret_val+M_PI;
+			break;
+		case 2:
+			ret_val=ret_val+M_PI;
+			break;
+		case 3:
+			ret_val=ret_val+M_PI*2;
+			break;
+	}
+
 
 	return(ret_val);
 }

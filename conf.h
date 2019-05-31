@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include <math.h>
 
+#define M_PI	(3.14159265358979323846264338327950288)
+#define M_PI_2	(1.57079632679489661923132169163975144)
 
 extern const int FSIZE_X,FSIZE_Y;	//frame size FSIZE_X=SIZE_X*2+1 FSIZE_Y=SIZE_Y*2+1+11
 extern const int SIZE_X,SIZE_Y;		//map size
