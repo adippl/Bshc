@@ -3,7 +3,6 @@
 #include "state.h"
 
 
-
 struct ship*
 ship_init(int size, struct ply* ply_ptr){
 	struct ship* sh_ptr=malloc(sizeof(struct ship));

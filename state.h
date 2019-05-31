@@ -2,6 +2,7 @@
 #define STATE_H
 
 #include "conf.h"
+#include "ship.h"
 
 struct state{
 	uint16_t sizex;		//mapsize
@@ -17,9 +18,9 @@ struct state{
 struct ply{
 	uint8_t pln;	//player number
 	unsigned char pcol;	//player colour
-	char nsh3;	//number of their ships (sh3)
-	char nsh4;	//number of their ships (sh4)
-	char nsh5;	//number of their ships (sh5)
+	char nsh3;	//number of their ships
+	char nsh4;	//number of their ships
+	char nsh5;	//number of their ships
 	uint8_t shtbl_size;	//size of ship tbl
 	struct ship** shtbl_ptr;//array of pointers to players ships
 
@@ -36,6 +37,7 @@ struct fld{	//map consists of fields
 struct ship{
 	bool shdir;	//ship direction 0=vertical 1=horizontal
 	uint16_t shsize;	//ship size
+	uint16_t shtype;	//ship size
 	uint16_t sax;	//anchor x cord (Ship Anchor x)
 	uint16_t say;	//anchor y cord
 	uint16_t hp;	//100% hp == shsize	0 --> destroyed
@@ -46,9 +48,9 @@ struct ship{
 };
 
 struct coords{
-	uint16_t x;	//ship anchor x
-	uint16_t y;	//ship anchor y
-	bool d;		//ship's direction 0-vertical 1 horizontal
+	uint16_t x;	// x
+	uint16_t y;	// y
+	uint8_t d;	// direction 0=n 1=e 2=s 3=w
 };
 
 typedef struct state state;

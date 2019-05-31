@@ -81,7 +81,7 @@ main(int argc, char **argv){
 	float a =-1.1f;
 	printf("float %f float\n",a/0.1);
 
-	test_ang();
+	//test_ang();
 	test_shot();
 
 	struct state* state_ptr=state_init(3);
