@@ -1,9 +1,6 @@
-#CC=gcc-7.3.0	-std=c11 -g -Wall -Werror -pedantic
-#CC=gcc-8.2.0	-std=c18 -g -Wall -Werror -pedantic
-CC=gcc-8.2.0	
-#CC=clang-6.0	-std=c17 -Wall
+CC=gcc-9.1.0	
 
-CC_ARG= -std=c18 -lm -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake
+CC_ARG= -std=c18 -lm -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake -fplan9-extensions
 
 output:	main.o state.o conf.o term.o ui.o mth.o ship.o
 	$(CC) $(CC_ARG)  -o bsh main.o state.o conf.o term.o ui.o mth.o ship.o
@@ -29,8 +26,3 @@ cl:
 nk:	cl
 	rm bsh
 
-
-#clang:
-#	#CC=$(CLANG_CC)
-#	#output:
-#	
