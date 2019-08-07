@@ -3,10 +3,24 @@
 
 #include "conf.h"
 
+
+//universal destructor macro
+#define del(X) ((struct generic*)X)->destr((void*)&X);
+
+void obj_free(void** obj_pp);
+
+struct
+ob_gen{	//generic destructor
+	void (*dstr)(void** obj_pp);
+};
+
+
+
+
 struct pos_x_y_d{
 	uint16_t x;	// x
 	uint16_t y;	// y
-	uint8_t d;	// direction 0=n 1=e 2=s 3=w
+	uint16_t d;	// direction 0=n 100=w 200=s 300=e
 };
 typedef struct pos_x_y_d s_xyd;
 
@@ -16,27 +30,29 @@ struct modifier{
 	uint8_t value;		// bonus value
 };
 
-struct abilit{			// 
+struct ship_abilit{			// 
+	struct ob_gen;	//generic struct destructor
 	uint8_t type;		// type modules type, 0=passive, 1=weapon, 2=ability
 	uint8_t ab_id;		// ability id
 	uint8_t state;		// state, 0=default, 1=activated, 2=damage, 3=destroyed
-	int8_t  ap_cost;	// cost of activating ability
+	int8_t  ap_cost;	// cost of activating abilit	//0==passive
 	
-	uint16_t nodefmod;			// number of default modifiers
+	uint8_t nodefmod;			// number of default modifiers
 	struct modifier* defmod_tbl_p;		// pointer to table of define modifiers
 
-	uint16_t noactmod;			// number of modifiers while active
+	uint8_t noactmod;			// number of modifiers while active
 	struct modifier* actmod_tbl_p;		// pointer to table of modifiers while active
 
-	uint16_t nodmgmod;			// number of modifiers while damaged
+	uint8_t nodmgmod;			// number of modifiers while damaged
 	struct modifier* dmgmod_tbl_p;		// pointer to table of modifiers while damaged
 
-	uint16_t nodstmod;			// number of modifiers while destroyed
+	uint8_t nodstmod;			// number of modifiers while destroyed
 	struct modifier* dstmod_tbl_p;		// pointer to table of modifiers while destroyed
 };
-typedef struct abilit abilit;
+typedef struct ship_abilit ship_abilit;
 
-struct wpn{
+struct ship_wpn_templ{
+	struct ob_gen;	//generic struct destructor
 	uint8_t type;		// type modules type, 0=passive, 1=weapon, 2=ability
 //	wchar* name;		// pointer to name
 	int8_t  ap_cost;	// cost of activating ability
@@ -57,9 +73,10 @@ struct wpn{
 	uint8_t mod_hit_chance;	// chance to damage modules in ship segment
 	uint8_t mod_dmg;	// hp damage on hit
 };
-typedef struct wpn wpn;
+typedef struct ship_wpn_templ ship_wpn_templ;
 
-struct module{
+struct ship_module{
+	struct ob_gen;	//generic struct destructor
 	uint8_t mod_id;		// module id
 	uint8_t modsizex;	// module size in x dimension
 	uint8_t modsizey;	// module size in y dimension
@@ -73,14 +90,20 @@ struct module{
 	uint8_t dest_thresh;	// destruction shreshold shreshold
 	uint8_t dest_dmg;	// damage dealt to the ship when module gets destroyed
 
-	//uint8_t type;		// modules type, 0=passive, 1=weapon, 2=ability
-	wpn* wpn_p;		// pointer to wpn struct, NULL if modules isn't a weapon
-	abilit* abilit_p;	// pointer to abilitier struct, NULL if modules doesn't have stat abilitiers
+	ship_wpn_templ* wpn_bare_p;		// pointer to ship_wpn_templ struct, NULL if modules isn't a weapon 
+	ship_abilit* abilit_p;	// pointer to abilitier struct, NULL if modules doesn't have stat abilities
 
 };
-typedef struct module module;
+typedef struct ship_module ship_module;
 
-struct ship_temp{
+//struct wpn{	// struct inheriting members of module and wpn_bare
+//	struct wpn_templ;
+//	struct ship_module;
+//};
+//typedef struct wpn wpn;
+
+struct ship_templ{
+	struct ob_gen;	//generic struct destructor
 	uint8_t template_id;		// template id
 	uint8_t shsizex;		// ship's size in x dimension
 	uint8_t shsizey;		// ship's size in y dimension
@@ -95,17 +118,19 @@ struct ship_temp{
 	uint8_t manvrbility;		// cost of turning by 90deg in action points
 
 	uint8_t view_rnge;		// ship's view range
-	uint8_t view_visibility;	// ship's visibility, higher range, lower visibility
+	uint8_t view_visibility;	// ship's visibility, higher value, lower visibility
 
 	uint16_t mod_tbl_size;		// size of table of modules
 	void* mod_tbl_p;		// pointer to table of modules
+	//void (*free)(struct ship_temp**);	//destructor self_ptr->free(&self_ptr);
 };
-typedef struct ship_temp ship_temp;
+typedef struct ship_templ ship_templ;
 
 
 struct ship_r{
-	struct ship_temp* shtype;	//pointer to ship's template
-	s_xyd  coords;			//ships coordinates x, y, d in a struct
+	struct ob_gen;	//inh p to destructor
+	struct pos_x_y_d;		//ships coordinates x, y, d in a struct
+	struct ship_templ* shtype;	//pointer to ship's template
 
 	uint16_t hp;	//current ship's hp
 //	uint8_t hp_multiplier;		// hp segment multiplier. 1=>1hp segmements, 2=>2hp segments
@@ -124,22 +149,20 @@ struct ship_r{
 	uint16_t mod_tbl_size;		// size of table of modules
 	void* mod_tbl_p;		// pointer to table of modules
 	
-	struct fld** sgmnts;	//pointer to an array of pointer to fls (fields) with ship segments
+	struct fld** sgmnts;	//pointer to an array of pointer to fld (fields) with ship segments
 	struct ply* ply;	//pointer to player (owner)
 
-	void (*free)(struct ship_r**);		//"destructor" self_ptr->free(&self_ptr);
+	//void (*free)(struct ship_r**);		//"destructor" self_ptr->free(&self_ptr);
 };
 typedef struct ship_r ship_r;
 
 
-//struct wpn{
-//
-//};
-//typedef struct wpn wpn;
+ship_r* ship_r_init();
+ship_templ* ship_templ_init();
+ship_module* ship_module_init();
+ship_wpn_templ* ship_wpn_templ_init();
+ship_abilit* ship_abilit_init();
 
-
-//typedef struct ship_temp ship_temp;
-
-
+//void obj_ship_abilit_free(ship_abilit** obj_pp);
 
 #endif // SHIP_H
