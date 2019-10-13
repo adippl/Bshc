@@ -212,7 +212,7 @@ ship_place_str_pos(struct state* state_ptr, struct ship* ship_ptr){
 			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos+i][xpos];			//risky //FIXIT
 			(*fld_ptr_cst)[ypos+i][xpos]->state=2;
 		}else{
-			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT
+			(*fld_ptr_cst)[ypos][xpos+i]->ship_ptr=(void*)*(ship_ptr->sgmnts+i);	//risky //FIXIT TODO
 			*(ship_ptr->sgmnts+i)=(*fld_ptr_cst)[ypos][xpos+i];			//risky //FIXIT
 			(*fld_ptr_cst)[ypos][xpos+i]->state=2;
 		}
