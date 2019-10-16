@@ -11,9 +11,9 @@ void
 test_struct_inits(){
 	printf("\n");
 	
-	struct chfb* kkk=chfb();
-	kkk->free(&kkk);
-	printf("chfb %p\n",(void*)kkk);
+	struct ctfb* kkk=ctfb_fb_init(FSIZE_X,FSIZE_Y);
+	kkk->delete(&kkk);
+	printf("ctfb %p\n",(void*)kkk);
 
 	struct ship* k=ship(3,(void*)0x0);
 	k->free(&k);
@@ -86,32 +86,32 @@ main(int argc, char **argv){
 
 	struct state* state_ptr=state_init(3);
 	
-	struct chfb* ptr=fb_draw_map(fb_init());
+	struct ctfb* ptr=fb_draw_map(ctfb_fb_init(FSIZE_X,FSIZE_Y));
 	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
 	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0);
-	clear();
-	gotoxy(0,0);
-	fb_screen_draw(ptr);
-	gotoxy(0,52);
-	fb_free(&ptr);
+	ptr->clear();
+	ptr->gotoxy(0,0);
+	ctfb_fb_screenDraw(ptr);
+	ptr->gotoxy(0,52);
+	ctfb_fb_free(&ptr);
 
-	struct chfb* chfb_ptr=chfb();
-	fb_draw_map(chfb_ptr);
+	struct ctfb* ctfb_ptr=ctfb_fb_init(SIZE_X,SIZE_Y);
+	fb_draw_map(ctfb_ptr);
 
-	fb_screen_draw(chfb_ptr);
-	char kek=fb_input_ships_and_draw(chfb_ptr, state_ptr, 0);
+	ctfb_fb_screenDraw(ctfb_ptr);
+	char kek=fb_input_ships_and_draw(ctfb_ptr, state_ptr, 0);
 	
-	fb_draw_ships(chfb_ptr, state_ptr,1,0);
-	fb_screen_draw(chfb_ptr);
+	fb_draw_ships(ctfb_ptr, state_ptr,1,0);
+	ctfb_fb_screenDraw(ctfb_ptr);
 
 		state_ship_move_ship(state_ptr, (*( (*(state_ptr->ply_ptr+0))->shtbl_ptr+0 )), 10, 10, 0);
 		ply_do_f_for_all_ships(&lol, state_ptr, (*(state_ptr->ply_ptr+0)), NULL);
-		fb_clear_and_map(chfb_ptr);
-//		fb_draw_ships(chfb_ptr, state_ptr,1,0);
-		ply_do_f_for_all_ships(&fb_draw_ship_single_f, NULL, (*(state_ptr->ply_ptr+0)) ,(void*)chfb_ptr);
-		fb_screen_draw(chfb_ptr);
+		fb_clear_and_map(ctfb_ptr);
+//		fb_draw_ships(ctfb_ptr, state_ptr,1,0);
+		ply_do_f_for_all_ships(&fb_draw_ship_single_f, NULL, (*(state_ptr->ply_ptr+0)) ,(void*)ctfb_ptr);
+		ctfb_fb_screenDraw(ctfb_ptr);
 
-//fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_chfb_ptr){
+//fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_ctfb_ptr){
 
 	printf("\nkkke%d\n",(int)kek);
 	

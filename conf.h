@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include <math.h>
 
+#include "lib/ctfb.h"
+
 #define M_PI	(3.14159265358979323846264338327950288)
 #define M_PI_2	(1.57079632679489661923132169163975144)
 

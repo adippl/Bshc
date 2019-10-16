@@ -5,66 +5,56 @@
 
 //const char FRAMECHARS[]="─│┌┐└┘├┤┬┴┼"; // DOESN'T WORK
 
-const wchar_t FRAMECHARS[11]={0x2500,0x2502,0x250c,0x2510,0x2514,0x2518,0x251c,0x2525,0x252c,0x2534,0x253c};	// ─│┌┐└┘├┤┬┴┼
+//const wchar_t FRAMECHARS[11]={0x2500,0x2502,0x250c,0x2510,0x2514,0x2518,0x251c,0x2525,0x252c,0x2534,0x253c};	// ─│┌┐└┘├┤┬┴┼
 
 const unsigned char PLAYER_COL[2][3]={{31,0,0},{32,0,0}};
 
-void
-clear(){ fprintf(stdout,"\033[H\033[J");}
-void
-gotoxy(int x,int y){fprintf(stdout,"\033[%d;%dH",y,x);}
-void
-resizexy(int x,int y){fprintf(stdout,"\033[8;%d;%dt",y,x);}
+//void
+//clear(){ fprintf(stdout,"\033[H\033[J");}
+//void
+//gotoxy(int x,int y){fprintf(stdout,"\033[%d;%dH",y,x);}
+//void
+//resizexy(int x,int y){fprintf(stdout,"\033[8;%d;%dt",y,x);}
 
-struct chfb*
-fb_init(){
-	struct chfb* chfb_ptr=malloc(sizeof(struct chfb));
-	if(!chfb_ptr)return(NULL);
+struct ctfb*
+tfb_init(){
+	struct ctfb *p_ctfb=NULL;
+	p_ctfb=ctfb_fb_init(FSIZE_X, FSIZE_Y);
+	if(!p_ctfb)return(NULL);
 
-	chfb_ptr->sizex=FSIZE_X;
-        chfb_ptr->sizey=FSIZE_Y-2;
-        chfb_ptr->area=chfb_ptr->sizex*chfb_ptr->sizey;
-	
-	chfb_ptr->msizex=SIZE_X*2+1;
-        chfb_ptr->msizey=SIZE_Y*2+1;
-        chfb_ptr->marea=chfb_ptr->msizex*chfb_ptr->msizey;
+//	p_ctfb->msizex=SIZE_X*2+1;
+//        p_ctfb->msizey=SIZE_Y*2+1;
+//        p_ctfb->marea=p_ctfb->msizex*p_ctfb->msizey;
 	 
-	chfb_ptr->fbtb_ptr=malloc(sizeof(wchar_t)*chfb_ptr->area);
-	if(!chfb_ptr->fbtb_ptr)return(NULL);
-	for(int i=0;i<chfb_ptr->area;i++){
-		*(chfb_ptr->fbtb_ptr+i)=' ';
-	}
 
-	chfb_ptr->frmt_ptr=malloc(sizeof(unsigned char)*chfb_ptr->area*3);
-	if(!chfb_ptr->frmt_ptr)return(NULL);
-	for(int j=0;j<chfb_ptr->area*3;j++){
-		*(chfb_ptr->frmt_ptr+j)=0;
-	}
-
-	chfb_ptr->free=fb_free;
-
-	chfb_ptr->draw_map=fb_draw_map;
-	chfb_ptr->cleanm=fb_clear_and_map;
-	return(chfb_ptr);
-}
-void
-fb_free(struct chfb** chfb_ptr){
-	if(!*chfb_ptr)exit(11);
-	free((*chfb_ptr)->fbtb_ptr);
-	free((*chfb_ptr)->frmt_ptr);
-	free(*chfb_ptr);
-	*chfb_ptr=NULL;
+//	p_ctfb->free=fb_free;
+//	p_ctfb->draw_map=fb_draw_map;
+//	p_ctfb->cleanm=fb_clear_and_map;
+	return(p_ctfb);
 }
 
+//void
+//fb_free(struct ctfb** ctfb_ptr){
+//	if(!*ctfb_ptr)exit(11);
+//	free((*ctfb_ptr)->fbtb_ptr);
+//	free((*ctfb_ptr)->frmt_ptr);
+//	free(*ctfb_ptr);
+//	*ctfb_ptr=NULL;
+//}
 
-struct chfb*
-fb_draw_map(struct chfb* chfb_ptr){
-	if(!chfb_ptr)return(NULL);
-	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
-	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
+
+struct ctfb*
+fb_draw_map(struct ctfb* ctfb_ptr){
+	if(!ctfb_ptr)return(NULL);
+	wchar_t (*fbtb_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex]=(void*)ctfb_ptr->fbtb_ptr;	//risky
+	unsigned char (*frmt_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex][3]=(void*)ctfb_ptr->frmt_ptr;	//risky
 	
-	for(int i=0;i<(chfb_ptr->msizey);i++){
-		for(int j=0;j<chfb_ptr->msizex;j++){
+	//
+	//		XX-1/2 is a conversion from screen coordinates to map coordinates
+	//
+	
+	for(int i=0;i<((ctfb_ptr->sizey-1)/2);i++){
+		for(int j=0;j<(ctfb_ptr->sizex-1)/2;j++){
 			if(i%2==1&&j%2==1){
 				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[10];
 				
@@ -86,11 +76,11 @@ fb_draw_map(struct chfb* chfb_ptr){
 			}
 		}
 	}
-	for(int j=0;j<chfb_ptr->msizex/2;j+=1){
+	for(int j=0;j<(ctfb_ptr->sizex-1)/2/2;j+=1){
 		(*fbtb_ptr_cstd)[0][j*2+2]=j%10+'0';
 		(*frmt_ptr_cstd)[0][j*2+2][0]=(j/10>0)?30+j/10:37;	//if j>10 colour numer set by line above //37 is white
 	}
-	for(int i=2;i<chfb_ptr->msizey;i+=2){
+	for(int i=2;i<(ctfb_ptr->sizey-1)/2;i+=2){
 		(*fbtb_ptr_cstd)[i][0]=i/2+47+49;
 		//(*frmt_ptr_cstd)[i][0][0]=(i/6>0)?30+i/6:37;
 		(*frmt_ptr_cstd)[i+2][0][0]=(i/6>0)?30+i/6:37;
@@ -98,101 +88,102 @@ fb_draw_map(struct chfb* chfb_ptr){
 	
 
 	//draw bottom border
-	for(int i=0;i<chfb_ptr->sizex;i++){
-		(*fbtb_ptr_cstd)[chfb_ptr->msizey][i]=i%2?FRAMECHARS[9]:FRAMECHARS[0];
+	for(int i=0;i<ctfb_ptr->sizex;i++){
+		(*fbtb_ptr_cstd)[(ctfb_ptr->sizey-1)/2][i]=i%2?FRAMECHARS[9]:FRAMECHARS[0];
 	}
 
-	return(chfb_ptr);
+	return(ctfb_ptr);
 }
 
 void
-fb_clear_and_map(struct chfb* chfb_ptr){
+fb_clear_and_map(struct ctfb* ctfb_ptr){
 
-	for(int i=0;i<chfb_ptr->area;i++){
-		*(chfb_ptr->fbtb_ptr+i)=0; //zero char
+	for(int i=0;i<ctfb_ptr->area;i++){
+		*(ctfb_ptr->fbtb_ptr+i)=0; //zero char
 	}
-	for(int i=0;i<chfb_ptr->area*3;i++ ){
-		*(chfb_ptr->frmt_ptr+i)=0; //zero format
+	for(int i=0;i<ctfb_ptr->area*3;i++ ){
+		*(ctfb_ptr->frmt_ptr+i)=0; //zero format
 	}
-	fb_draw_map(chfb_ptr);
+	fb_draw_map(ctfb_ptr);
 }
+
+//void
+//fb_screen_draw_bw(struct ctfb* ctfb_ptr){	//backup, legacy function prints black and white screen 
+//	if(!ctfb_ptr)exit(11);
+//	resizexy(FSIZE_X,FSIZE_Y);
+//
+//	for(int i=0;i<ctfb_ptr->sizey;i++){
+//		for(int j=0;j<ctfb_ptr->sizex;j++){
+//			fprintf(stdout,"%lc",*(ctfb_ptr->fbtb_ptr+i*ctfb_ptr->sizex+j));
+//		}
+//		fprintf(stdout,"\n");
+//	}
+//}
+
+//void
+//fb_screen_draw(struct ctfb* ctfb_ptr){
+//	if(!ctfb_ptr)exit(11);
+//	resizexy(FSIZE_X,FSIZE_Y);
+//	gotoxy(0,0);
+//	wchar_t (*fbtb_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex]=(void*)ctfb_ptr->fbtb_ptr;	//risky
+//	unsigned char (*frmt_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex][3]=(void*)ctfb_ptr->frmt_ptr;	//risky
+//
+//	for(int i=0;i<ctfb_ptr->sizey;i++){
+//		for(int j=0;j<ctfb_ptr->sizex;j++){
+//			//fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
+//			
+//			// IFs below are check format_tabel for number of formatting variables assigned to the char
+//			// 0-empty 1-presetn()
+//			//	000
+//			//	100
+//			//	110
+//			//	111
+//
+//			if((*frmt_ptr_cstd)[i][j][0]==0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
+//				fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
+//
+//			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
+//				prtnch((*fbtb_ptr_cstd)[i][j],1,(*frmt_ptr_cstd)[i][j][0]);
+//
+//			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]==0){
+//				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1]);
+//
+//			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]!=0){
+//				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1],(*frmt_ptr_cstd)[i][j][2]);
+//			}
+//		}
+//		fprintf(stdout,"\n");
+//	}
+//}
+
+//void prtnch(wchar_t chr, unsigned char nofarg,...){
+//	if(nofarg<1||nofarg>3)exit(EXIT_FAILURE);
+//
+//	va_list vl;
+//	va_start(vl, nofarg); 
+//
+//	switch(nofarg){
+//		case 1:
+//			fprintf(stdout,"\033[%dm%lc\033[0m",va_arg(vl,int),chr);
+//		break;
+//		case 2:
+//			fprintf(stdout,"\033[%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),chr);
+//		break;
+//		case 3:
+//			fprintf(stdout,"\033[%d;%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),va_arg(vl,int),chr);
+//		break;
+//	} 
+//	va_end(vl);
+//}
+
 
 void
-fb_screen_draw_bw(struct chfb* chfb_ptr){	//backup, legacy function prints black and white screen 
-	if(!chfb_ptr)exit(11);
-	resizexy(FSIZE_X,FSIZE_Y);
-
-	for(int i=0;i<chfb_ptr->sizey;i++){
-		for(int j=0;j<chfb_ptr->sizex;j++){
-			fprintf(stdout,"%lc",*(chfb_ptr->fbtb_ptr+i*chfb_ptr->sizex+j));
-		}
-		fprintf(stdout,"\n");
-	}
-}
-void
-fb_screen_draw(struct chfb* chfb_ptr){
-	if(!chfb_ptr)exit(11);
-	resizexy(FSIZE_X,FSIZE_Y);
-	gotoxy(0,0);
-	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//risky
-	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
-
-	for(int i=0;i<chfb_ptr->sizey;i++){
-		for(int j=0;j<chfb_ptr->sizex;j++){
-			//fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
-			
-			// IFs below are check format_tabel for number of formatting variables assigned to the char
-			// 0-empty 1-presetn()
-			//	000
-			//	100
-			//	110
-			//	111
-
-			if((*frmt_ptr_cstd)[i][j][0]==0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
-				fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
-
-			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
-				prtnch((*fbtb_ptr_cstd)[i][j],1,(*frmt_ptr_cstd)[i][j][0]);
-
-			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]==0){
-				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1]);
-
-			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]!=0){
-				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1],(*frmt_ptr_cstd)[i][j][2]);
-			}
-		}
-		fprintf(stdout,"\n");
-	}
-}
-
-void prtnch(wchar_t chr, unsigned char nofarg,...){
-	if(nofarg<1||nofarg>3)exit(EXIT_FAILURE);
-
-	va_list vl;
-	va_start(vl, nofarg); 
-
-	switch(nofarg){
-		case 1:
-			fprintf(stdout,"\033[%dm%lc\033[0m",va_arg(vl,int),chr);
-		break;
-		case 2:
-			fprintf(stdout,"\033[%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),chr);
-		break;
-		case 3:
-			fprintf(stdout,"\033[%d;%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),va_arg(vl,int),chr);
-		break;
-	} 
-	va_end(vl);
-}
-
-
-void
-fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_code){
-	if(!chfb_ptr)exit(EXIT_FAILURE);
+fb_draw_ship_single(struct ctfb* ctfb_ptr, struct ship* ship_ptr, char color_code){
+	if(!ctfb_ptr)exit(EXIT_FAILURE);
 	if(!ship_ptr)exit(EXIT_FAILURE);
 	
-	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//framebuffer_table_pointer_casted
-	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
+	wchar_t (*fbtb_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex]=(void*)ctfb_ptr->fbtb_ptr;	//framebuffer_table_pointer_casted
+	unsigned char (*frmt_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex][3]=(void*)ctfb_ptr->frmt_ptr;	//risky
 
 
 	//2+ move from the edge if the screen; (x or y)*2+i*2  *2 alligns to the grid
@@ -211,8 +202,8 @@ fb_draw_ship_single(struct chfb* chfb_ptr, struct ship* ship_ptr, char color_cod
 }
 
 void 
-fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noarg, ...){
-	if(!chfb_ptr)exit(EXIT_FAILURE);
+fb_draw_ships(struct ctfb* ctfb_ptr, struct state* state_ptr, unsigned char noarg, ...){
+	if(!ctfb_ptr)exit(EXIT_FAILURE);
 	if(!state_ptr)exit(EXIT_FAILURE);
 	if(noarg<1||noarg>state_ptr->nopl)exit(EXIT_FAILURE);
 	
@@ -229,7 +220,7 @@ fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noar
 //		fprintf(stderr,"pln=%d %d\n", (*ply_ptr_cst)[arg]->pln, (*ply_ptr_cst)[arg]->shtbl_size);
 
 		for(int j=0;j<(*ply_ptr_cst)[arg]->shtbl_size;j++){
-			fb_draw_ship_single(chfb_ptr, (*( (*ply_ptr_cst)[arg]->shtbl_ptr +j)), (*ply_ptr_cst)[arg]->pcol);
+			fb_draw_ship_single(ctfb_ptr, (*( (*ply_ptr_cst)[arg]->shtbl_ptr +j)), (*ply_ptr_cst)[arg]->pcol);
 			fprintf(stderr,"shsize=%d\n",(*( (*ply_ptr_cst)[arg]->shtbl_ptr +j))->shsize );
 		}
 	}
@@ -238,16 +229,16 @@ fb_draw_ships(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char noar
 
 
 void
-fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_chfb_ptr){
+fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_ctfb_ptr){
 	if(!state_ptr)exit(EXIT_FAILURE);
 	if(!ship_ptr)exit(EXIT_FAILURE);
-	if(!v_chfb_ptr)exit(EXIT_FAILURE);
+	if(!v_ctfb_ptr)exit(EXIT_FAILURE);
 
 	uint8_t color_code=ship_ptr->ply->pcol;
 
-	struct chfb* chfb_ptr=(struct chfb*)v_chfb_ptr;
-	wchar_t (*fbtb_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex]=(void*)chfb_ptr->fbtb_ptr;	//framebuffer_table_pointer_casted
-	unsigned char (*frmt_ptr_cstd)[chfb_ptr->sizey][chfb_ptr->sizex][3]=(void*)chfb_ptr->frmt_ptr;	//risky
+	struct ctfb* ctfb_ptr=(struct ctfb*)v_ctfb_ptr;
+	wchar_t (*fbtb_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex]=(void*)ctfb_ptr->fbtb_ptr;	//framebuffer_table_pointer_casted
+	unsigned char (*frmt_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex][3]=(void*)ctfb_ptr->frmt_ptr;	//risky
 
 
 	//2+ move from the edge if the screen; (x or y)*2+i*2  *2 alligns to the grid

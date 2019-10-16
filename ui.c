@@ -5,17 +5,6 @@
 #include <string.h>
 
 
-void
-screen_clear_area(uint16_t x, uint16_t y, uint16_t xm, uint16_t ym){
-	gotoxy(x,y);
-	for(int j=0;j<ym;j++){
-		for(int i=0;i<xm;i++){
-			fprintf(stdout," ");
-		}
-		fprintf(stdout,"\n");
-	}
-}
-
 uint16_t
 input_coord(uint16_t* x, uint16_t* y, uint16_t xmax, uint16_t ymax){
 	uint16_t ix=0,iy=0,id=0;
@@ -23,8 +12,8 @@ input_coord(uint16_t* x, uint16_t* y, uint16_t xmax, uint16_t ymax){
 	
 	for(;;){
 		ix=0;iy=0;id=0;cy=0;
-		screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
-		gotoxy(0,51);
+		ctfb_screenClearArea(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
+		ctfb_gotoxy(0,51);
 		fprintf(stdout,"Input X and Y to aim and shoot.( X=(intiger) Y=(char)) \n");
 		if(scanf("%hu %lc %hu",&ix,&cy,&id)!=3){
 			fprintf(stderr,"INPUT ERROR"); 
@@ -63,8 +52,8 @@ input_ship_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax
 	
 	for(;;){
 		ix=0;iy=0;id=0;cy=0;
-		screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
-		gotoxy(0,51);
+		ctfb_screenClearArea(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
+		ctfb_gotoxy(0,51);
 		fprintf(stdout,"Ship number %d\tShip's length=%d \nInput ship's X=(intiger) Y=(char) and direction (0 vertical, 1 horizontal)\n",*i,ship_ptr->shsize);
 		if(scanf("%hu %lc %hu",&ix,&cy,&id)!=3){
 			fprintf(stderr,"INPUT ERROR"); 
@@ -89,8 +78,8 @@ input_ship_coord(uint16_t* x, uint16_t* y, bool* d, uint16_t xmax, uint16_t ymax
 }
 
 char
-fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned char pln){
-	if(!chfb_ptr)return(1);
+fb_input_ships_and_draw(struct ctfb* ctfb_ptr, struct state* state_ptr, unsigned char pln){
+	if(!ctfb_ptr)return(1);
 	if(!state_ptr)return(1);
 	if(0<pln||pln>state_ptr->nopl)return(1);
 	
@@ -117,7 +106,7 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 				ship_arr[i]->shdir=d;
 				
 				ship_place_str_pos(tempstate_ptr,ship_arr[i]);
-				fb_draw_ship_single(chfb_ptr, ship_arr[i], PLAYER_COL[pln][0] ); // 37  is a color code
+				fb_draw_ship_single(ctfb_ptr, ship_arr[i], PLAYER_COL[pln][0] ); // 37  is a color code
 				break;
 			}else{
 				fprintf(stderr,"\n!%d %d %d!\n",x,y,(int)d);
@@ -126,7 +115,7 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 				continue;
 			}
 		}
-		fb_screen_draw(chfb_ptr);
+		ctfb_ptr->draw(ctfb_ptr);
 		//x=0;y=0;d=0;
 	}
 	for(int i=0;i<noship;i++){
@@ -155,7 +144,8 @@ fb_input_ships_and_draw(struct chfb* chfb_ptr, struct state* state_ptr, unsigned
 //	}
 //}
 
-uint16_t input_int(char* arr){
+uint16_t 
+input_int(char* arr){
 	uint16_t ret_var=0;
 	wchar_t discard;
 	for(;;){
@@ -170,18 +160,21 @@ uint16_t input_int(char* arr){
 	}
 	return(ret_var);
 }
-uint16_t input_int_range(char* arr, uint16_t max){
-	uint16_t ret_var=0;
-	do{
-		ret_var=input_int(arr);
-	}while(!(ret_var<max));
 
-	return(ret_var);
-}
+//uint16_t 
+//input_int_range(char* arr, uint16_t max){
+//	uint16_t ret_var=0;
+//	do{
+//		ret_var=input_int(arr);
+//	}while(!(ret_var<max));
+//
+//	return(ret_var);
+//}
 
-state* state_game_intit(){
+state*
+state_game_intit(){
 	
-	clear();
+	ctfb_clear();
 	state* state_ptr=state_init(input_int("input the number of players"));
 	for(int i=0;i<state_ptr->nopl;i++){
 		(*(state_ptr->ply_ptr+i))->pcol=input_int("input player's colour")&0xffff;

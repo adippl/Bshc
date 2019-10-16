@@ -1,10 +1,13 @@
 
 CC=gcc-9.1.0	
 
-CFLAG= -std=c18 -lm -g -Wall -Werror -pedantic	-march=skylake -mtune=skylake -fplan9-extensions
+#CFLAG= -std=c18 -lm -g -Wall -Werror -pedantic	-march=westmere -mtune=skylake -fplan9-extensions -lm -L./lib/ -lctfb lib/libctfb.a
+CFLAG= -std=c18 -g -Wall -Werror -pedantic	-march=westmere -mtune=skylake -fplan9-extensions 
+LDFLAGS= -lm lib/libctfb.a
+#LDFLAGS= -lm -L./lib/ -lctfb
 
 output:	main.o state.o conf.o term.o ui.o mth.o ship.o
-	$CC $CFLAG  -o bsh main.o state.o conf.o term.o ui.o mth.o ship.o
+	$CC $CFLAG  -o bsh main.o state.o conf.o term.o ui.o mth.o ship.o $LDFLAGS
 
 main.o:	main.c
 	$CC $CFLAG  -c main.c
@@ -21,6 +24,11 @@ mth.o:	mth.c
 	$CC $CFLAG  -c mth.c
 ship.o:	ship.c
 	$CC $CFLAG  -c ship.c
+
+libctfb.a:
+	cd lib/
+	mk
+
 
 cl:
 	rm *.o
