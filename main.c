@@ -75,44 +75,46 @@ int
 main(int argc, char **argv){
 	time_t tt;		//FIXIT
 	srand(time(&tt));	//FIXIT
-//	setlocale(LC_ALL, "C.UTF-8");
 	setlocale(LC_ALL, "en_US.utf8");
 	
 	float a =-1.1f;
 	printf("float %f float\n",a/0.1);
 
 	//test_ang();
-	test_shot();
-
-	struct state* state_ptr=state_init(3);
+	//test_shot();
 	
-	struct ctfb* ptr=fb_draw_map(ctfb_fb_init(FSIZE_X,FSIZE_Y));
-	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
-	fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0);
-	ptr->clear();
-	ptr->gotoxy(0,0);
-	ctfb_fb_screenDraw(ptr);
-	ptr->gotoxy(0,52);
-	ctfb_fb_free(&ptr);
 
-	struct ctfb* ctfb_ptr=ctfb_fb_init(SIZE_X,SIZE_Y);
-	fb_draw_map(ctfb_ptr);
-
-	ctfb_fb_screenDraw(ctfb_ptr);
-	char kek=fb_input_ships_and_draw(ctfb_ptr, state_ptr, 0);
+//	struct state* state_ptr=state_init(3);	//TODO
 	
-	fb_draw_ships(ctfb_ptr, state_ptr,1,0);
+	//struct ctfb* ptr=fb_drawMap(ctfb_fb_init(FSIZE_X,FSIZE_Y));
+	//fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+0),0);
+	//fb_draw_ship_single(ptr,*((*state_ptr->ply_ptr+0)->shtbl_ptr+1),0);
+	//ptr->clear();
+	//ptr->gotoxy(0,0);
+	//ctfb_fb_screenDraw(ptr);
+	//ptr->gotoxy(0,52);
+	//ctfb_fb_free(&ptr);
+
+	struct ctfb* ctfb_ptr=ctfb_fb_init(FSIZE_X,FSIZE_Y);
+	fb_drawMap(ctfb_ptr);
+
+	ctfb_ptr->draw(ctfb_ptr);
+	sleep(9999);
+//	char kek=fb_inputInputShipsAndDraw(ctfb_ptr, state_ptr, 0);	//TODO
+	
+						//	fb_draw_ships(ctfb_ptr, state_ptr,1,0);
 	ctfb_fb_screenDraw(ctfb_ptr);
 
-		state_ship_move_ship(state_ptr, (*( (*(state_ptr->ply_ptr+0))->shtbl_ptr+0 )), 10, 10, 0);
-		ply_do_f_for_all_ships(&lol, state_ptr, (*(state_ptr->ply_ptr+0)), NULL);
-		fb_clear_and_map(ctfb_ptr);
-//		fb_draw_ships(ctfb_ptr, state_ptr,1,0);
-		ply_do_f_for_all_ships(&fb_draw_ship_single_f, NULL, (*(state_ptr->ply_ptr+0)) ,(void*)ctfb_ptr);
-		ctfb_fb_screenDraw(ctfb_ptr);
+//		state_ship_move_ship(state_ptr, (*( (*(state_ptr->ply_ptr+0))->shtbl_ptr+0 )), 10, 10, 0);
+//		ply_do_f_for_all_ships(&lol, state_ptr, (*(state_ptr->ply_ptr+0)), NULL);
+//		fb_clear_and_map(ctfb_ptr);
+////		fb_draw_ships(ctfb_ptr, state_ptr,1,0);
+//		ply_do_f_for_all_ships(&fb_draw_ship_single_f, NULL, (*(state_ptr->ply_ptr+0)) ,(void*)ctfb_ptr);
+//		ctfb_fb_screenDraw(ctfb_ptr);
 
 //fb_draw_ship_single_f(state* state_ptr, ship* ship_ptr, void* v_ctfb_ptr){
 
-	printf("\nkkke%d\n",(int)kek);
+//	printf("\nkkke%d\n",(int)kek);
+
 	
 }

@@ -4,15 +4,15 @@
 #include "conf.h"
 
 
-//universal destructor macro
-#define del(X) ((struct generic*)X)->destr((void*)&X);
-
-void obj_free(void** obj_pp);
-
-struct
-ob_gen{	//generic destructor
-	void (*dstr)(void** obj_pp);
-};
+////universal destructor macro
+//#define del(X) ((struct generic*)X)->destr((void*)&X)
+//
+//void obj_free(void** obj_pp);
+//
+//struct
+//ob_gen{	//generic destructor
+//	void (*dstr)(void** obj_pp);
+//};
 
 
 

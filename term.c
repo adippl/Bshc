@@ -9,13 +9,6 @@
 
 const unsigned char PLAYER_COL[2][3]={{31,0,0},{32,0,0}};
 
-//void
-//clear(){ fprintf(stdout,"\033[H\033[J");}
-//void
-//gotoxy(int x,int y){fprintf(stdout,"\033[%d;%dH",y,x);}
-//void
-//resizexy(int x,int y){fprintf(stdout,"\033[8;%d;%dt",y,x);}
-
 struct ctfb*
 tfb_init(){
 	struct ctfb *p_ctfb=NULL;
@@ -26,25 +19,13 @@ tfb_init(){
 //        p_ctfb->msizey=SIZE_Y*2+1;
 //        p_ctfb->marea=p_ctfb->msizex*p_ctfb->msizey;
 	 
-
-//	p_ctfb->free=fb_free;
-//	p_ctfb->draw_map=fb_draw_map;
-//	p_ctfb->cleanm=fb_clear_and_map;
 	return(p_ctfb);
 }
 
-//void
-//fb_free(struct ctfb** ctfb_ptr){
-//	if(!*ctfb_ptr)exit(11);
-//	free((*ctfb_ptr)->fbtb_ptr);
-//	free((*ctfb_ptr)->frmt_ptr);
-//	free(*ctfb_ptr);
-//	*ctfb_ptr=NULL;
-//}
-
+#define _mapToTermSize(X) (X*2+1)
 
 struct ctfb*
-fb_draw_map(struct ctfb* ctfb_ptr){
+fb_drawMap(struct ctfb* ctfb_ptr){
 	if(!ctfb_ptr)return(NULL);
 	wchar_t (*fbtb_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex]=(void*)ctfb_ptr->fbtb_ptr;	//risky
 	unsigned char (*frmt_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex][3]=(void*)ctfb_ptr->frmt_ptr;	//risky
@@ -52,44 +33,51 @@ fb_draw_map(struct ctfb* ctfb_ptr){
 	//
 	//		XX-1/2 is a conversion from screen coordinates to map coordinates
 	//
+	#define _MSIZE(val) (val-SIZE_Y_CORRECTION)
+	//fprintf(stderr,"LOLOLOLLO fb_drawMap x=%d mx=%d\n",ctfb_ptr->sizex,_MSIZE(ctfb_ptr->sizex));
+	//fprintf(stderr,"LOLOLOLLO fb_drawMap y=%d my=%d\n",ctfb_ptr->sizey,_MSIZE(ctfb_ptr->sizey));
 	
-	for(int i=0;i<((ctfb_ptr->sizey-1)/2);i++){
-		for(int j=0;j<(ctfb_ptr->sizex-1)/2;j++){
+	//for(int i=0;i<((ctfb_ptr->sizey));i++){
+	//	for(int j=0;j<(ctfb_ptr->sizex);j++){
+	for(int i=0;i<(_MSIZE(ctfb_ptr->sizey));i++){
+		for(int j=0;j<(ctfb_ptr->sizex);j++){
 			if(i%2==1&&j%2==1){
-				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[10];
+				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[10];	//	draw ┼
 				
 				//(*frmt_ptr_cstd)[i][j][0]=36;
 				//(*frmt_ptr_cstd)[i][j][1]=1;
 			}else if(j%2==0&&i%2==1){
-				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[0];
+				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[0];	//	draw ─
 
 				//(*frmt_ptr_cstd)[i][j][0]=36;
 				//(*frmt_ptr_cstd)[i][j][1]=1;
 			}else if(j%2==1&&i%2==0){
-				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[1];
+				(*fbtb_ptr_cstd)[i][j]=FRAMECHARS[1];	//	draw │
 
 				//(*frmt_ptr_cstd)[i][j][0]=36;
 				//(*frmt_ptr_cstd)[i][j][1]=1;
 			}
 			else{
-				(*fbtb_ptr_cstd)[i][j]=' ';
+				(*fbtb_ptr_cstd)[i][j]=' ';		// draw empty
 			}
 		}
 	}
-	for(int j=0;j<(ctfb_ptr->sizex-1)/2/2;j+=1){
+	//number bar
+	for(int j=0;j<(ctfb_ptr->sizex)/2;j+=1){
 		(*fbtb_ptr_cstd)[0][j*2+2]=j%10+'0';
 		(*frmt_ptr_cstd)[0][j*2+2][0]=(j/10>0)?30+j/10:37;	//if j>10 colour numer set by line above //37 is white
 	}
-	for(int i=2;i<(ctfb_ptr->sizey-1)/2;i+=2){
+	//letter bar
+	for(int i=2;i<_MSIZE(ctfb_ptr->sizey);i+=2){
 		(*fbtb_ptr_cstd)[i][0]=i/2+47+49;
-		//(*frmt_ptr_cstd)[i][0][0]=(i/6>0)?30+i/6:37;
 		(*frmt_ptr_cstd)[i+2][0][0]=(i/6>0)?30+i/6:37;
 	}
 	
 
 	//draw bottom border
 	for(int i=0;i<ctfb_ptr->sizex;i++){
-		(*fbtb_ptr_cstd)[(ctfb_ptr->sizey-1)/2][i]=i%2?FRAMECHARS[9]:FRAMECHARS[0];
+		//(*fbtb_ptr_cstd)[_MSIZE(ctfb_ptr->sizey)][i]=i%2?FRAMECHARS[9]:FRAMECHARS[0];	// draw ┴ or ─
+		(*fbtb_ptr_cstd)[(ctfb_ptr->sizey)-7][i]=i%2?FRAMECHARS[9]:FRAMECHARS[0];	// draw ┴ or ─
 	}
 
 	return(ctfb_ptr);
@@ -104,77 +92,8 @@ fb_clear_and_map(struct ctfb* ctfb_ptr){
 	for(int i=0;i<ctfb_ptr->area*3;i++ ){
 		*(ctfb_ptr->frmt_ptr+i)=0; //zero format
 	}
-	fb_draw_map(ctfb_ptr);
+	fb_drawMap(ctfb_ptr);
 }
-
-//void
-//fb_screen_draw_bw(struct ctfb* ctfb_ptr){	//backup, legacy function prints black and white screen 
-//	if(!ctfb_ptr)exit(11);
-//	resizexy(FSIZE_X,FSIZE_Y);
-//
-//	for(int i=0;i<ctfb_ptr->sizey;i++){
-//		for(int j=0;j<ctfb_ptr->sizex;j++){
-//			fprintf(stdout,"%lc",*(ctfb_ptr->fbtb_ptr+i*ctfb_ptr->sizex+j));
-//		}
-//		fprintf(stdout,"\n");
-//	}
-//}
-
-//void
-//fb_screen_draw(struct ctfb* ctfb_ptr){
-//	if(!ctfb_ptr)exit(11);
-//	resizexy(FSIZE_X,FSIZE_Y);
-//	gotoxy(0,0);
-//	wchar_t (*fbtb_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex]=(void*)ctfb_ptr->fbtb_ptr;	//risky
-//	unsigned char (*frmt_ptr_cstd)[ctfb_ptr->sizey][ctfb_ptr->sizex][3]=(void*)ctfb_ptr->frmt_ptr;	//risky
-//
-//	for(int i=0;i<ctfb_ptr->sizey;i++){
-//		for(int j=0;j<ctfb_ptr->sizex;j++){
-//			//fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
-//			
-//			// IFs below are check format_tabel for number of formatting variables assigned to the char
-//			// 0-empty 1-presetn()
-//			//	000
-//			//	100
-//			//	110
-//			//	111
-//
-//			if((*frmt_ptr_cstd)[i][j][0]==0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
-//				fprintf(stdout,"%lc",(*fbtb_ptr_cstd)[i][j]);
-//
-//			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]==0&&(*frmt_ptr_cstd)[i][j][2]==0){
-//				prtnch((*fbtb_ptr_cstd)[i][j],1,(*frmt_ptr_cstd)[i][j][0]);
-//
-//			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]==0){
-//				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1]);
-//
-//			}else if((*frmt_ptr_cstd)[i][j][0]!=0&&(*frmt_ptr_cstd)[i][j][1]!=0&&(*frmt_ptr_cstd)[i][j][2]!=0){
-//				prtnch((*fbtb_ptr_cstd)[i][j],2,(*frmt_ptr_cstd)[i][j][0],(*frmt_ptr_cstd)[i][j][1],(*frmt_ptr_cstd)[i][j][2]);
-//			}
-//		}
-//		fprintf(stdout,"\n");
-//	}
-//}
-
-//void prtnch(wchar_t chr, unsigned char nofarg,...){
-//	if(nofarg<1||nofarg>3)exit(EXIT_FAILURE);
-//
-//	va_list vl;
-//	va_start(vl, nofarg); 
-//
-//	switch(nofarg){
-//		case 1:
-//			fprintf(stdout,"\033[%dm%lc\033[0m",va_arg(vl,int),chr);
-//		break;
-//		case 2:
-//			fprintf(stdout,"\033[%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),chr);
-//		break;
-//		case 3:
-//			fprintf(stdout,"\033[%d;%d;%dm%lc\033[0m",va_arg(vl,int),va_arg(vl,int),va_arg(vl,int),chr);
-//		break;
-//	} 
-//	va_end(vl);
-//}
 
 
 void

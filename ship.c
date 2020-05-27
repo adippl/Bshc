@@ -32,12 +32,12 @@
 //	return(shot_ptr);
 //}
 
-void
-obj_free(void** obj_pp){	//generic destructor
-	if(!*obj_pp)exit(EXIT_FAILURE);
-	free(*obj_pp);
-	*obj_pp=NULL;
-	return;}
+//void
+//obj_free(void** obj_pp){	//generic destructor
+//	if(!*obj_pp)exit(EXIT_FAILURE);
+//	free(*obj_pp);
+//	*obj_pp=NULL;
+//	return;}
 
 //constructors
 

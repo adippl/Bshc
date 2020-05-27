@@ -6,7 +6,7 @@ CFLAG= -std=c18 -g -Wall -Werror -pedantic	-march=westmere -mtune=skylake -fplan
 LDFLAGS= -lm lib/libctfb.a
 #LDFLAGS= -lm -L./lib/ -lctfb
 
-output:	main.o state.o conf.o term.o ui.o mth.o ship.o
+output:	main.o state.o conf.o term.o ui.o mth.o ship.o libctfb.a
 	$CC $CFLAG  -o bsh main.o state.o conf.o term.o ui.o mth.o ship.o $LDFLAGS
 
 main.o:	main.c
@@ -29,9 +29,12 @@ libctfb.a:
 	cd lib/
 	mk
 
+libctfb.a_nk:
+	cd lib/
+	mk nk
 
 cl:
 	rm *.o
-nk:	cl
+nk:	cl libctfb.a_nk
 	rm bsh
 
