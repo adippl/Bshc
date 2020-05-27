@@ -45,6 +45,7 @@
 //ob_gen{
 //	void (*dstr)(void** obj_pp);//generic destructor
 //};
+void objFree(void* p_obj);	//generic destructor
 
 #endif // CONF_H
 

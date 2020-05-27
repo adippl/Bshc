@@ -14,9 +14,9 @@ const char SH3_NOSH=2,SH4_NOSH=3,SH5_NOSH=4;
 
 
 
-//void
-//obj_free(void** obj_pp){	//generic destructor
-//	if(!*obj_pp)exit(EXIT_FAILURE);
-//	free(*obj_pp);
-//	*obj_pp=NULL;
-//	return;}
+void
+objFree(void* p_obj){	//generic destructor
+	NULL_P_CHECK(p_obj);
+	free(p_obj);
+	p_obj=NULL;
+	return;}

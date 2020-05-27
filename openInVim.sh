@@ -36,9 +36,11 @@ vim -s <(echo '
 :call OpenCTab("tests/tests")
 :call OpenCTab("main")
 :call OpenCTab("conf")
-:call OpenCTab("mth")
 :call OpenCTab("state")
 :call OpenCTab("ship")
+:call OpenCTab("ship_templTU")
+:call OpenCTab("module")
+:call OpenCTab("module_templTU")
 :call OpenCTab("ui_term")
 
 

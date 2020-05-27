@@ -1,4 +1,6 @@
+#include "tests.h"
 
+/*
 void
 test_struct_inits(){
 	printf("\n");
@@ -62,3 +64,4 @@ void test_ang(){
 	angle=vec_angle(&p2)*(180/3.14);
 	fprintf(stderr,"9=%f\n",angle);
 }
+*/

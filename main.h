@@ -3,7 +3,6 @@
 
 #include "conf.h"
 #include "state.h"
-#include "mth.h"
 #include "state.h"
 #include "ui_term.h"
 

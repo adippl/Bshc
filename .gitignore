@@ -4,6 +4,7 @@
 *.o
 *.gch
 *.gdb
+*.out
 .exrc
 lib/
 bsh

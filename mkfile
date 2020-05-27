@@ -44,6 +44,7 @@ test:	$OBJ testCC
 	$CC $LDARG $OBJ tests/tests.o -o bshc_test.out
 testcl:
 	rm -f tests/*.o
+	rm -r bshc_test.out
 
 cl: testcl
 	rm -f *.o *.gch
