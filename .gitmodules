@@ -4,3 +4,6 @@
 [submodule "submod/cstl"]
 	path = submod/cstl
 	url = ssh://git@mmstgzvjkkd7ro3lhnwopseqfmulola7htnqiqwmtu7qaafha5cx3gad.onion:/srv/git/cstl
+[submodule "submod/pdjson"]
+	path = submod/pdjson
+	url = https://github.com/skeeto/pdjson
