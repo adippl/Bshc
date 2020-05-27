@@ -20,29 +20,26 @@ vim -s <(echo '
 	:set foldlevel=0
 	:endfunction
 
-:set foldmethod=indent
 
-
-
-
-:e test/test.c
-	:call SynC()
-:tabe mkfile
+:e mkfile
 :tabe README
 
 :tabe submod/cstl/tmpl/tmpl.h
 	:call SynC()
 :tabe submod/cstl/tmpl/obj.h
 	:call SynC()
-:call OpenCTab("submod/cstl/tmpl/arr")
 
+:call OpenCTab("submod/cstl/tmpl/arr")
+:set foldmethod=indent
+
+
+:call OpenCTab("tests/tests")
 :call OpenCTab("main")
 :call OpenCTab("conf")
 :call OpenCTab("mth")
 :call OpenCTab("state")
 :call OpenCTab("ship")
-:call OpenCTab("term")
-:call OpenCTab("ui")
+:call OpenCTab("ui_term")
 
 
 

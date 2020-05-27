@@ -38,7 +38,14 @@ output: $OBJ
 %.o:	%.c
 	$CC $CCARG -c $prereq -o $target
 
-cl:
+testCC:	$OBJ
+	$CC $CCARG -c tests/tests.c -o tests/tests.o
+test:	$OBJ testCC
+	$CC $LDARG $OBJ tests/tests.o -o bshc_test.out
+testcl:
+	rm -f tests/*.o
+
+cl: testcl
 	rm -f *.o *.gch
 nk: cl
 	rm -f $EXEC

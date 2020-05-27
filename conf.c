@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include "conf.h"
 
 const int FSIZE_X=161,FSIZE_Y=60;
 const int SIZE_X=80,SIZE_Y=24;
@@ -15,11 +14,9 @@ const char SH3_NOSH=2,SH4_NOSH=3,SH5_NOSH=4;
 
 
 
-//generic destructor
-
-void
-obj_free(void** obj_pp){	//generic destructor
-	if(!*obj_pp)exit(EXIT_FAILURE);
-	free(*obj_pp);
-	*obj_pp=NULL;
-	return;}
+//void
+//obj_free(void** obj_pp){	//generic destructor
+//	if(!*obj_pp)exit(EXIT_FAILURE);
+//	free(*obj_pp);
+//	*obj_pp=NULL;
+//	return;}
