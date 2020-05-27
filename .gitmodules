@@ -1,0 +1,3 @@
+[submodule "submod/libctfb"]
+	path = submod/libctfb
+	url = ssh://git@mmstgzvjkkd7ro3lhnwopseqfmulola7htnqiqwmtu7qaafha5cx3gad.onion:/srv/git/libctfb
