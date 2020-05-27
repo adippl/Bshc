@@ -3,7 +3,14 @@
 
 #include "conf.h"
 #include "state.h"
+#include <string.h>
 
+uint16_t aim_and_shoot(struct state* state_ptr);
+
+char fb_inputInputShipsAndDraw(struct ctfb* ctfb_ptr, struct state* state_ptr,unsigned char pln);
+
+//void  input_int(char* arr, uint16_t* input_var);
+uint16_t input_int(char* arr);
 const wchar_t FRAMECHARS[11];	//utf box drawing characters
 
 const unsigned char PLAYER_COL[2][3];

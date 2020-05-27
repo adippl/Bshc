@@ -1,9 +1,11 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define "state.h"
-#define "conf.h"
-#define "term.h1
+#include "conf.h"
+#include "state.h"
+#include "mth.h"
+#include "state.h"
+#include "ui_term.h"
 
 #endif // MAIN_H
 

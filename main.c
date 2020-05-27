@@ -1,10 +1,4 @@
-#include <wchar.h>
-
-#include "conf.h"
-#include "mth.h"
-#include "state.h"
-#include "term.h"
-#include "ui.h"
+#include "main.h"
 
 
 void

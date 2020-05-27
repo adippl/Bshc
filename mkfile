@@ -1,11 +1,7 @@
-
-CC=cc
-
-CFLAG= -std=c18 -g -Wall -Werror -pedantic -fplan9-extensions 
-LDFLAGS= -lm lib/libctfb.a
-
 #generic c/c++ mkfile 
 NAME=bshc
+CC=cc
+
 
 CC=gcc
 #CCXX=g++
