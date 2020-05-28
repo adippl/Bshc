@@ -2,6 +2,132 @@
 #define _SHIP_H
 
 #include "conf.h"
+#include "smodule.h"
+#include "smodule_TTU.h"
+
+typedef struct ship obj_ship;
+struct ship{
+	#ifdef T
+	#undef T
+	#endif
+	#define T ship
+	#include "submod/cstl/tmpl/obj.h"
+	#undef T
+	
+	int shipTemplateID;
+	int hp;
+	int water;
+	int drag;
+	int power;
+	int manuver;
+	int ap;
+	int view;
+
+	TEMPLATE3(arr,arrStrct,obj_smodule)* modules;
+	};
+
+obj_ship* shipFinalize(obj_ship* this);
+void shipFree(obj_ship* this);
+obj_ship* shipCopy(obj_ship* this);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ////universal destructor macro

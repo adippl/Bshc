@@ -25,8 +25,8 @@ test_struct_inits(){
 	st->free(&st);
 	printf("state %p \n",(void*)st);
 	
-	struct shot* shot_ptr=shot(10);
-	shot_ptr->free(&shot_ptr);
+	struct shot* shot_objCopy=shot(10);
+	shot_objCopy->free(&shot_objCopy);
 }
 void
 test_shot(){
@@ -65,3 +65,36 @@ void test_ang(){
 	fprintf(stderr,"9=%f\n",angle);
 }
 */
+
+int
+test_resources(){
+	obj_resources* obj=calloc(1,sizeof(obj_resources));
+	resourcesFinalize(obj);
+	//obj_resources* objCopy=resourcesCopy(obj);
+	resourcesFree(obj);
+	//resourcesFree(objCopy);
+	return(0);}
+
+int
+test_ship(){
+	obj_ship* obj=calloc(1,sizeof(obj_ship));
+	shipFinalize(obj);
+	obj_ship* objCopy=shipCopy(obj);
+	shipFree(obj);
+	shipFree(objCopy);
+	return(0);}
+
+//int
+//test_smodule(){
+//	obj_smodule* obj=calloc(1,sizeof(obj_smodule));
+//	smoduleFinalize(obj);
+//	obj_smodule* objCopy=smoduleCopy(obj);
+//	smoduleFree(obj);
+//	smoduleFree(objCopy);
+//	return(0);}
+
+int
+main(){
+	test_resources();
+	test_ship();
+	return(EXIT_SUCCESS);}

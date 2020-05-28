@@ -3,27 +3,21 @@
 
 #include "conf.h"
 
-typedef struct module obj_module;
-struct module{
+typedef struct smodule obj_smodule;
+struct smodule{
 	#ifdef T
 	#undef T
 	#endif
-	#define T module
+	#define T smodule
 	#include "submod/cstl/tmpl/obj.h"
 	#undef T
 	
-	int temp;
+	int smodType;
 	};
 
-obj_module* moduleFinalize(obj_module* this);
-void moduleFree(obj_module* this);
-obj_module* moduleCopy(obj_module* this);
-//obj_module* (*copyDeep)(obj_module* p_struct);
-
-//#ifdef T
-//#undef T
-//#endif
-//#define T obj_module
-//#include "submod/cstl/tmpl/arr.h"
+obj_smodule* smoduleFinalize(obj_smodule* this);
+void smoduleFree(obj_smodule* this);
+obj_smodule* smoduleCopy(obj_smodule* this);
+//obj_smodule* (*copyDeep)(obj_smodule* p_struct);
 
 #endif // _MODULE_H

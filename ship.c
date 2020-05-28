@@ -1,5 +1,152 @@
 #include "ship.h"
 
+obj_ship*
+shipFinalize(obj_ship* this){
+	//this->free=(void (*)(obj_ship*))objFree;
+	this->finalize=shipFinalize;
+	this->free=shipFree;
+	//CAT(obj,T)* (*copy)(CAT(obj,T)* p_struct);
+	this->copy=shipCopy;
+	//CAT(obj,T)* (*copyDeep)(CAT(obj,T)* p_struct);
+	this->copyDeep=NULL;
+	this->objSize=sizeof(obj_ship);
+	//uint16_t objName;
+	
+	this->shipTemplateID=0;
+	this->hp=0;
+	this->water=0;
+	this->drag=0;
+	this->power=0;
+	this->manuver=0;
+	this->ap=0;
+	this->view=0;
+
+	this->modules=TEMPLATE3(arr,Init,obj_smodule)();
+	NULL_P_CHECK(this->modules);
+	return(this);}
+
+void shipFree(obj_ship* this){
+	NULL_P_CHECK(this);
+	TEMPLATE3(arr,Free,obj_smodule)(this->modules);
+	free(this);
+	this=NULL;
+	return;}
+
+obj_ship*
+shipCopy(obj_ship* this){
+	NULL_P_CHECK(this);
+	obj_ship* ptr=calloc(1,sizeof(obj_ship));
+	this->finalize(ptr);
+	STRUCTCOPPIER(ptr,this,shipTemplateID);
+	STRUCTCOPPIER(ptr,this,hp);
+	STRUCTCOPPIER(ptr,this,water);
+	STRUCTCOPPIER(ptr,this,drag);
+	STRUCTCOPPIER(ptr,this,power);
+	STRUCTCOPPIER(ptr,this,manuver);
+	STRUCTCOPPIER(ptr,this,ap);
+	STRUCTCOPPIER(ptr,this,view);
+	ptr->modules=TEMPLATE3(arr,Copy,obj_smodule)(this->modules);
+	return(ptr);}
+//obj_ship* (*copyDeep)(obj_ship* p_struct);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //uint8_t
 //rand_gen(uint8_t* spread){
 //	int v=*spread+SPREAD_DEF;	//SPREAD_DEF=1 by def
