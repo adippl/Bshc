@@ -21,13 +21,13 @@ shipFinalize(obj_ship* this){
 	this->ap=0;
 	this->view=0;
 
-	this->modules=TEMPLATE3(arr,Init,obj_smodule)();
-	NULL_P_CHECK(this->modules);
+	TEMPLATE3(arr,Finalize,obj_smodule)(&this->modules);
+	//NULL_P_CHECK(this->modules.p_array);
 	return(this);}
 
 void shipFree(obj_ship* this){
 	NULL_P_CHECK(this);
-	TEMPLATE3(arr,Free,obj_smodule)(this->modules);
+	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
 	free(this);
 	this=NULL;
 	return;}
@@ -45,7 +45,7 @@ shipCopy(obj_ship* this){
 	STRUCTCOPPIER(ptr,this,manuver);
 	STRUCTCOPPIER(ptr,this,ap);
 	STRUCTCOPPIER(ptr,this,view);
-	ptr->modules=TEMPLATE3(arr,Copy,obj_smodule)(this->modules);
+	TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&ptr->modules);
 	return(ptr);}
 //obj_ship* (*copyDeep)(obj_ship* p_struct);
 

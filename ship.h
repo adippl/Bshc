@@ -23,7 +23,7 @@ struct ship{
 	int ap;
 	int view;
 
-	TEMPLATE3(arr,arrStrct,obj_smodule)* modules;
+	TEMPLATE3(arr,arrStrct,obj_smodule) modules;
 	};
 
 obj_ship* shipFinalize(obj_ship* this);

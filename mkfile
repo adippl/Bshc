@@ -5,9 +5,10 @@ CC=cc
 
 CC=gcc
 #CCXX=g++
-CCARG= -std=c18 -g -Wall -Wextra -pedantic -fPIC -DDEBUG $CEXTRA
+_CCARG= -g -Wall -Wextra -pedantic -Wendif-labels -Wcomment -fpie
+CCARG= -std=c99  -DDEBUG $_CCARG $CCX
 #CCXXARG= -std=c++2a -g -Wall -pedantic -fPIC $CXXEXTRA
-LDARG= -fPIE $LDEXTRA
+LDARG= $LDX
 
 #SRC=`{ls -1 *.cpp|sed 's/....$//'; ls -1 *.c|sed 's/..$//'; }
 #OBJ=`{ls -1 *.cpp|sed 's/....$/.o/'; ls -1 *.c|sed 's/..$/.o/'; }
