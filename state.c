@@ -26,11 +26,11 @@ void resourcesFree(obj_resources* this){
 	return;}
 
 
-//obj_resources*
-//resourcesCopy(obj_resources* this){
-//	NULL_P_CHECK(this);
-//	obj_resources* ptr=calloc(1,sizeof(obj_resources));
-//	NULL_P_CHECK(ptr);
-//	return(ptr);}
-//obj_resources* (*copyDeep)(obj_resources* p_struct);
-
+obj_resources*
+resourcesCopy(obj_resources* this){
+	NULL_P_CHECK(this);
+	obj_resources* ptr=calloc(1,sizeof(obj_resources));
+	NULL_P_CHECK(ptr);
+	TEMPLATE3(arr,Finalize,obj_ship)(&ptr->shipTeplates);
+	TEMPLATE3(arr,Copyto,obj_ship)(&this->shipTeplates,&ptr->shipTeplates);
+	return(ptr);}
