@@ -16,11 +16,12 @@ resourcesFinalize(obj_resources* this){
 	//uint16_t objName;
 	
 	
-	this->shipTeplates=TEMPLATE3(arr,Init,obj_ship)();
+	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTeplates);
 	return(this);}
 
 void resourcesFree(obj_resources* this){
 	NULL_P_CHECK(this);
+	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTeplates);
 	free(this);
 	return;}
 

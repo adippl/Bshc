@@ -14,7 +14,7 @@ struct resources{
 	#include "submod/cstl/tmpl/obj.h"
 	#undef T
 	
-	TEMPLATE3(arr,arrStrct,obj_ship)* shipTeplates;
+	TEMPLATE3(arr,arrStrct,obj_ship) shipTeplates;
 	};
 
 obj_resources* resourcesFinalize(obj_resources* this);
