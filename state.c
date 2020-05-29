@@ -15,6 +15,7 @@ resourcesFinalize(obj_resources* this){
 	this->objSize=sizeof(obj_resources);
 	//uint16_t objName;
 	
+	this->vers=1;
 	
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTeplates);
 	return(this);}
@@ -34,3 +35,7 @@ resourcesCopy(obj_resources* this){
 	TEMPLATE3(arr,Finalize,obj_ship)(&ptr->shipTeplates);
 	TEMPLATE3(arr,Copyto,obj_ship)(&this->shipTeplates,&ptr->shipTeplates);
 	return(ptr);}
+
+
+int
+resourcesLoadFile(obj_resources* this, FILE* input);

@@ -13,6 +13,7 @@ struct resources{
 	#define T resources
 	#include "submod/cstl/tmpl/obj.h"
 	#undef T
+	int vers;
 	
 	TEMPLATE3(arr,arrStrct,obj_ship) shipTeplates;
 	};

@@ -66,6 +66,20 @@ void test_ang(){
 }
 */
 
+const char json_typename[][16] = {
+    [JSON_ERROR]      = "ERROR",
+    [JSON_DONE]       = "DONE",
+    [JSON_OBJECT]     = "OBJECT",
+    [JSON_OBJECT_END] = "OBJECT_END",
+    [JSON_ARRAY]      = "ARRAY",
+    [JSON_ARRAY_END]  = "ARRAY_END",
+    [JSON_STRING]     = "STRING",
+    [JSON_NUMBER]     = "NUMBER",
+    [JSON_TRUE]       = "TRUE",
+    [JSON_FALSE]      = "FALSE",
+    [JSON_NULL]       = "NULL",
+};
+
 int
 test_resources(){
 	obj_resources* obj=calloc(1,sizeof(obj_resources));
@@ -74,6 +88,47 @@ test_resources(){
 	resourcesFree(obj);
 	//resourcesFree(objCopy);
 	return(0);}
+
+int
+test_resourcesReadConfig(){
+	FILE* res_conf_json=fopen(F_MAIN_CONF,"r");
+	bool error=false;
+	if(!res_conf_json){
+		fprintf(stderr,"test %s failed to open %s",__func__,F_MAIN_CONF);
+		return(1);}
+	else{
+		json_stream JS={0};
+		json_open_stream(&JS, res_conf_json);
+		json_set_streaming(&JS,true);
+		//enum json_type type;
+		const char* str=NULL;
+		size_t strLength=0;
+		if(	json_next(&JS)==JSON_OBJECT && \
+			json_next(&JS)==JSON_STRING && \
+			(str=json_get_string(&JS,&strLength))!=NULL && \
+			strcmp("resources",str)==0){
+			printf("successss!!!!\n");}
+		else{
+			goto error;}
+			
+
+		printf("peek %s\n",json_typename[json_peek(&JS)]);
+		printf("next %s\n",json_typename[json_next(&JS)]);
+		printf("next %s\n",json_typename[json_next(&JS)]);
+		printf("next %s\n",json_typename[json_next(&JS)]);
+		printf("next %s\n",json_typename[json_next(&JS)]);
+		printf("next %s\n",json_typename[json_next(&JS)]);
+		//printf("next %s\n",json_typename[json_next(&JS)]);
+		//printf("next %s\n",json_typename[json_next(&JS)]);
+		//printf("next %s\n",json_typename[json_next(&JS)]);
+		//printf("next %s\n",json_typename[json_next(&JS)]);
+		
+		if(error){
+			error:
+			fprintf(stderr,"PARISING ERROR %s\n",__func__);}
+		json_close(&JS);
+		fclose(res_conf_json);
+		return(0);}}
 
 int
 test_ship(){
@@ -97,4 +152,5 @@ int
 main(){
 	test_resources();
 	test_ship();
+	//test_resourcesReadConfig();
 	return(EXIT_SUCCESS);}

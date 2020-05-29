@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <math.h>
 
+#include "submod/pdjson/pdjson.h"
 #include "submod/libctfb/ctfb.h"
 
 
@@ -20,6 +21,8 @@
 
 #define M_PI	(3.14159265358979323846264338327950288)
 #define M_PI_2	(1.57079632679489661923132169163975144)
+
+#define F_MAIN_CONF "res/conf.json"
 
 //extern const int FSIZE_X,FSIZE_Y;	//frame size FSIZE_X=SIZE_X*2+1 FSIZE_Y=SIZE_Y*2+1+11
 //extern const int SIZE_X,SIZE_Y;		//map size
@@ -49,6 +52,8 @@
 //	void (*dstr)(void** obj_pp);//generic destructor
 //};
 void objFree(void* p_obj);	//generic destructor
+
+
 
 #endif // CONF_H
 

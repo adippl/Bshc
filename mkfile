@@ -5,7 +5,7 @@ CC=cc
 
 CC=gcc
 #CCXX=g++
-_CCARG= -g -Wall -Wextra -pedantic -Wendif-labels -Wcomment -fpie
+_CCARG= -g -Wall -Wextra -pedantic -fpie
 CCARG= -std=c99  -DDEBUG $_CCARG $CCX
 #CCXXARG= -std=c++2a -g -Wall -pedantic -fPIC $CXXEXTRA
 LDARG= $LDX
@@ -14,6 +14,7 @@ LDARG= $LDX
 #OBJ=`{ls -1 *.cpp|sed 's/....$/.o/'; ls -1 *.c|sed 's/..$/.o/'; }
 SRC=`{ls -1 *.c|sed 's/..$//'; }
 OBJ=`{ls -1 *.c|sed 's/..$/.o/'; }
+EOBJ= submod/pdjson/pdjson.o 
 
 EXEC=a.out
 #LIBSO=$NAME.so
@@ -25,8 +26,8 @@ run: output
 #test: lib-shared
 #	gcc test.c -o test.out
 
-output: $OBJ
-	$CC $LDARG $OBJ -o $EXEC
+output: $OBJ pdjson
+	$CC $LDARG $OBJ $EOBJ -o $EXEC
 
 #libstatic: $OBJ
 ##	DARG=-static
@@ -41,14 +42,21 @@ output: $OBJ
 
 testCC:	$OBJ
 	$CC $CCARG -c tests/tests.c -o tests/tests.o
-test:	$OBJ testCC
-	$CC $LDARG $OBJ tests/tests.o -o bshc_test.out
+test:	$OBJ testCC pdjson
+	$CC $LDARG $OBJ $EOBJ tests/tests.o -o bshc_test.out
 testcl:
 	rm -f tests/*.o bshc_test.out
 
+pdjson:
+	cd submod/pdjson/
+	make
+pdjsoncl:
+	cd submod/pdjson/
+	make clean
+
 cl: testcl
 	rm -f *.o *.gch
-nk: cl
+nk: cl pdjsoncl
 	rm -f $EXEC
 	rm -f $LIBSO $LIBA
 
