@@ -4,6 +4,7 @@
 #include "conf.h"
 #include "ship.h"
 #include "ship_TTU.h"
+#include "parse.h"
 
 typedef struct resources obj_resources;
 struct resources{
@@ -22,6 +23,8 @@ obj_resources* resourcesFinalize(obj_resources* this);
 void resourcesFree(obj_resources* this);
 obj_resources* resourcesCopy(obj_resources* this);
 
+
+int resourcesParse(obj_resources* this, json_stream* js);
 
 
 #endif // _STATE_H

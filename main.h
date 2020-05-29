@@ -5,6 +5,7 @@
 #include "state.h"
 #include "state.h"
 #include "ui_term.h"
+#include "parse.h"
 
 #endif // _MAIN_H
 

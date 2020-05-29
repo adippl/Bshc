@@ -29,13 +29,17 @@ vim -s <(echo '
 :tabe submod/cstl/tmpl/obj.h
 	:call SynC()
 
-:call OpenCTab("submod/cstl/tmpl/arr")
-:set foldmethod=indent
+:tabe submod/pdjson/pdjson.h
 
+:call OpenCTab("submod/cstl/tmpl/arr")
+
+:tabe res/conf.json
+:set foldmethod=indent
 
 :call OpenCTab("tests/tests")
 :call OpenCTab("main")
 :call OpenCTab("conf")
+:call OpenCTab("parse")
 :call OpenCTab("state")
 :call OpenCTab("ship")
 :call OpenCTab("ship_TTU")
