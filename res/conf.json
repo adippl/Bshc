@@ -3,13 +3,14 @@
 		"vers":1,
 		"shipTemplates":[
 			{
-				"shipTemplateID":"0",
-				"hp":"0",
-				"water":"0",
-				"drag":"0",
-				"power":"0",
-				"ap":"0",
-				"view":"0"
+				"shipTemplateID":1,
+				"name":"corvete",
+				"hp":100,
+				"water":0,
+				"drag":1,
+				"power":10,
+				"ap":10,
+				"view":15
 			}
 		]
 	}

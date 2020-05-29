@@ -21,6 +21,7 @@ struct resources{
 
 obj_resources* resourcesFinalize(obj_resources* this);
 void resourcesFree(obj_resources* this);
+void resourcesClean(obj_resources* this);
 obj_resources* resourcesCopy(obj_resources* this);
 
 

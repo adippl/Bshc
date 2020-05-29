@@ -20,12 +20,19 @@ resourcesFinalize(obj_resources* this){
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTeplates);
 	return(this);}
 
-void resourcesFree(obj_resources* this){
+void
+resourcesFree(obj_resources* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTeplates);
 	free(this);
 	return;}
 
+
+void
+resourcesClean(obj_resources* this){
+	NULL_P_CHECK(this);
+	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTeplates);
+	return;}
 
 obj_resources*
 resourcesCopy(obj_resources* this){
@@ -67,15 +74,22 @@ resourcesParse(obj_resources* this, json_stream* js){
 				skipToArrEnd(js);
 				break;
 			default:
+				fprintf(stderr,"parsErr %s wrong node type %s\n" \
+					,__func__,json_typename[type]);
 				break;}
 	
-	if(strcmp("vers",str)==0){
-		if(json_next(js)==JSON_NUMBER){
-			this->vers=(int)json_get_number(js);}
-		else{
-			PARSE_EMSG(js,"vers alue is not a number");}}
+	parseVarINT(js,vers)
+	
+	if(strcmp("shipTemplates",str)==0){
+		if(json_peek(js)==JSON_ARRAY){
+			obj_ship* ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
+			shipFinalize(ship);
+			shipParse(ship,js);}
+		//else{PARSE_EMSG("shipTemplates","obj_ship arr parsing error\n");}}}
+		else{fprintf(stderr,"FUCKFUCKUFCK\n");}}
 			
-
-	}
-	}
+	
+	
+	
+	}}
 

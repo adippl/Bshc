@@ -97,8 +97,10 @@ test_resourcesReadConfig(){
 		
 		
 		if(error){
-			error:
 			fprintf(stderr,"PARISING ERROR %s\n",__func__);}
+		
+		//resourcesFree
+		resourcesCopy(&obj);
 		json_close(&JS);
 		fclose(res_conf_json);
 		return(0);}

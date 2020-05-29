@@ -13,6 +13,7 @@ shipFinalize(obj_ship* this){
 	//uint16_t objName;
 	
 	this->shipTemplateID=0;
+	this->name=calloc(SSTRLENG,sizeof(char));
 	this->hp=0;
 	this->water=0;
 	this->drag=0;
@@ -25,11 +26,19 @@ shipFinalize(obj_ship* this){
 	//NULL_P_CHECK(this->modules.p_array);
 	return(this);}
 
-void shipFree(obj_ship* this){
+void
+shipFree(obj_ship* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
+	free(this->name);
 	free(this);
-	this=NULL;
+	return;}
+
+void
+shipClean(obj_ship* this){
+	NULL_P_CHECK(this);
+	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
+	free(this->name);
 	return;}
 
 obj_ship*
@@ -45,12 +54,60 @@ shipCopy(obj_ship* this){
 	STRUCTCOPPIER(ptr,this,manuver);
 	STRUCTCOPPIER(ptr,this,ap);
 	STRUCTCOPPIER(ptr,this,view);
+	strncpy(ptr->name,this->name,SSTRLENG);
 	TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&ptr->modules);
 	return(ptr);}
 //obj_ship* (*copyDeep)(obj_ship* p_struct);
 
 
 
+
+int
+shipParse(obj_ship* this, json_stream* js){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(js);
+	
+	enum json_type type;
+	const char* str=NULL;
+	type=json_next(js);
+	if(type!=JSON_OBJECT)return(2);
+	while(true){
+		type=json_next(js);
+		switch(type){
+			case(JSON_OBJECT_END):
+				return(0);
+			case(JSON_ERROR):
+			case(JSON_DONE):
+			case(JSON_OBJECT):
+				return(3);
+			case(JSON_STRING):
+				str=json_get_string(js,NULL);
+				break;
+			//case(JSON_NUMBER):
+			//	number=json_get_number(js);
+			//	break;
+			case(JSON_ARRAY):
+				skipToArrEnd(js);
+				break;
+			default:
+				fprintf(stderr,"parsErr %s wrong node type %s\n",\
+					__func__,json_typename[type]);
+				break;}
+	
+	//if(strcmp("name",str)==0){
+	//	if(json_next(js)==JSON_STRING){
+	//		this->name=(int)json_get_string(js,NULL);}
+	//	else{
+	//		PARSE_EMSG(js,"value is not a string\n");}}
+	/* these macros don't require ; at the end*/
+	parseVarINT(js,shipTemplateID)
+	parseVarINT(js,hp)
+	parseVarINT(js,drag)
+	parseVarINT(js,power)
+	parseVarINT(js,manuver)
+	parseVarINT(js,ap)
+	parseVarINT(js,view)
+	}}
 
 
 

@@ -4,6 +4,7 @@
 #include "conf.h"
 #include "smodule.h"
 #include "smodule_TTU.h"
+#include "parse.h"
 
 typedef struct ship obj_ship;
 struct ship{
@@ -15,6 +16,7 @@ struct ship{
 	#undef T
 	
 	int shipTemplateID;
+	char* name;
 	int hp;
 	int water;
 	int drag;
@@ -29,8 +31,10 @@ struct ship{
 obj_ship* shipFinalize(obj_ship* this);
 void shipFree(obj_ship* this);
 obj_ship* shipCopy(obj_ship* this);
+void shipClean(obj_ship* this);
 
 
+int shipParse(obj_ship* this, json_stream* js);
 
 
 
@@ -292,3 +296,4 @@ obj_ship* shipCopy(obj_ship* this);
 ////void obj_ship_abilit_free(ship_abilit** obj_pp);
 
 #endif // _SHIP_H
+

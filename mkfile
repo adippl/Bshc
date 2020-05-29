@@ -3,7 +3,7 @@ NAME=bshc
 CC=cc
 
 
-CC=gcc
+#CC=gcc
 #CCXX=g++
 _CCARG= -g -Wall -Wextra -pedantic -fpie
 CCARG= -std=c99  -DDEBUG $_CCARG $CCX
@@ -42,8 +42,10 @@ output: $OBJ pdjson
 
 testCC:	$OBJ
 	$CC $CCARG -c tests/tests.c -o tests/tests.o
-test:	$OBJ testCC pdjson
+_test:	$OBJ testCC pdjson
 	$CC $LDARG $OBJ $EOBJ tests/tests.o -o bshc_test.out
+test:
+	mk _test CCX=-D_TESTS
 testcl:
 	rm -f tests/*.o bshc_test.out
 
@@ -59,6 +61,9 @@ cl: testcl
 nk: cl pdjsoncl
 	rm -f $EXEC
 	rm -f $LIBSO $LIBA
+
+wc: nk
+	wc -l *.c *.h mkfile tests/* res/*.json
 
 
 # vim : set ft=make:
