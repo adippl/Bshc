@@ -2,12 +2,9 @@
 
 obj_ship*
 shipFinalize(obj_ship* this){
-	//this->free=(void (*)(obj_ship*))objFree;
 	this->finalize=shipFinalize;
 	this->free=shipFree;
-	//CAT(obj,T)* (*copy)(CAT(obj,T)* p_struct);
 	this->copy=shipCopy;
-	//CAT(obj,T)* (*copyDeep)(CAT(obj,T)* p_struct);
 	this->copyDeep=NULL;
 	this->objSize=sizeof(obj_ship);
 	//uint16_t objName;
@@ -100,13 +97,14 @@ shipParse(obj_ship* this, json_stream* js){
 	//	else{
 	//		PARSE_EMSG(js,"value is not a string\n");}}
 	/* these macros don't require ; at the end*/
-	parseVarINT(js,shipTemplateID)
-	parseVarINT(js,hp)
-	parseVarINT(js,drag)
-	parseVarINT(js,power)
-	parseVarINT(js,manuver)
-	parseVarINT(js,ap)
-	parseVarINT(js,view)
+	parseVarINT(js,shipTemplateID);
+	parseVarINT(js,hp);
+	parseVarINT(js,drag);
+	parseVarINT(js,power);
+	parseVarINT(js,manuver);
+	parseVarINT(js,ap);
+	parseVarINT(js,view);
+	parseVarSTR(js,name);
 	}}
 
 

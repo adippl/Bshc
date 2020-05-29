@@ -45,7 +45,7 @@ testCC:	$OBJ
 _test:	$OBJ testCC pdjson
 	$CC $LDARG $OBJ $EOBJ tests/tests.o -o bshc_test.out
 test:
-	mk _test CCX=-D_TESTS
+	mk _test CCX=-D_TESTS CC=$CC 
 testcl:
 	rm -f tests/*.o bshc_test.out
 

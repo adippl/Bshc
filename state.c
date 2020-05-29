@@ -9,6 +9,7 @@ obj_resources*
 resourcesFinalize(obj_resources* this){
 	this->finalize=resourcesFinalize;
 	this->free=resourcesFree;
+	this->clean=resourcesClean;
 	//this->copy=resourcesCopy;
 	//CAT(obj,T)* (*copyDeep)(CAT(obj,T)* p_struct);
 	this->copyDeep=NULL;
@@ -18,6 +19,9 @@ resourcesFinalize(obj_resources* this){
 	this->vers=1;
 	
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTeplates);
+	this->shipTeplates.objFinalize=shipFinalize;
+	this->shipTeplates.objClean=shipClean;
+	this->shipTeplates.objCopy=shipCopy;
 	return(this);}
 
 void
@@ -78,12 +82,12 @@ resourcesParse(obj_resources* this, json_stream* js){
 					,__func__,json_typename[type]);
 				break;}
 	
-	parseVarINT(js,vers)
+	parseVarINT(js,vers);
 	
 	if(strcmp("shipTemplates",str)==0){
 		if(json_peek(js)==JSON_ARRAY){
 			obj_ship* ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			shipFinalize(ship);
+			//shipFinalize(ship);
 			shipParse(ship,js);}
 		//else{PARSE_EMSG("shipTemplates","obj_ship arr parsing error\n");}}}
 		else{fprintf(stderr,"FUCKFUCKUFCK\n");}}

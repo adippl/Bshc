@@ -6,8 +6,6 @@ smoduleFinalize(obj_smodule* this){
 	this->free=smoduleFree;
 	//CAT(obj,T)* (*copy)(CAT(obj,T)* p_struct);
 	this->copy=smoduleCopy;
-	//CAT(obj,T)* (*copyDeep)(CAT(obj,T)* p_struct);
-	this->copyDeep=NULL;
 	this->objSize=sizeof(obj_smodule);
 	//uint16_t objName;
 	this->smodType=0;
@@ -18,6 +16,12 @@ void smoduleFree(obj_smodule* this){
 	free(this);
 	this=NULL;
 	return;}
+
+void smoduleClean(obj_smodule* this){
+	NULL_P_CHECK(this);
+	this=NULL;
+	return;}
+
 
 
 obj_smodule*

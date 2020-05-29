@@ -1,4 +1,3 @@
-
 #ifndef _PARSE_H
 #define _PARSE_H
 
@@ -21,8 +20,21 @@ int skipToArrEnd(json_stream* js);
 #define parseVarINT(X,Y) if(strcmp(#Y,str)==0){ \
 		if(json_next(X)==JSON_NUMBER){ \
 			this->Y=(int)json_get_number(X);} \
-		else{PARSE_EMSG(X,"value is not a number\n");}}
+		else{PARSE_EMSG(X,"value is not a number\n");}} \
+		continue
 
+#define parseVarBOL(X,Y) if(strcmp(#Y,str)==0){ \
+		switch(json_next(X)==JSON_NUMBER){ \
+			case(JSON_TRUE): this->Y=true; break; \
+			case(JSON_FALSE): this->Y=false; break; \
+			default: PARSE_EMSG(X,"value is not a number\n"); break;}} \
+		continue
+
+#define parseVarSTR(X,Y) if(strcmp(#Y,str)==0){ \
+		if(json_next(X)==JSON_STRING){ \
+			strncpy(this->Y,json_get_string(X,NULL),SSTRLENG);} \
+		else{PARSE_EMSG(X,"value is not a string\n");}} \
+		continue
 
 
 #endif // _PARSE_H
