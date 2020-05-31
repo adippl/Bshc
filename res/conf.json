@@ -10,7 +10,19 @@
 				"drag":1,
 				"power":10,
 				"ap":10,
-				"view":15
+				"view":15,
+				"visibility":10
+			},
+			{
+				"shipTemplateID":2,
+				"name":"DD",
+				"hp":300,
+				"water":0,
+				"drag":5,
+				"power":25,
+				"ap":10,
+				"view":25,
+				"visibility":25
 			}
 		]
 	}

@@ -27,5 +27,6 @@ obj_resources* resourcesCopy(obj_resources* this);
 
 int resourcesParse(obj_resources* this, json_stream* js);
 
+int resources_Dump(obj_resources* this);
 
 #endif // _STATE_H

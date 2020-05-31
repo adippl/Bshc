@@ -13,6 +13,12 @@ struct smodule{
 	#undef T
 	
 	int smodType;
+	char* name;
+	int hp;
+	int powergen;
+	int manuver;
+	int ap;
+	int view;
 	};
 
 obj_smodule* smoduleFinalize(obj_smodule* this);

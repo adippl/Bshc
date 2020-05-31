@@ -104,13 +104,31 @@ shipParse(obj_ship* this, json_stream* js){
 	parseVarINT(js,manuver);
 	parseVarINT(js,ap);
 	parseVarINT(js,view);
+	parseVarINT(js,visibility);
 	parseVarSTR(js,name);
-	}}
+	}
+	return(0);}
 
 
+//void* (*objPrint)(void* p_obj);
+/*
+*/
 
-
-
+void* TEMPLATE(obj_ship,dump)(void* ap_obj){
+	NULL_P_CHECK(ap_obj);
+	obj_ship* this=(obj_ship*) ap_obj;
+	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
+	DUMP_STRUCT_int(this,shipTemplateID);
+	DUMP_STRUCT_string(this,name);
+	DUMP_STRUCT_int(this,hp);
+	DUMP_STRUCT_int(this,water);
+	DUMP_STRUCT_int(this,drag);
+	DUMP_STRUCT_int(this,manuver);
+	DUMP_STRUCT_int(this,ap);
+	DUMP_STRUCT_int(this,view);
+	DUMP_STRUCT_int(this,visibility);
+	fprintf(stderr,"\nend of obj_ship %p\n",(void*)this);
+	return(NULL);}
 
 
 

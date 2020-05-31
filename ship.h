@@ -24,6 +24,7 @@ struct ship{
 	int manuver;
 	int ap;
 	int view;
+	int visibility;
 
 	TEMPLATE3(arr,arrStrct,obj_smodule) modules;
 	};
@@ -37,6 +38,7 @@ void shipClean(obj_ship* this);
 int shipParse(obj_ship* this, json_stream* js);
 
 
+void* TEMPLATE(obj_ship,dump)(void* p_obj);
 
 
 
