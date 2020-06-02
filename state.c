@@ -95,11 +95,15 @@ resourcesParse(obj_resources* this, json_stream* js){
 	
 	if(arr){
 		if(strcmp("shipTemplates",str)==0){
+			int rt=0;
 			type=json_peek(js);
 			ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			shipParse(ship,js);
+			rt=shipParse(ship,js);
+			printf("rt=%d\n",rt);
+			fprintf(stderr,"parsA %s type %s\n",__func__,json_typename[type]);
 			ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			shipParse(ship,js);
+			rt=shipParse(ship,js);
+			printf("rt=%d\n",rt);
 			fprintf(stderr,"parsA %s type %s\n",__func__,json_typename[type]);
 
 			//while(type==JSON_OBJECT){

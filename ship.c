@@ -58,7 +58,7 @@ shipCopy(obj_ship* this){
 
 
 
-
+/*
 int
 shipParse(obj_ship* this, json_stream* js){
 	NULL_P_CHECK(this);
@@ -96,7 +96,6 @@ shipParse(obj_ship* this, json_stream* js){
 	//		this->name=(int)json_get_string(js,NULL);}
 	//	else{
 	//		PARSE_EMSG(js,"value is not a string\n");}}
-	/* these macros don't require ; at the end*/
 	parseVarINT(js,shipTemplateID);
 	parseVarINT(js,hp);
 	parseVarINT(js,drag);
@@ -108,11 +107,64 @@ shipParse(obj_ship* this, json_stream* js){
 	parseVarSTR(js,name);
 	}
 	return(0);}
-
-
-//void* (*objPrint)(void* p_obj);
-/*
 */
+
+int
+shipParse(obj_ship* this, json_stream* js){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(js);
+	
+	enum json_type type;
+	const char* str=json_get_string(js,NULL);
+	type=json_next(js);
+	if(type!=JSON_OBJECT)return(2);
+
+	bool var=false;
+	while(true){
+		type=json_next(js);
+		switch(type){
+			case JSON_NULL:
+				PARSE_EMSG(js,"JSON_NULL");
+			    break;
+			case JSON_TRUE:
+				PARSE_EMSG(js,"TRUE");
+			    break;
+			case JSON_FALSE:
+				PARSE_EMSG(js,"FALSE");
+			    break;
+			case JSON_NUMBER:
+				PARSE_EMSG(js,"NUMBER");
+			    break;
+			case JSON_STRING:
+				var=true;
+			    break;
+			case JSON_ARRAY:
+			case JSON_OBJECT:
+			case JSON_ERROR:
+			case JSON_DONE:
+				PARSE_EMSG(js,"unexpected JSON ERROR");
+			    break;
+			case JSON_ARRAY_END:
+				PARSE_EMSG(js,"unexprcted array end");
+				return(1);
+			case JSON_OBJECT_END:
+				return(0);}
+		if(var){
+			parseVarINT(js,shipTemplateID)
+			parseVarINT(js,hp)
+			parseVarINT(js,water)
+			parseVarINT(js,drag)
+			parseVarINT(js,power)
+			parseVarINT(js,manuver)
+			parseVarINT(js,ap)
+			parseVarINT(js,visibility)
+			parseVarSTR(js,name)
+			}
+
+		}
+		
+	
+	return(1);}
 
 void* TEMPLATE(obj_ship,dump)(void* ap_obj){
 	NULL_P_CHECK(ap_obj);
