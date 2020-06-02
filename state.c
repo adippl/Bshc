@@ -55,9 +55,9 @@ resourcesParse(obj_resources* this, json_stream* js){
 	NULL_P_CHECK(js);
 	
 	enum json_type type;
-	const char* str=NULL;
+	const char* str=json_get_string(js,NULL);
 	obj_ship* ship=NULL;
-	bool value,arr;
+	bool value,arr,arrloop=true,var=false;
 	//double number;
 	//bool loop=true;
 	type=json_next(js);
@@ -68,22 +68,19 @@ resourcesParse(obj_resources* this, json_stream* js){
 		type=json_next(js);
 		switch(type){
 			case(JSON_OBJECT_END):
-				return(0);
 			case(JSON_ERROR):
+			case(JSON_NULL):
 			case(JSON_DONE):
-				return(2);
-			case(JSON_OBJECT):
-				return(3);
-			case(JSON_STRING):
-				value=true;
-				str=json_get_string(js,NULL);
-				break;
-			//case(JSON_NUMBER):
-			//	number=json_get_number(js);
-			//	break;
 			case(JSON_ARRAY):
 				//skipToArrEnd(js);
-				arr=true;
+				//break;
+			case(JSON_OBJECT):
+				PARSE_EMSG(js,json_typename[type]);
+				return(2);
+			case(JSON_STRING):
+				value=true;
+				break;
+				//skipToArrEnd(js);
 				break;
 			default:
 				fprintf(stderr,"parsErr %s wrong node type %s\n" \
@@ -91,54 +88,49 @@ resourcesParse(obj_resources* this, json_stream* js){
 				break;}
 	if(value){
 		parseVarINT(js,vers);
-		}
-	
-	if(arr){
+		
 		if(strcmp("shipTemplates",str)==0){
-			int rt=0;
-			type=json_peek(js);
-			ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			rt=shipParse(ship,js);
-			printf("rt=%d\n",rt);
-			fprintf(stderr,"parsA %s type %s\n",__func__,json_typename[type]);
-			ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			rt=shipParse(ship,js);
-			printf("rt=%d\n",rt);
-			fprintf(stderr,"parsA %s type %s\n",__func__,json_typename[type]);
-
-			//while(type==JSON_OBJECT){
-			//	fprintf(stderr,"parsA %s type %s\n",__func__,json_typename[type]);
-			//	ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			//	shipParse(ship,js);
-			//	fprintf(stderr,"parsB %s type %s\n",__func__,json_typename[type]);
-			//	}
-			//if(json_peek(js)==JSON_ARRAY_END)
-			//	json_next(js);
-
-
-
-
-
-			//while(type!=JSON_ARRAY_END){
-			//	switch(type){
-			//		fprintf(stderr,"parsing arr, checking type %s\n",
-			//			json_typename[type]);
-			//		case(JSON_OBJECT):
-			//			//ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-			//			//shipParse(ship,js);
-			//			break;
-			//		case(JSON_STRING): type=json_next(js); break;
-			//		case(JSON_NUMBER): type=json_next(js); break;
-			//		case(JSON_TRUE): type=json_next(js); break;
-			//		case(JSON_FALSE): type=json_next(js); break;
-
-			//		case(JSON_DONE): return(1);
-			//		case(JSON_ERROR): return(1);
-			//		case(JSON_ARRAY): return(1);
-			//		case(JSON_ARRAY_END): json_next(js); return(0);
-			//		default: return(2);}}
-				}}
-	}}
+			if(json_next(js)!=JSON_ARRAY)continue;
+			printf("entering arr parse\n");
+			while(arrloop){
+				
+				printf("\t yARRLOOP BB %s\n",json_typename[type]);
+				var=false;
+				switch(type){	
+					case JSON_NULL:
+					case JSON_TRUE:
+					case JSON_FALSE:
+					case JSON_NUMBER:
+					case JSON_STRING:
+					case JSON_ARRAY:
+						PARSE_EMSG(js,json_typename[type]);
+					    break;
+					case JSON_OBJECT:
+						printf("\t yARRLOOP %s\n",json_typename[type]);
+						printf("json object found!!!!!!!!!!!!!!!!!!!!!\n");
+						var=true;
+						break;
+					case JSON_OBJECT_END:
+					case JSON_ERROR:
+					case JSON_DONE:
+						PARSE_EMSG(js,json_typename[type]);
+					    break;
+					case JSON_ARRAY_END:
+						//json_next(js);
+						arrloop=false;
+						break;}
+				if(var){
+					printf("extend and parse\n");
+					//type=json_next(js);
+					printf("\t JSON passed to  %s\n",json_typename[type]);
+					ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
+					if(!ship)return(2);
+					shipParse(ship,js);
+					printf("\t JSON after ship  %s\n",json_typename[type]);
+					if(json_peek(js)==JSON_OBJECT)continue;
+					}
+				type=json_next(js);
+				}}}}}
 
 	
 int

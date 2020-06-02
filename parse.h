@@ -9,7 +9,7 @@ const char* skipToNextObj(json_stream* jstream, size_t* r_length);
 int skipToArrEnd(json_stream* js);
 
 
-#define PARSE_EMSG(X,Y) fprintf(stderr,"json parse error in func %s pos %ld %ld %s",__func__,json_get_lineno(X),json_get_position(X),(Y))
+#define PARSE_EMSG(X,Y) fprintf(stderr,"json parse error in func %s pos %ld %ld unexpected %s\n",__func__,json_get_lineno(X),json_get_position(X),(Y))
 
 /*
 #define parseVar(X,Y) if(strcmp(#Y,str)==0){ \

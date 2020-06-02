@@ -114,26 +114,20 @@ shipParse(obj_ship* this, json_stream* js){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(js);
 	
-	enum json_type type;
+	enum json_type type=json_peek(js);
 	const char* str=json_get_string(js,NULL);
-	type=json_next(js);
-	if(type!=JSON_OBJECT)return(2);
+printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
+	/*if(type!=JSON_OBJECT)return(2); entering function moves json stream 
+										one place ahead. no idea why */
 
 	bool var=false;
 	while(true){
-		type=json_next(js);
 		switch(type){
 			case JSON_NULL:
-				PARSE_EMSG(js,"JSON_NULL");
-			    break;
 			case JSON_TRUE:
-				PARSE_EMSG(js,"TRUE");
-			    break;
 			case JSON_FALSE:
-				PARSE_EMSG(js,"FALSE");
-			    break;
 			case JSON_NUMBER:
-				PARSE_EMSG(js,"NUMBER");
+				printf("\t yARRLOOP BB %s\n",json_typename[type]);
 			    break;
 			case JSON_STRING:
 				var=true;
@@ -161,6 +155,7 @@ shipParse(obj_ship* this, json_stream* js){
 			parseVarSTR(js,name)
 			}
 
+		type=json_next(js);
 		}
 		
 	
