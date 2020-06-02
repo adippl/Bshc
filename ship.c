@@ -120,6 +120,7 @@ shipParse(obj_ship* this, json_stream* js){
 printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 	/*if(type!=JSON_OBJECT)return(2); entering function moves json stream 
 										one place ahead. no idea why */
+	printf("FIRST ship STRING %s\n",str);
 
 	bool var=false;
 	while(true){

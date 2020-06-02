@@ -86,10 +86,7 @@ resourcesParse(obj_resources* this, json_stream* js){
 		
 		if(strcmp("shipTemplates",str)==0){
 			if(json_next(js)!=JSON_ARRAY)continue;
-			printf("entering arr parse\n");
 			while(arrloop){
-				
-				printf("\t yARRLOOP BB %s\n",json_typename[type]);
 				var=false;
 				switch(type){	
 					case JSON_NULL:
@@ -101,8 +98,6 @@ resourcesParse(obj_resources* this, json_stream* js){
 						PARSE_EMSG(js,json_typename[type]);
 					    break;
 					case JSON_OBJECT:
-						printf("\t yARRLOOP %s\n",json_typename[type]);
-						printf("json object found!!!!!!!!!!!!!!!!!!!!!\n");
 						var=true;
 						break;
 					case JSON_OBJECT_END:
@@ -115,8 +110,7 @@ resourcesParse(obj_resources* this, json_stream* js){
 						arrloop=false;
 						break;}
 				if(var){
-					//printf("extend and parse\n");
-					//printf("\t JSON passed to  %s\n",json_typename[type]);
+					printf("\t JSON passed to  %s\n",json_typename[type]);
 					ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
 					if(!ship)return(2);
 					shipParse(ship,js);

@@ -9,6 +9,7 @@ TEMPLATE(obj_smodule,finalize)(obj_smodule* this){
 	this->objSize=sizeof(obj_smodule);
 	//uint16_t objName;
 	this->smodType=0;
+	this->name=calloc(SSTRLENG,sizeof(char));
 	return(this);}
 
 void
@@ -20,8 +21,7 @@ TEMPLATE(obj_smodule,free)(obj_smodule* this){
 void
 TEMPLATE(obj_smodule,clean)(obj_smodule* this){
 	//NULL_P_CHECK(this);
-	/* dummy function */
-	fprintf(stderr,"placeholder dummy function \"clean\" p=%p\n",(void*)this);
+	free(this->name);
 	return;}
 
 
@@ -56,6 +56,7 @@ smoduleParse(obj_smodule* this, json_stream* js){
 	enum json_type type=json_peek(js);
 	const char* str=json_get_string(js,NULL);
 	bool var=false;
+	printf("FIRST STRING %s\n",str);
 	while(true){
 		switch(type){
 			case JSON_NULL:
@@ -83,7 +84,9 @@ smoduleParse(obj_smodule* this, json_stream* js){
 			parseVarINT(js,hp)
 			parseVarINT(js,powergen)
 			parseVarINT(js,hitChance)
+			parseVarINT(js,ap)
 			parseVarINT(js,apGen)
+			parseVarSTR(js,name)
 			}
 
 		type=json_next(js);
