@@ -49,7 +49,7 @@ skipToArrEnd(json_stream* js){
 				continue;}}}
 	
 
-/*
+
 int
 parseArr(json_stream* js){
 	enum json_type type;
@@ -66,7 +66,6 @@ parseArr(json_stream* js){
 				break;
 			default:
 				continue;}}}
-*/	
 
 
 /*

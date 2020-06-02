@@ -34,4 +34,37 @@ int skipToArrEnd(json_stream* js);
 		else{PARSE_EMSG(X,"value is not a string\n");}}
 
 
+#define parseARRobj(Z,Y,X,W,U)	if(strcmp(#Y,str)==0){ \
+			if(json_next(Z)!=JSON_ARRAY)continue; \
+			while(arrloop){ \
+				var=false; \
+				switch(type){ \
+					case JSON_NULL: \
+					case JSON_TRUE: \
+					case JSON_FALSE: \
+					case JSON_NUMBER: \
+					case JSON_STRING: \
+					case JSON_ARRAY: \
+						PARSE_EMSG(Z,json_typename[type]); \
+					    break; \
+					case JSON_OBJECT: \
+						var=true; \
+						break; \
+					case JSON_OBJECT_END: \
+					case JSON_ERROR: \
+					case JSON_DONE: \
+						PARSE_EMSG(Z,json_typename[type]); \
+					    break; \
+					case JSON_ARRAY_END: \
+						arrloop=false; \
+						break;} \
+				if(var){ \
+					X=TEMPLATE3(arr,append,X)(U); \
+					if(!X)return(2); \
+					W(X,Z); \
+					if(json_peek(Z)==JSON_OBJECT)continue; \
+					} \
+				type=json_next(Z);}} 
+
+
 #endif // _PARSE_H

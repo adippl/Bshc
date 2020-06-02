@@ -19,10 +19,6 @@ resourcesFinalize(obj_resources* this){
 	this->vers=1;
 	
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTeplates);
-	this->shipTeplates.objFinalize=shipFinalize;
-	this->shipTeplates.objClean=shipClean;
-	this->shipTeplates.objCopy=shipCopy;
-	this->shipTeplates.objPrint=TEMPLATE(obj_ship,dump);
 	return(this);}
 
 void
@@ -57,14 +53,13 @@ resourcesParse(obj_resources* this, json_stream* js){
 	enum json_type type;
 	const char* str=json_get_string(js,NULL);
 	obj_ship* ship=NULL;
-	bool value,arr,arrloop=true,var=false;
+	bool value,arrloop=true,var=false;
 	//double number;
 	//bool loop=true;
 	type=json_next(js);
 	if(type!=JSON_OBJECT)return(2);
 	while(true){
 		value=false;
-		arr=false;
 		type=json_next(js);
 		switch(type){
 			case(JSON_OBJECT_END):
@@ -120,17 +115,15 @@ resourcesParse(obj_resources* this, json_stream* js){
 						arrloop=false;
 						break;}
 				if(var){
-					printf("extend and parse\n");
-					//type=json_next(js);
-					printf("\t JSON passed to  %s\n",json_typename[type]);
+					//printf("extend and parse\n");
+					//printf("\t JSON passed to  %s\n",json_typename[type]);
 					ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
 					if(!ship)return(2);
 					shipParse(ship,js);
 					printf("\t JSON after ship  %s\n",json_typename[type]);
 					if(json_peek(js)==JSON_OBJECT)continue;
 					}
-				type=json_next(js);
-				}}}}}
+				type=json_next(js);}}}}}
 
 	
 int

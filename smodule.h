@@ -2,6 +2,7 @@
 #define _MODULE_H
 
 #include "conf.h"
+#include "parse.h"
 
 typedef struct smodule obj_smodule;
 struct smodule{
@@ -16,14 +17,17 @@ struct smodule{
 	char* name;
 	int hp;
 	int powergen;
-	int manuver;
+	int hitChance;
 	int ap;
-	int view;
+	int apGen;
 	};
 
-obj_smodule* smoduleFinalize(obj_smodule* this);
-void smoduleFree(obj_smodule* this);
-obj_smodule* smoduleCopy(obj_smodule* this);
+obj_smodule* TEMPLATE(obj_smodule,finalize)(obj_smodule* this);
+void TEMPLATE(obj_smodule,free)(obj_smodule* this);
+void TEMPLATE(obj_smodule,clean)(obj_smodule* this);
+obj_smodule* TEMPLATE(obj_smodule,copy)(obj_smodule* this);
 //obj_smodule* (*copyDeep)(obj_smodule* p_struct);
+obj_smodule* TEMPLATE(obj_smodule,print)(obj_smodule* this);
 
+int smoduleParse(obj_smodule* this, json_stream* js);
 #endif // _MODULE_H

@@ -111,10 +111,10 @@ test_resourcesReadConfig(){
 int
 test_ship(){
 	obj_ship* obj=calloc(1,sizeof(obj_ship));
-	shipFinalize(obj);
-	obj_ship* objCopy=shipCopy(obj);
-	shipFree(obj);
-	shipFree(objCopy);
+	obj_ship_finalize(obj);
+	obj_ship* objCopy=obj_ship_copy(obj);
+	obj_ship_free(obj);
+	obj_ship_free(objCopy);
 	return(0);}
 
 //int

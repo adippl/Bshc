@@ -29,16 +29,16 @@ struct ship{
 	TEMPLATE3(arr,arrStrct,obj_smodule) modules;
 	};
 
-obj_ship* shipFinalize(obj_ship* this);
-void shipFree(obj_ship* this);
-obj_ship* shipCopy(obj_ship* this);
-void shipClean(obj_ship* this);
+obj_ship* TEMPLATE(obj_ship,finalize)(obj_ship* this);
+void TEMPLATE(obj_ship,free)(obj_ship* this);
+void TEMPLATE(obj_ship,clean)(obj_ship* this);
+obj_ship* TEMPLATE(obj_ship,copy)(obj_ship* this);
 
 
 int shipParse(obj_ship* this, json_stream* js);
 
 
-void* TEMPLATE(obj_ship,dump)(void* p_obj);
+void* TEMPLATE(obj_ship,print)(void* p_obj);
 
 
 

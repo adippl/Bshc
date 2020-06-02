@@ -1,10 +1,11 @@
 #include "ship.h"
 
 obj_ship*
-shipFinalize(obj_ship* this){
-	this->finalize=shipFinalize;
-	this->free=shipFree;
-	this->copy=shipCopy;
+TEMPLATE(obj_ship,finalize)(obj_ship* this){
+	this->finalize=TEMPLATE(obj_ship,finalize);
+	this->free=TEMPLATE(obj_ship,free);
+	this->clean=TEMPLATE(obj_ship,clean);
+	this->copy=TEMPLATE(obj_ship,copy);
 	this->copyDeep=NULL;
 	this->objSize=sizeof(obj_ship);
 	//uint16_t objName;
@@ -20,26 +21,24 @@ shipFinalize(obj_ship* this){
 	this->view=0;
 
 	TEMPLATE3(arr,Finalize,obj_smodule)(&this->modules);
-	//NULL_P_CHECK(this->modules.p_array);
+	NULL_P_CHECK(this->modules.p_array);
 	return(this);}
 
 void
-shipFree(obj_ship* this){
+TEMPLATE(obj_ship,free)(obj_ship* this){
 	NULL_P_CHECK(this);
-	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
-	free(this->name);
+	TEMPLATE(obj_ship,clean)(this);
 	free(this);
 	return;}
 
 void
-shipClean(obj_ship* this){
+TEMPLATE(obj_ship,clean)(obj_ship* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
-	free(this->name);
 	return;}
 
 obj_ship*
-shipCopy(obj_ship* this){
+TEMPLATE(obj_ship,copy)(obj_ship* this){
 	NULL_P_CHECK(this);
 	obj_ship* ptr=calloc(1,sizeof(obj_ship));
 	this->finalize(ptr);
@@ -116,6 +115,8 @@ shipParse(obj_ship* this, json_stream* js){
 	
 	enum json_type type=json_peek(js);
 	const char* str=json_get_string(js,NULL);
+	bool arrloop=true;
+	obj_smodule* obj_smodule=NULL;
 printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 	/*if(type!=JSON_OBJECT)return(2); entering function moves json stream 
 										one place ahead. no idea why */
@@ -153,6 +154,8 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 			parseVarINT(js,ap)
 			parseVarINT(js,visibility)
 			parseVarSTR(js,name)
+			
+			parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
 			}
 
 		type=json_next(js);
@@ -161,7 +164,7 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 	
 	return(1);}
 
-void* TEMPLATE(obj_ship,dump)(void* ap_obj){
+void* TEMPLATE(obj_ship,print)(void* ap_obj){
 	NULL_P_CHECK(ap_obj);
 	obj_ship* this=(obj_ship*) ap_obj;
 	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
@@ -174,7 +177,9 @@ void* TEMPLATE(obj_ship,dump)(void* ap_obj){
 	DUMP_STRUCT_int(this,ap);
 	DUMP_STRUCT_int(this,view);
 	DUMP_STRUCT_int(this,visibility);
-	fprintf(stderr,"\nend of obj_ship %p\n",(void*)this);
+	fprintf(stderr,"modules arr at %p:\n",(void*)&this->modules);
+	TEMPLATE3(arr,dump,obj_smodule)(&this->modules);
+	fprintf(stderr,"\nEND of obj_ship %p\n",(void*)this);
 	return(NULL);}
 
 
