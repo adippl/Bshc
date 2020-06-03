@@ -91,13 +91,13 @@ shipParse(obj_ship* this, json_stream* js){
 			case JSON_ARRAY:
 			case JSON_OBJECT:
 			case JSON_DONE:
-				PARSE_EMSG(js,"unexpected JSON ERROR");
+				PARSE_EMSG(js,json_typename[type]);
 			    break;
 			case JSON_ARRAY_END:
-				PARSE_EMSG(js,"unexprcted array end");
+				PARSE_EMSG(js,json_typename[type]);
 				return(1);
 			case JSON_OBJECT_END:
-				fprintf(stderr,"SHIP END l=%d\n",json_get_lineno(js));
+				fprintf(stderr,"SHIP END l=%ld\n",json_get_lineno(js));
 				return(0);}
 		if(var){
 			parseVarINT(js,shipTemplateID)
@@ -106,6 +106,7 @@ shipParse(obj_ship* this, json_stream* js){
 			parseVarINT(js,centerx);
 			parseVarINT(js,centery);
 			parseVarINT(js,hp)
+			parseVarINT(js,armor)
 			parseVarINT(js,water)
 			parseVarINT(js,drag)
 			parseVarINT(js,power)
@@ -114,9 +115,13 @@ shipParse(obj_ship* this, json_stream* js){
 			parseVarINT(js,visibility)
 			parseVarSTR(js,sname)
 			
-			parseARR_SKIP(js,sname)
-			//parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
+			//parseARR_SKIP(js,sname)
+			parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
 			}
+
+			//fprintf(stderr,"json %s found invalid key %s ",__func__,str);
+			//type=json_next(js);
+ 			//fprintf(stderr,"with value %s\n",str);
 
 		}
 		
@@ -129,7 +134,12 @@ void* TEMPLATE(obj_ship,print)(void* ap_obj){
 	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
 	DUMP_STRUCT_int(this,shipTemplateID);
 	DUMP_STRUCT_string(this,sname);
+	DUMP_STRUCT_int(this,sizex);
+	DUMP_STRUCT_int(this,sizey);
+	DUMP_STRUCT_int(this,centerx);
+	DUMP_STRUCT_int(this,centery);
 	DUMP_STRUCT_int(this,hp);
+	DUMP_STRUCT_int(this,armor);
 	DUMP_STRUCT_int(this,water);
 	DUMP_STRUCT_int(this,drag);
 	DUMP_STRUCT_int(this,manuver);

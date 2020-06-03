@@ -5,24 +5,86 @@
 			{
 				"shipTemplateID":1,
 				"sname":"corvete",
+				"sizex":1,
+				"sizey":2,
+				"centerx":0,
+				"centery":0,
 				"hp":100,
+				"armor":5,
 				"water":0,
 				"drag":1,
 				"power":10,
 				"ap":10,
 				"view":15,
-				"visibility":10
+				"visibility":10,
+				"modules":[
+					{
+						"smodType":0,
+						"name":"engine corv",
+						"posx":0,
+						"posy":0,
+						"hp":10,
+						"powergen":10,
+						"hitChance":"128",
+						"ap":5,
+						"apGen":2,
+						"external":false
+					},
+					{
+						"smodType":0,
+						"name":"command corv",
+						"posx":0,
+						"posy":1,
+						"hp":10,
+						"powergen":-2,
+						"hitChance":"64",
+						"ap":5,
+						"apGen":5,
+						"external":true
+					}
+				]
 			},
 			{
 				"shipTemplateID":2,
 				"sname":"DD",
+				"sizex":1,
+				"sizey":3,
+				"centerx":0,
+				"centery":1,
 				"hp":300,
+				"armor":5,
 				"water":0,
 				"drag":5,
 				"power":25,
 				"ap":10,
 				"view":25,
-				"visibility":25
+				"visibility":25,
+				"modules":[
+					{
+						"smodType":0,
+						"name":"engine DD",
+						"posx":0,
+						"posy":2,
+						"hp":20,
+						"powergen":20,
+						"hitChance":"128",
+						"ap":10,
+						"apGen":2,
+						"external":false
+					},
+					{
+						"smodType":0,
+						"name":"command dd",
+						"posx":0,
+						"posy":1,
+						"hp":25,
+						"powergen":-4,
+						"hitChance":"64",
+						"ap":5,
+						"apGen":5,
+						"external":true
+					}
+				]
 			}
 		]
 	}

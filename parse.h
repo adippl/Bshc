@@ -24,34 +24,34 @@ int skipToArrEnd(json_stream* js);
 		else{PARSE_EMSG(X,"value is not a number\n");}}
 
 #define parseVarBOOL(X,Y) if(strcmp(#Y,str)==0){ \
-		switch(json_next(X)==JSON_NUMBER){ \
-			case(JSON_TRUE): this->Y=true; break; \
-			case(JSON_FALSE): this->Y=false; break; \
+		switch(json_next(X)){ \
+			case(JSON_TRUE): this->Y=true; continue; \
+			case(JSON_FALSE): this->Y=false; continue; \
 			default: PARSE_EMSG(X,"value is not a number\n"); break;}}
 
 #define parseVarSTR(X,Y) if(strcmp(#Y,str)==0){ \
 		if(json_next(X)==JSON_STRING){ \
-			strncpy(this->Y,json_get_string(X,NULL),SSTRLENG);} \
+			strncpy(this->Y,json_get_string(X,NULL),SSTRLENG); \
+			continue;} \
 		else{PARSE_EMSG(X,"value is not a string\n");}}
 
 
 #define parseARRobj(Z,Y,X,W,U)	if(strcmp(#Y,str)==0){ \
 			if((type=json_next(Z))!=JSON_ARRAY)continue; \
-			type=json_next(Z); \
 			while(arrloop){ \
+				type=json_next(Z); \
 				var=false; \
 				switch(type){ \
 					case JSON_ERROR: \
-						PARSE_EMSG(js,json_typename[type]); \
-						fprintf(stderr,"JSON ERR %s\n", \
-							json_get_error(js)); \
+						PARSE_EMSG(Z,json_typename[type]); \
+						fprintf(stderr,"json ERR %s\n", \
+							json_get_error(Z)); \
 						break; \
 					case JSON_OBJECT: \
 						var=true; \
 						break; \
 					case JSON_DONE: \
 					case JSON_ARRAY_END: \
-						PARSE_EMSG(Z,json_typename[type]); \
 						arrloop=false; \
 						continue; \
 					default: \
@@ -62,10 +62,12 @@ int skipToArrEnd(json_stream* js);
 				if(var){ \
 					X=TEMPLATE3(arr,append,X)(U); \
 					if(!X)return(2); \
-					W(X,Z); \
-					if(json_peek(Z)==JSON_OBJECT)continue; \
-					} \
-				type=json_next(Z);}} 
+					W(X,Z);}} \
+			continue;} 
+
+
+
+
 
 #define parseARR_SKIP(Z,Y) if(strcmp(#Y,str)==0){ \
 		if(json_next(Z)==JSON_ARRAY){ \

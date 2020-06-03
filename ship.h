@@ -22,6 +22,7 @@ struct ship{
 	int centerx;
 	int centery;
 	int hp;
+	int armor;
 	int water;
 	int drag;
 	int power;

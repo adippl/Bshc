@@ -15,11 +15,15 @@ struct smodule{
 	
 	int smodType;
 	char* name;
+	int posx;
+	int posy;
 	int hp;
+	int armor;
 	int powergen;
 	int hitChance;
 	int ap;
 	int apGen;
+	bool external;
 	};
 
 obj_smodule* TEMPLATE(obj_smodule,finalize)(obj_smodule* this);
