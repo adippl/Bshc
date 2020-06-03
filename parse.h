@@ -39,23 +39,26 @@ int skipToArrEnd(json_stream* js);
 			while(arrloop){ \
 				var=false; \
 				switch(type){ \
+					case JSON_ERROR: \
+						PARSE_EMSG(js,json_typename[type]); \
+						fprintf(stderr,"JSON ERR %s\n", \
+							json_get_error(js)); \
+						break; \
 					case JSON_NULL: \
 					case JSON_TRUE: \
 					case JSON_FALSE: \
 					case JSON_NUMBER: \
 					case JSON_STRING: \
+					case JSON_OBJECT_END: \
 					case JSON_ARRAY: \
 						PARSE_EMSG(Z,json_typename[type]); \
 					    break; \
 					case JSON_OBJECT: \
 						var=true; \
 						break; \
-					case JSON_OBJECT_END: \
-					case JSON_ERROR: \
 					case JSON_DONE: \
-						PARSE_EMSG(Z,json_typename[type]); \
-					    break; \
 					case JSON_ARRAY_END: \
+						PARSE_EMSG(Z,json_typename[type]); \
 						arrloop=false; \
 						break;} \
 				if(var){ \

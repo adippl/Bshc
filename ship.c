@@ -11,7 +11,7 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	//uint16_t objName;
 	
 	this->shipTemplateID=0;
-	this->name=calloc(SSTRLENG,sizeof(char));
+	this->sname=calloc(SSTRLENG,sizeof(char));
 	this->hp=0;
 	this->water=0;
 	this->drag=0;
@@ -35,6 +35,7 @@ void
 TEMPLATE(obj_ship,clean)(obj_ship* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
+	free(this->sname);
 	return;}
 
 obj_ship*
@@ -43,6 +44,10 @@ TEMPLATE(obj_ship,copy)(obj_ship* this){
 	obj_ship* ptr=calloc(1,sizeof(obj_ship));
 	this->finalize(ptr);
 	STRUCTCOPPIER(ptr,this,shipTemplateID);
+	STRUCTCOPPIER(ptr,this,sizex);
+	STRUCTCOPPIER(ptr,this,sizey);
+	STRUCTCOPPIER(ptr,this,centerx);
+	STRUCTCOPPIER(ptr,this,centery);
 	STRUCTCOPPIER(ptr,this,hp);
 	STRUCTCOPPIER(ptr,this,water);
 	STRUCTCOPPIER(ptr,this,drag);
@@ -50,63 +55,10 @@ TEMPLATE(obj_ship,copy)(obj_ship* this){
 	STRUCTCOPPIER(ptr,this,manuver);
 	STRUCTCOPPIER(ptr,this,ap);
 	STRUCTCOPPIER(ptr,this,view);
-	strncpy(ptr->name,this->name,SSTRLENG);
+	strncpy(ptr->sname,this->sname,SSTRLENG);
 	TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&ptr->modules);
 	return(ptr);}
-//obj_ship* (*copyDeep)(obj_ship* p_struct);
 
-
-
-/*
-int
-shipParse(obj_ship* this, json_stream* js){
-	NULL_P_CHECK(this);
-	NULL_P_CHECK(js);
-	
-	enum json_type type;
-	const char* str=NULL;
-	type=json_next(js);
-	if(type!=JSON_OBJECT)return(2);
-	while(true){
-		type=json_next(js);
-		switch(type){
-			case(JSON_OBJECT_END):
-				return(0);
-			case(JSON_ERROR):
-			case(JSON_DONE):
-			case(JSON_OBJECT):
-				return(3);
-			case(JSON_STRING):
-				str=json_get_string(js,NULL);
-				break;
-			//case(JSON_NUMBER):
-			//	number=json_get_number(js);
-			//	break;
-			case(JSON_ARRAY):
-				skipToArrEnd(js);
-				break;
-			default:
-				fprintf(stderr,"parsErr %s wrong node type %s\n",\
-					__func__,json_typename[type]);
-				break;}
-	
-	//if(strcmp("name",str)==0){
-	//	if(json_next(js)==JSON_STRING){
-	//		this->name=(int)json_get_string(js,NULL);}
-	//	else{
-	//		PARSE_EMSG(js,"value is not a string\n");}}
-	parseVarINT(js,shipTemplateID);
-	parseVarINT(js,hp);
-	parseVarINT(js,drag);
-	parseVarINT(js,power);
-	parseVarINT(js,manuver);
-	parseVarINT(js,ap);
-	parseVarINT(js,view);
-	parseVarINT(js,visibility);
-	parseVarSTR(js,name);
-	}
-	return(0);}
-*/
 
 int
 shipParse(obj_ship* this, json_stream* js){
@@ -125,18 +77,21 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 	bool var=false;
 	while(true){
 		switch(type){
+			case JSON_ERROR:
+				PARSE_EMSG(js,json_typename[type]);
+				fprintf(stderr,"JSON ERR %s\n",\
+					json_get_error(js));
+				break;
 			case JSON_NULL:
 			case JSON_TRUE:
 			case JSON_FALSE:
 			case JSON_NUMBER:
-				printf("\t yARRLOOP BB %s\n",json_typename[type]);
-			    break;
+				break;
 			case JSON_STRING:
 				var=true;
 			    break;
 			case JSON_ARRAY:
 			case JSON_OBJECT:
-			case JSON_ERROR:
 			case JSON_DONE:
 				PARSE_EMSG(js,"unexpected JSON ERROR");
 			    break;
@@ -147,6 +102,10 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 				return(0);}
 		if(var){
 			parseVarINT(js,shipTemplateID)
+			parseVarINT(js,sizex);
+			parseVarINT(js,sizey);
+			parseVarINT(js,centerx);
+			parseVarINT(js,centery);
 			parseVarINT(js,hp)
 			parseVarINT(js,water)
 			parseVarINT(js,drag)
@@ -154,7 +113,7 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 			parseVarINT(js,manuver)
 			parseVarINT(js,ap)
 			parseVarINT(js,visibility)
-			parseVarSTR(js,name)
+			parseVarSTR(js,sname)
 			
 			parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
 			}
@@ -170,7 +129,7 @@ void* TEMPLATE(obj_ship,print)(void* ap_obj){
 	obj_ship* this=(obj_ship*) ap_obj;
 	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
 	DUMP_STRUCT_int(this,shipTemplateID);
-	DUMP_STRUCT_string(this,name);
+	DUMP_STRUCT_string(this,sname);
 	DUMP_STRUCT_int(this,hp);
 	DUMP_STRUCT_int(this,water);
 	DUMP_STRUCT_int(this,drag);

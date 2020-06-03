@@ -16,7 +16,11 @@ struct ship{
 	#undef T
 	
 	int shipTemplateID;
-	char* name;
+	char* sname;
+	int sizex;
+	int sizey;
+	int centerx;
+	int centery;
 	int hp;
 	int water;
 	int drag;

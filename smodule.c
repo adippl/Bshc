@@ -38,13 +38,14 @@ TEMPLATE(obj_smodule,copy)(obj_smodule* this){
 obj_smodule*
 TEMPLATE(obj_smodule,print)(obj_smodule* this){
 	NULL_P_CHECK(this);
-	fprintf(stderr,"dumping smodule.h");
+	fprintf(stderr,"\ndumping smodule.h\n");
 	DUMP_STRUCT_int(this,smodType);
 	DUMP_STRUCT_string(this,name);
 	DUMP_STRUCT_int(this,hp);
 	DUMP_STRUCT_int(this,powergen);
 	DUMP_STRUCT_int(this,hitChance);
 	DUMP_STRUCT_int(this,ap);
+	
 	return(NULL);}
 
 
@@ -59,6 +60,11 @@ smoduleParse(obj_smodule* this, json_stream* js){
 	printf("FIRST STRING %s\n",str);
 	while(true){
 		switch(type){
+			case JSON_ERROR:
+				PARSE_EMSG(js,json_typename[type]);
+				fprintf(stderr,"JSON ERR %s\n",\
+					json_get_error(js));
+				break;
 			case JSON_NULL:
 			case JSON_TRUE:
 			case JSON_FALSE:
@@ -70,7 +76,6 @@ smoduleParse(obj_smodule* this, json_stream* js){
 			    break;
 			case JSON_ARRAY:
 			case JSON_OBJECT:
-			case JSON_ERROR:
 			case JSON_DONE:
 				PARSE_EMSG(js,"unexpected JSON ERROR");
 			    break;

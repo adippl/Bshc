@@ -59,19 +59,22 @@ resourcesParse(obj_resources* this, json_stream* js){
 	type=json_next(js);
 	if(type!=JSON_OBJECT)return(2);
 	while(true){
-		value=false;
 		type=json_next(js);
+		value=false;
 		switch(type){
-			case(JSON_OBJECT_END):
-			case(JSON_ERROR):
-			case(JSON_NULL):
 			case(JSON_DONE):
+				return(0);
+			case JSON_ERROR:
+				PARSE_EMSG(js,json_typename[type]);
+				fprintf(stderr,"JSON ERR %s\n",\
+					json_get_error(js));
+				break;
+			case(JSON_OBJECT_END):
+			case(JSON_NULL):
 			case(JSON_ARRAY):
-				//skipToArrEnd(js);
-				//break;
 			case(JSON_OBJECT):
 				PARSE_EMSG(js,json_typename[type]);
-				return(2);
+				break;
 			case(JSON_STRING):
 				value=true;
 				break;
@@ -87,8 +90,14 @@ resourcesParse(obj_resources* this, json_stream* js){
 		if(strcmp("shipTemplates",str)==0){
 			if(json_next(js)!=JSON_ARRAY)continue;
 			while(arrloop){
+				ship=NULL;
 				var=false;
 				switch(type){	
+					case JSON_ERROR:
+						PARSE_EMSG(js,json_typename[type]);
+						fprintf(stderr,"JSON ERR %s\n",\
+							json_get_error(js));
+						break;
 					case JSON_NULL:
 					case JSON_TRUE:
 					case JSON_FALSE:
@@ -101,12 +110,11 @@ resourcesParse(obj_resources* this, json_stream* js){
 						var=true;
 						break;
 					case JSON_OBJECT_END:
-					case JSON_ERROR:
-					case JSON_DONE:
 						PARSE_EMSG(js,json_typename[type]);
 					    break;
+					case JSON_DONE:
 					case JSON_ARRAY_END:
-						//json_next(js);
+						PARSE_EMSG(js,json_typename[type]);
 						arrloop=false;
 						break;}
 				if(var){

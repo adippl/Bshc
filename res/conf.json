@@ -4,7 +4,7 @@
 		"shipTemplates":[
 			{
 				"shipTemplateID":1,
-				"name":"corvete",
+				"sname":"corvete",
 				"hp":100,
 				"water":0,
 				"drag":1,
@@ -21,12 +21,21 @@
 						"hitChance":"128",
 						"ap":5,
 						"apGen":1
+					},
+					{
+						"smodType":0,
+						"name":"command corv",
+						"hp":10,
+						"powergen":-2,
+						"hitChance":"64",
+						"ap":5,
+						"apGen":5
 					}
 				]
 			},
 			{
 				"shipTemplateID":2,
-				"name":"DD",
+				"sname":"DD",
 				"hp":300,
 				"water":0,
 				"drag":5,
