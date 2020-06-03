@@ -52,7 +52,7 @@ resourcesParse(obj_resources* this, json_stream* js){
 	
 	enum json_type type;
 	const char* str=json_get_string(js,NULL);
-	obj_ship* ship=NULL;
+	obj_ship* obj_ship=NULL;
 	bool value,arrloop=true,var=false;
 	//double number;
 	//bool loop=true;
@@ -74,6 +74,7 @@ resourcesParse(obj_resources* this, json_stream* js){
 			case(JSON_ARRAY):
 			case(JSON_OBJECT):
 				PARSE_EMSG(js,json_typename[type]);
+				exit(1);
 				break;
 			case(JSON_STRING):
 				value=true;
@@ -87,45 +88,8 @@ resourcesParse(obj_resources* this, json_stream* js){
 	if(value){
 		parseVarINT(js,vers);
 		
-		if(strcmp("shipTemplates",str)==0){
-			if(json_next(js)!=JSON_ARRAY)continue;
-			while(arrloop){
-				ship=NULL;
-				var=false;
-				switch(type){	
-					case JSON_ERROR:
-						PARSE_EMSG(js,json_typename[type]);
-						fprintf(stderr,"JSON ERR %s\n",\
-							json_get_error(js));
-						break;
-					case JSON_NULL:
-					case JSON_TRUE:
-					case JSON_FALSE:
-					case JSON_NUMBER:
-					case JSON_STRING:
-					case JSON_ARRAY:
-						PARSE_EMSG(js,json_typename[type]);
-					    break;
-					case JSON_OBJECT:
-						var=true;
-						break;
-					case JSON_OBJECT_END:
-						PARSE_EMSG(js,json_typename[type]);
-					    break;
-					case JSON_DONE:
-					case JSON_ARRAY_END:
-						PARSE_EMSG(js,json_typename[type]);
-						arrloop=false;
-						break;}
-				if(var){
-					printf("\t JSON passed to  %s\n",json_typename[type]);
-					ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTeplates);
-					if(!ship)return(2);
-					shipParse(ship,js);
-					printf("\t JSON after ship  %s\n",json_typename[type]);
-					if(json_peek(js)==JSON_OBJECT)continue;
-					}
-				type=json_next(js);}}}}}
+		parseARRobj(js,shipTeplates,obj_ship,shipParse,&this->shipTeplates);
+				}}}
 
 	
 int
