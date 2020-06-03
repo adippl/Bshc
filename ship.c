@@ -65,17 +65,15 @@ shipParse(obj_ship* this, json_stream* js){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(js);
 	
-	enum json_type type=json_peek(js);
+	enum json_type type;
 	const char* str=json_get_string(js,NULL);
 	bool arrloop=true;
 	obj_smodule* obj_smodule=NULL;
-printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
-	/*if(type!=JSON_OBJECT)return(2); entering function moves json stream 
-										one place ahead. no idea why */
 	printf("FIRST ship STRING %s\n",str);
 
 	bool var=false;
 	while(true){
+		type=json_next(js);
 		switch(type){
 			case JSON_ERROR:
 				PARSE_EMSG(js,json_typename[type]);
@@ -99,6 +97,7 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 				PARSE_EMSG(js,"unexprcted array end");
 				return(1);
 			case JSON_OBJECT_END:
+				fprintf(stderr,"SHIP END l=%d\n",json_get_lineno(js));
 				return(0);}
 		if(var){
 			parseVarINT(js,shipTemplateID)
@@ -115,10 +114,10 @@ printf("SHIPPARSE FIRST OBJECT PASSED %s\n",json_typename[type]);
 			parseVarINT(js,visibility)
 			parseVarSTR(js,sname)
 			
-			parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
+			parseARR_SKIP(js,sname)
+			//parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
 			}
 
-		type=json_next(js);
 		}
 		
 	

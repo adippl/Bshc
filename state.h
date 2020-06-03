@@ -16,7 +16,7 @@ struct resources{
 	#undef T
 	int vers;
 	
-	TEMPLATE3(arr,arrStrct,obj_ship) shipTeplates;
+	TEMPLATE3(arr,arrStrct,obj_ship) shipTemplates;
 	};
 
 obj_resources* resourcesFinalize(obj_resources* this);

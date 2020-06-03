@@ -18,13 +18,13 @@ resourcesFinalize(obj_resources* this){
 	
 	this->vers=1;
 	
-	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTeplates);
+	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTemplates);
 	return(this);}
 
 void
 resourcesFree(obj_resources* this){
 	NULL_P_CHECK(this);
-	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTeplates);
+	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTemplates);
 	free(this);
 	return;}
 
@@ -32,7 +32,7 @@ resourcesFree(obj_resources* this){
 void
 resourcesClean(obj_resources* this){
 	NULL_P_CHECK(this);
-	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTeplates);
+	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTemplates);
 	return;}
 
 obj_resources*
@@ -40,8 +40,8 @@ resourcesCopy(obj_resources* this){
 	NULL_P_CHECK(this);
 	obj_resources* ptr=calloc(1,sizeof(obj_resources));
 	NULL_P_CHECK(ptr);
-	TEMPLATE3(arr,Finalize,obj_ship)(&ptr->shipTeplates);
-	TEMPLATE3(arr,Copyto,obj_ship)(&this->shipTeplates,&ptr->shipTeplates);
+	TEMPLATE3(arr,Finalize,obj_ship)(&ptr->shipTemplates);
+	TEMPLATE3(arr,Copyto,obj_ship)(&this->shipTemplates,&ptr->shipTemplates);
 	return(ptr);}
 
 
@@ -66,29 +66,62 @@ resourcesParse(obj_resources* this, json_stream* js){
 				return(0);
 			case JSON_ERROR:
 				PARSE_EMSG(js,json_typename[type]);
-				fprintf(stderr,"JSON ERR %s\n",\
+				fprintf(stderr,"json ERR %s\n",\
 					json_get_error(js));
-				break;
-			case(JSON_OBJECT_END):
-			case(JSON_NULL):
-			case(JSON_ARRAY):
-			case(JSON_OBJECT):
-				PARSE_EMSG(js,json_typename[type]);
 				exit(1);
-				break;
 			case(JSON_STRING):
 				value=true;
 				break;
-				//skipToArrEnd(js);
-				break;
+			case(JSON_OBJECT_END):
+				if(json_peek(js)==JSON_OBJECT_END)json_next(js);
+				continue;
 			default:
-				fprintf(stderr,"parsErr %s wrong node type %s\n" \
-					,__func__,json_typename[type]);
+				PARSE_EMSG(js,json_typename[type]);
+				exit(1);
 				break;}
 	if(value){
+		fprintf(stderr,"DEBUG "); \
+		PARSE_EMSG(js,json_typename[type]);
 		parseVarINT(js,vers);
 		
-		parseARRobj(js,shipTeplates,obj_ship,shipParse,&this->shipTeplates);
+		if(strcmp("shipTemplates",str)==0){ \
+		
+			if((type=json_next(js))!=JSON_ARRAY)continue; \
+			while(arrloop){ \
+				type=json_next(js); \
+				var=false; \
+				switch(type){ \
+					case JSON_ERROR: \
+						PARSE_EMSG(js,json_typename[type]); \
+						fprintf(stderr,"json ERR %s\n", \
+							json_get_error(js)); \
+						break; \
+					case JSON_OBJECT: \
+						var=true; \
+						break; \
+					case JSON_DONE: \
+					case JSON_ARRAY_END: \
+						fprintf(stderr,"DEBUG "); \
+						PARSE_EMSG(js,json_typename[type]); \
+						arrloop=false; \
+						continue; \
+					default: \
+						fprintf(stderr,"arr parse err\n"); \
+						PARSE_EMSG(js,json_typename[type]); \
+					    break; \
+						} \
+				if(var){ \
+					obj_ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTemplates); \
+					if(!obj_ship)return(2); \
+					fprintf(stderr,"DEBUG passed at %s\n",json_typename[type]); \
+					shipParse(obj_ship,js); \
+					/* if(json_peek(js)==JSON_OBJECT)continue; \ */
+					} \
+				}
+			continue;} 
+		fprintf(stderr,"json %s found invalid key %s",__func__,str);
+		type=json_next(js);
+ 		fprintf(stderr,"with value %s\n",str);
 				}}}
 
 	
@@ -97,7 +130,7 @@ resources_Dump(obj_resources* this){
 	NULL_P_CHECK(this);
 	fprintf(stderr,"\n\ndumping obj_resources at %p :\n",(void*)this);
 	fprintf(stderr,"vers: %d\n",this->vers);
-	fprintf(stderr,"shipTeplates arr at %p:\n",(void*)&this->shipTeplates);
-	TEMPLATE3(arr,dump,obj_ship)(&this->shipTeplates);
+	fprintf(stderr,"shipTemplates arr at %p:\n",(void*)&this->shipTemplates);
+	TEMPLATE3(arr,dump,obj_ship)(&this->shipTemplates);
 	fprintf(stderr,"\nEND of obj_resources at %p :\n",(void*)this);
 	return(0);}

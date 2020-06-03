@@ -11,27 +11,7 @@
 				"power":10,
 				"ap":10,
 				"view":15,
-				"visibility":10,
-				"modules":[
-					{
-						"smodType":0,
-						"name":"engine corv",
-						"hp":10,
-						"powergen":10,
-						"hitChance":"128",
-						"ap":5,
-						"apGen":1
-					},
-					{
-						"smodType":0,
-						"name":"command corv",
-						"hp":10,
-						"powergen":-2,
-						"hitChance":"64",
-						"ap":5,
-						"apGen":5
-					}
-				]
+				"visibility":10
 			},
 			{
 				"shipTemplateID":2,
@@ -42,18 +22,7 @@
 				"power":25,
 				"ap":10,
 				"view":25,
-				"visibility":25,
-				"modules":[
-					{
-						"smodType":0,
-						"name":"engine DD",
-						"hp":20,
-						"powergen":20,
-						"hitChance":"128",
-						"ap":10,
-						"apGen":2
-					}
-				]
+				"visibility":25
 			}
 		]
 	}
