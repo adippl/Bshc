@@ -85,37 +85,6 @@ resourcesParse(obj_resources* this, json_stream* js){
 		parseVarINT(js,vers);
 		
 		parseARRobj(js,shipTemplates,obj_ship,shipParse,&this->shipTemplates)
-		/*
-		if(strcmp("shipTemplates",str)==0){ \
-			if((type=json_next(js))!=JSON_ARRAY)continue; \
-			while(arrloop){ \
-				type=json_next(js); \
-				var=false; \
-				switch(type){ \
-					case JSON_ERROR: \
-						PARSE_EMSG(js,json_typename[type]); \
-						fprintf(stderr,"json ERR %s\n", \
-							json_get_error(js)); \
-						break; \
-					case JSON_OBJECT: \
-						var=true; \
-						break; \
-					case JSON_DONE: \
-					case JSON_ARRAY_END: \
-						arrloop=false; \
-						continue; \
-					default: \
-						fprintf(stderr,"arr parse err\n"); \
-						PARSE_EMSG(js,json_typename[type]); \
-					    break; \
-						} \
-				if(var){ \
-					obj_ship=TEMPLATE3(arr,append,obj_ship)(&this->shipTemplates); \
-					if(!obj_ship)return(2); \
-					shipParse(obj_ship,js);}} \
-			continue;} 
-		*/
-
 		fprintf(stderr,"json %s found invalid key %s",__func__,str);
 		type=json_next(js);
  		fprintf(stderr,"with value %s\n",str);
