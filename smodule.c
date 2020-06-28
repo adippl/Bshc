@@ -33,6 +33,20 @@ TEMPLATE(obj_smodule,copy)(obj_smodule* this){
 	NULL_P_CHECK(ptr);
 	return(ptr);}
 
+void
+TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(dest);
+	strncpy(dest->name,this->name,SSTRLENG);
+	STRUCTCOPPIER(dest,this,posx);
+	STRUCTCOPPIER(dest,this,posy);
+	STRUCTCOPPIER(dest,this,hp);
+	STRUCTCOPPIER(dest,this,armor);
+	STRUCTCOPPIER(dest,this,hitChance);
+	STRUCTCOPPIER(dest,this,ap);
+	STRUCTCOPPIER(dest,this,apGen);
+	STRUCTCOPPIER(dest,this,external);
+	return;}
 
 
 obj_smodule*

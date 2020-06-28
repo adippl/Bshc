@@ -62,8 +62,8 @@ nk: cl pdjsoncl
 	rm -f $EXEC
 	rm -f $LIBSO $LIBA
 
-wc: nk
-	wc -l *.c *.h mkfile tests/* res/*.json
+wc:
+	wc -l *.{c,h} submod/libctfb/*.{c,h} submod/libctfb/cstl/tmpl/arr.*
 
 
 # vim : set ft=make:

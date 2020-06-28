@@ -152,8 +152,33 @@ void* TEMPLATE(obj_ship,print)(void* ap_obj){
 	return(NULL);}
 
 
+obj_ship*
+TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(dest);
+	STRUCTCOPPIER(dest,this,shipTemplateID);
+	STRUCTCOPPIER(dest,this,sizex);
+	STRUCTCOPPIER(dest,this,sizey);
+	STRUCTCOPPIER(dest,this,centerx);
+	STRUCTCOPPIER(dest,this,centery);
+	STRUCTCOPPIER(dest,this,hp);
+	STRUCTCOPPIER(dest,this,water);
+	STRUCTCOPPIER(dest,this,drag);
+	STRUCTCOPPIER(dest,this,power);
+	STRUCTCOPPIER(dest,this,manuver);
+	STRUCTCOPPIER(dest,this,ap);
+	STRUCTCOPPIER(dest,this,view);
+	strncpy(dest->sname,this->sname,SSTRLENG);
+	//TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&dest->modules);
+	
+	//obj_smodule*	TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest);
+	obj_smodule *p_tmp=NULL;
+	TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
+	while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
+		obj_smodule_copyTo(p_tmp,TEMPLATE3(arr,append,obj_smodule)(&dest->modules));
+		}
 
-
+	return(dest);}
 
 
 
