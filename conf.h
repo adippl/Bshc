@@ -56,9 +56,9 @@
 //};
 void objFree(void* p_obj);	//generic destructor
 
-#define DUMP_STRUCT_int(X,Y) fprintf(stderr,"%s %d\n",#Y,X->Y)
-#define DUMP_STRUCT_char(X,Y) fprintf(stderr,"%s %c\n",#Y,X->Y)
-#define DUMP_STRUCT_string(X,Y) fprintf(stderr,"%s %s\n",#Y,X->Y)
+#define DUMP_STRUCT_int(X,Y) fprintf(stderr,"\t%s %d\n",#Y,X->Y)
+#define DUMP_STRUCT_char(X,Y) fprintf(stderr,"\t%s %c\n",#Y,X->Y)
+#define DUMP_STRUCT_string(X,Y) fprintf(stderr,"\t%s %s\n",#Y,X->Y)
 
 #endif // CONF_H
 
