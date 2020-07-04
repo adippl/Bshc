@@ -59,31 +59,6 @@ TEMPLATE(obj_ship,copy)(obj_ship* this){
 	TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&ptr->modules);
 	return(ptr);}
 
-
-void* TEMPLATE(obj_ship,print)(void* ap_obj){
-	NULL_P_CHECK(ap_obj);
-	obj_ship* this=(obj_ship*) ap_obj;
-	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
-	DUMP_STRUCT_int(this,shipTemplateID);
-	DUMP_STRUCT_string(this,sname);
-	DUMP_STRUCT_int(this,sizex);
-	DUMP_STRUCT_int(this,sizey);
-	DUMP_STRUCT_int(this,centerx);
-	DUMP_STRUCT_int(this,centery);
-	DUMP_STRUCT_int(this,hp);
-	DUMP_STRUCT_int(this,armor);
-	DUMP_STRUCT_int(this,water);
-	DUMP_STRUCT_int(this,drag);
-	DUMP_STRUCT_int(this,manuver);
-	DUMP_STRUCT_int(this,ap);
-	DUMP_STRUCT_int(this,view);
-	DUMP_STRUCT_int(this,visibility);
-	fprintf(stderr,"modules arr at %p:\n",(void*)&this->modules);
-	TEMPLATE3(arr,dump,obj_smodule)(&this->modules);
-	fprintf(stderr,"\nEND of obj_ship %p\n",(void*)this);
-	return(NULL);}
-
-
 obj_ship*
 TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
 	NULL_P_CHECK(this);
@@ -107,12 +82,33 @@ TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
 	obj_smodule *p_tmp=NULL;
 	TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
 	while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
-		printf("\t\t\tADASDASDASDASD	%p\n",p_tmp);
 		obj_smodule_copyTo(p_tmp,TEMPLATE3(arr,append,obj_smodule)(&dest->modules));
 		}
 
 	return(dest);}
 
+void* TEMPLATE(obj_ship,print)(void* ap_obj){
+	NULL_P_CHECK(ap_obj);
+	obj_ship* this=(obj_ship*) ap_obj;
+	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
+	DUMP_STRUCT_int(this,shipTemplateID);
+	DUMP_STRUCT_string(this,sname);
+	DUMP_STRUCT_int(this,sizex);
+	DUMP_STRUCT_int(this,sizey);
+	DUMP_STRUCT_int(this,centerx);
+	DUMP_STRUCT_int(this,centery);
+	DUMP_STRUCT_int(this,hp);
+	DUMP_STRUCT_int(this,armor);
+	DUMP_STRUCT_int(this,water);
+	DUMP_STRUCT_int(this,drag);
+	DUMP_STRUCT_int(this,manuver);
+	DUMP_STRUCT_int(this,ap);
+	DUMP_STRUCT_int(this,view);
+	DUMP_STRUCT_int(this,visibility);
+	fprintf(stderr,"modules arr at %p:\n",(void*)&this->modules);
+	TEMPLATE3(arr,dump,obj_smodule)(&this->modules);
+	fprintf(stderr,"\nEND of obj_ship %p\n",(void*)this);
+	return(NULL);}
 
 
 int

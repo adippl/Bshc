@@ -11,6 +11,8 @@
 #include "ship_TTU.h"
 #include "smodule.h"
 #include "smodule_TTU.h"
+#include "mapChunk.h"
+#include "mapChunk_TTU.h"
 
 #endif // _MAIN_H
 

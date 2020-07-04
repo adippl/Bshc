@@ -80,8 +80,6 @@ resourcesParse(obj_resources* this, json_stream* js){
 				exit(1);
 				break;}
 	if(value){
-		//fprintf(stderr,"DEBUG "); \
-		//PARSE_EMSG(js,json_typename[type]);
 		parseVarINT(js,vers);
 		
 		parseARRobj(js,shipTemplates,obj_ship,shipParse,&this->shipTemplates)
