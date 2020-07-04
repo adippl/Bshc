@@ -12,7 +12,7 @@ resourcesFinalize(obj_resources* this){
 	this->clean=resourcesClean;
 	//this->copy=resourcesCopy;
 	//CAT(obj,T)* (*copyDeep)(CAT(obj,T)* p_struct);
-	this->copyDeep=NULL;
+	this->copyTo=NULL;
 	this->objSize=sizeof(obj_resources);
 	//uint16_t objName;
 	
@@ -80,8 +80,8 @@ resourcesParse(obj_resources* this, json_stream* js){
 				exit(1);
 				break;}
 	if(value){
-		fprintf(stderr,"DEBUG "); \
-		PARSE_EMSG(js,json_typename[type]);
+		//fprintf(stderr,"DEBUG "); \
+		//PARSE_EMSG(js,json_typename[type]);
 		parseVarINT(js,vers);
 		
 		parseARRobj(js,shipTemplates,obj_ship,shipParse,&this->shipTemplates)

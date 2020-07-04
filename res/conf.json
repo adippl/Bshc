@@ -25,7 +25,7 @@
 						"posy":0,
 						"hp":10,
 						"powergen":10,
-						"hitChance":"128",
+						"hitChance":128,
 						"ap":5,
 						"apGen":2,
 						"external":false
@@ -37,7 +37,7 @@
 						"posy":1,
 						"hp":10,
 						"powergen":-2,
-						"hitChance":"64",
+						"hitChance":64,
 						"ap":5,
 						"apGen":5,
 						"external":true
@@ -67,7 +67,7 @@
 						"posy":2,
 						"hp":20,
 						"powergen":20,
-						"hitChance":"128",
+						"hitChance":128,
 						"ap":10,
 						"apGen":2,
 						"external":false
@@ -79,7 +79,7 @@
 						"posy":1,
 						"hp":25,
 						"powergen":-4,
-						"hitChance":"64",
+						"hitChance":64,
 						"ap":5,
 						"apGen":5,
 						"external":true

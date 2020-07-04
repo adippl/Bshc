@@ -6,7 +6,7 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	this->free=TEMPLATE(obj_ship,free);
 	this->clean=TEMPLATE(obj_ship,clean);
 	this->copy=TEMPLATE(obj_ship,copy);
-	this->copyDeep=NULL;
+	this->copyTo=NULL;
 	this->objSize=sizeof(obj_ship);
 	//uint16_t objName;
 	
@@ -21,7 +21,7 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	this->view=0;
 
 	TEMPLATE3(arr,Finalize,obj_smodule)(&this->modules);
-	NULL_P_CHECK(this->modules.p_array);
+	NULL_P_CHECK(this->modules.mem);
 	return(this);}
 
 void
@@ -58,6 +58,61 @@ TEMPLATE(obj_ship,copy)(obj_ship* this){
 	strncpy(ptr->sname,this->sname,SSTRLENG);
 	TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&ptr->modules);
 	return(ptr);}
+
+
+void* TEMPLATE(obj_ship,print)(void* ap_obj){
+	NULL_P_CHECK(ap_obj);
+	obj_ship* this=(obj_ship*) ap_obj;
+	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
+	DUMP_STRUCT_int(this,shipTemplateID);
+	DUMP_STRUCT_string(this,sname);
+	DUMP_STRUCT_int(this,sizex);
+	DUMP_STRUCT_int(this,sizey);
+	DUMP_STRUCT_int(this,centerx);
+	DUMP_STRUCT_int(this,centery);
+	DUMP_STRUCT_int(this,hp);
+	DUMP_STRUCT_int(this,armor);
+	DUMP_STRUCT_int(this,water);
+	DUMP_STRUCT_int(this,drag);
+	DUMP_STRUCT_int(this,manuver);
+	DUMP_STRUCT_int(this,ap);
+	DUMP_STRUCT_int(this,view);
+	DUMP_STRUCT_int(this,visibility);
+	fprintf(stderr,"modules arr at %p:\n",(void*)&this->modules);
+	TEMPLATE3(arr,dump,obj_smodule)(&this->modules);
+	fprintf(stderr,"\nEND of obj_ship %p\n",(void*)this);
+	return(NULL);}
+
+
+obj_ship*
+TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(dest);
+	STRUCTCOPPIER(dest,this,shipTemplateID);
+	STRUCTCOPPIER(dest,this,sizex);
+	STRUCTCOPPIER(dest,this,sizey);
+	STRUCTCOPPIER(dest,this,centerx);
+	STRUCTCOPPIER(dest,this,centery);
+	STRUCTCOPPIER(dest,this,hp);
+	STRUCTCOPPIER(dest,this,water);
+	STRUCTCOPPIER(dest,this,drag);
+	STRUCTCOPPIER(dest,this,power);
+	STRUCTCOPPIER(dest,this,manuver);
+	STRUCTCOPPIER(dest,this,ap);
+	STRUCTCOPPIER(dest,this,view);
+	strncpy(dest->sname,this->sname,SSTRLENG);
+	//TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&dest->modules);
+	
+	//obj_smodule*	TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest);
+	obj_smodule *p_tmp=NULL;
+	TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
+	while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
+		printf("\t\t\tADASDASDASDASD	%p\n",p_tmp);
+		obj_smodule_copyTo(p_tmp,TEMPLATE3(arr,append,obj_smodule)(&dest->modules));
+		}
+
+	return(dest);}
+
 
 
 int
@@ -127,61 +182,6 @@ shipParse(obj_ship* this, json_stream* js){
 		
 	
 	return(1);}
-
-void* TEMPLATE(obj_ship,print)(void* ap_obj){
-	NULL_P_CHECK(ap_obj);
-	obj_ship* this=(obj_ship*) ap_obj;
-	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
-	DUMP_STRUCT_int(this,shipTemplateID);
-	DUMP_STRUCT_string(this,sname);
-	DUMP_STRUCT_int(this,sizex);
-	DUMP_STRUCT_int(this,sizey);
-	DUMP_STRUCT_int(this,centerx);
-	DUMP_STRUCT_int(this,centery);
-	DUMP_STRUCT_int(this,hp);
-	DUMP_STRUCT_int(this,armor);
-	DUMP_STRUCT_int(this,water);
-	DUMP_STRUCT_int(this,drag);
-	DUMP_STRUCT_int(this,manuver);
-	DUMP_STRUCT_int(this,ap);
-	DUMP_STRUCT_int(this,view);
-	DUMP_STRUCT_int(this,visibility);
-	fprintf(stderr,"modules arr at %p:\n",(void*)&this->modules);
-	TEMPLATE3(arr,dump,obj_smodule)(&this->modules);
-	fprintf(stderr,"\nEND of obj_ship %p\n",(void*)this);
-	return(NULL);}
-
-
-obj_ship*
-TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
-	NULL_P_CHECK(this);
-	NULL_P_CHECK(dest);
-	STRUCTCOPPIER(dest,this,shipTemplateID);
-	STRUCTCOPPIER(dest,this,sizex);
-	STRUCTCOPPIER(dest,this,sizey);
-	STRUCTCOPPIER(dest,this,centerx);
-	STRUCTCOPPIER(dest,this,centery);
-	STRUCTCOPPIER(dest,this,hp);
-	STRUCTCOPPIER(dest,this,water);
-	STRUCTCOPPIER(dest,this,drag);
-	STRUCTCOPPIER(dest,this,power);
-	STRUCTCOPPIER(dest,this,manuver);
-	STRUCTCOPPIER(dest,this,ap);
-	STRUCTCOPPIER(dest,this,view);
-	strncpy(dest->sname,this->sname,SSTRLENG);
-	//TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&dest->modules);
-	
-	//obj_smodule*	TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest);
-	obj_smodule *p_tmp=NULL;
-	TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
-	while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
-		obj_smodule_copyTo(p_tmp,TEMPLATE3(arr,append,obj_smodule)(&dest->modules));
-		}
-
-	return(dest);}
-
-
-
 
 
 

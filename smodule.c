@@ -52,7 +52,7 @@ TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest){
 obj_smodule*
 TEMPLATE(obj_smodule,print)(obj_smodule* this){
 	NULL_P_CHECK(this);
-	fprintf(stderr,"\ndumping smodule.h\n");
+	fprintf(stderr,"\ndumping smodule\n");
 	DUMP_STRUCT_int(this,smodType);
 	DUMP_STRUCT_string(this,name);
 	DUMP_STRUCT_int(this,posx);
@@ -62,7 +62,7 @@ TEMPLATE(obj_smodule,print)(obj_smodule* this){
 	DUMP_STRUCT_int(this,powergen);
 	DUMP_STRUCT_int(this,hitChance);
 	DUMP_STRUCT_int(this,ap);
-	fprintf(stderr,"extermal %d\n",this->external);
+	fprintf(stderr,"\textermal %d\n",this->external);
 	
 	return(NULL);}
 
@@ -101,7 +101,7 @@ smoduleParse(obj_smodule* this, json_stream* js){
 				PARSE_EMSG(js,json_typename[type]);
 				return(1);
 			case JSON_OBJECT_END:
-				fprintf(stderr,"SHIP END l=%ld\n",json_get_lineno(js));
+				fprintf(stderr,"SMODULE END l=%ld\n",json_get_lineno(js));
 				return(0);}
 		if(var){
 			parseVarINT(js,smodType)

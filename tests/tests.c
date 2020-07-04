@@ -100,12 +100,12 @@ test_resourcesReadConfig(){
 			fprintf(stderr,"PARISING ERROR %s\n",__func__);}
 
 		/* test copy to real ship */
-		obj_shipReal* shipReal=calloc(1,sizeof(obj_shipReal));
-		obj_shipReal_finalize(shipReal);
-		obj_shipReal_initShipBase(shipReal,TEMPLATE3(arr,indexToPtr,obj_ship)(&obj.shipTemplates,0));
-		TEMPLATE(obj_shipReal,print)(shipReal);
-		obj_shipReal_clean(shipReal);
-		free(shipReal);
+		//obj_shipReal* shipReal=calloc(1,sizeof(obj_shipReal));
+		//obj_shipReal_finalize(shipReal);
+		//obj_shipReal_initShipBase(shipReal,TEMPLATE3(arr,indexToPtr,obj_ship)(&obj.shipTemplates,0));
+		//TEMPLATE(obj_shipReal,print)(shipReal);
+		//obj_shipReal_clean(shipReal);
+		//free(shipReal);
 		
 		resources_Dump(&obj);
 		resourcesClean(&obj);
@@ -135,13 +135,6 @@ test_ship(){
 	obj_ship_free(objCopy);
 	return(0);}
 
-int
-test_shipReal(){
-	obj_shipReal* obj=calloc(1,sizeof(obj_shipReal));
-	obj_shipReal_finalize(obj);
-	obj_shipReal_clean(obj);
-	free(obj);
-	return(0);}
 
 
 int
@@ -149,5 +142,4 @@ main(){
 	test_resources();
 	test_ship();
 	test_resourcesReadConfig();
-	test_shipReal();
 	return(EXIT_SUCCESS);}
