@@ -113,8 +113,16 @@ smoduleParse(obj_smodule* this, json_stream* js){
 			parseVarINT(js,hitChance)
 			parseVarINT(js,ap)
 			parseVarINT(js,apGen)
+			
 			parseVarSTR(js,name)
 			parseVarBOOL(js,external);
+			
+			parseVarINT(js,curr_hp)
+			parseVarINT(js,curr_armor)
+			parseVarINT(js,curr_powergen)
+			parseVarINT(js,curr_hitChance)
+			parseVarINT(js,curr_ap)
+			parseVarINT(js,curr_apGen)
 			}
 
 		}

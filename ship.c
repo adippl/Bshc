@@ -12,13 +12,13 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	
 	this->shipTemplateID=0;
 	this->sname=calloc(SSTRLENG,sizeof(char));
-	this->hp=0;
-	this->water=0;
-	this->drag=0;
-	this->power=0;
-	this->manuver=0;
-	this->ap=0;
-	this->view=0;
+	//this->hp=0;
+	//this->water=0;
+	//this->drag=0;
+	//this->power=0;
+	//this->manuver=0;
+	//this->ap=0;
+	//this->view=0;
 
 	TEMPLATE3(arr,Finalize,obj_smodule)(&this->modules);
 	NULL_P_CHECK(this->modules.mem);
@@ -169,6 +169,15 @@ shipParse(obj_ship* this, json_stream* js){
 			parseVarINT(js,ap)
 			parseVarINT(js,visibility)
 			parseVarSTR(js,sname)
+			
+			parseVarINT(js,curr_hp)
+			parseVarINT(js,curr_armor)
+			parseVarINT(js,curr_water)
+			parseVarINT(js,curr_drag)
+			parseVarINT(js,curr_power)
+			parseVarINT(js,curr_manuver)
+			parseVarINT(js,curr_ap)
+			parseVarINT(js,curr_visibility)
 			
 			//parseARR_SKIP(js,sname)
 			parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);

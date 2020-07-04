@@ -31,6 +31,15 @@ struct ship{
 	int view;
 	int visibility;
 
+	int curr_hp;
+	int curr_armor;
+	int curr_water;
+	int curr_drag;
+	int curr_power;
+	int curr_manuver;
+	int curr_ap;
+	int curr_view;
+	int curr_visibility;
 	TEMPLATE3(arr,arrStrct,obj_smodule) modules;
 	};
 

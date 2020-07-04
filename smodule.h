@@ -24,6 +24,13 @@ struct smodule{
 	int ap;
 	int apGen;
 	bool external;
+
+	int curr_hp;
+	int curr_armor;
+	int curr_powergen;
+	int curr_hitChance;
+	int curr_ap;
+	int curr_apGen;
 	};
 
 obj_smodule*	TEMPLATE(obj_smodule,finalize)(obj_smodule* this);
