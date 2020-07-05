@@ -135,11 +135,33 @@ test_ship(){
 	obj_ship_free(objCopy);
 	return(0);}
 
+int
+test_map(){
+	printf("obj_map TEST\n");
+	obj_map map={0};
+	obj_map mapCopy={0};
+	TEMPLATE(obj_map,finalize)(&map);
+	obj_mapChunk* chunk=TEMPLATE3(arr,append,obj_mapChunk)(&map.chunks);
+	chunk->posx=0;
+	chunk->posy=0;
+	chunk=TEMPLATE3(arr,append,obj_mapChunk)(&map.chunks);
+	chunk->posx=1;
+	chunk->posy=0;
+	TEMPLATE(obj_map,finalize)(&mapCopy);
+	TEMPLATE(obj_map,copyTo)(&map, &mapCopy);
+	TEMPLATE(obj_map,print)(&map);
+	TEMPLATE(obj_map,print)(&mapCopy);
+	TEMPLATE(obj_map,clean)(&map);
+	TEMPLATE(obj_map,clean)(&mapCopy);
+	printf("obj_map END OF TEST\n");
+	return(0);
+}
 
 
 int
 main(){
-	test_resources();
 	test_ship();
+	test_map();
+	test_resources();
 	test_resourcesReadConfig();
 	return(EXIT_SUCCESS);}

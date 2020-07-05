@@ -13,6 +13,7 @@
 #include "smodule_TTU.h"
 #include "mapChunk.h"
 #include "mapChunk_TTU.h"
+#include "map.h"
 
 #endif // _MAIN_H
 

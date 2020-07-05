@@ -5,7 +5,7 @@
 #include "ship.h"
 #include "parse.h"
 
-#define MAP_CHUNK_CHUNK_SIZE 32
+#define MAP_CHUNK_SIZE 32
 
 struct mapTile{
 	obj_ship* ship;
@@ -16,7 +16,7 @@ typedef struct mapChunk obj_mapChunk;
 struct mapChunk{
 	int posx;
 	int posy;
-	struct mapTile map2d[MAP_CHUNK_CHUNK_SIZE][MAP_CHUNK_CHUNK_SIZE];
+	struct mapTile map2d[MAP_CHUNK_SIZE][MAP_CHUNK_SIZE];
 	//union{
 	//	struct mapTile map2d[MAP_CHUNK_CHUNK_SIZE][MAP_CHUNK_CHUNK_SIZE];
 	//	struct mapTile map1d[MAP_CHUNK_CHUNK_SIZE*MAP_CHUNK_CHUNK_SIZE];

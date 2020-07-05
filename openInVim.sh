@@ -48,6 +48,7 @@ vim -s <(echo '
 :call OpenCTab("ui_term")
 :call OpenCTab("mapChunk")
 :call OpenCTab("mapChunk_TTU")
+:call OpenCTab("map")
 
 
 
