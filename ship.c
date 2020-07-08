@@ -109,6 +109,14 @@ TEMPLATE(obj_ship,print)(void* ap_obj){
 	DUMP_STRUCT_int(this,ap);
 	DUMP_STRUCT_int(this,view);
 	DUMP_STRUCT_int(this,visibility);
+	DUMP_STRUCT_int(this,curr_hp);
+	DUMP_STRUCT_int(this,curr_armor);
+	DUMP_STRUCT_int(this,curr_water);
+	DUMP_STRUCT_int(this,curr_drag);
+	DUMP_STRUCT_int(this,curr_manuver);
+	DUMP_STRUCT_int(this,curr_ap);
+	DUMP_STRUCT_int(this,curr_view);
+	DUMP_STRUCT_int(this,curr_visibility);
 	fprintf(stderr,"modules arr at %p:\n",(void*)&this->modules);
 	TEMPLATE3(arr,dump,obj_smodule)(&this->modules);
 	fprintf(stderr,"\nEND of obj_ship %p\n",(void*)this);

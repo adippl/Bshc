@@ -19,6 +19,7 @@ resourcesFinalize(obj_resources* this){
 	this->vers=1;
 	
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTemplates);
+	TEMPLATE(obj_map,finalize)(&this->map);
 	return(this);}
 
 void
@@ -33,6 +34,7 @@ void
 resourcesClean(obj_resources* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTemplates);
+	TEMPLATE(obj_map,clean)(&this->map);
 	return;}
 
 obj_resources*
@@ -83,9 +85,11 @@ resourcesParse(obj_resources* this, json_stream* js){
 		parseVarINT(js,vers);
 		
 		parseARRobj(js,shipTemplates,obj_ship,shipParse,&this->shipTemplates)
-		fprintf(stderr,"json %s found invalid key %s",__func__,str);
+		parseOBJ(js,mapParse,map);
+		
+		fprintf(stderr,"json %s found invalid key %s\n",__func__,str);
 		type=json_next(js);
- 		fprintf(stderr,"with value %s\n",str);
+		fprintf(stderr,"with value %s\n",str);
 				}}}
 
 	
@@ -96,5 +100,6 @@ resources_Dump(obj_resources* this){
 	fprintf(stderr,"vers: %d\n",this->vers);
 	fprintf(stderr,"shipTemplates arr at %p:\n",(void*)&this->shipTemplates);
 	TEMPLATE3(arr,dump,obj_ship)(&this->shipTemplates);
+	TEMPLATE(obj_map,print)(&this->map);
 	fprintf(stderr,"\nEND of obj_resources at %p :\n",(void*)this);
 	return(0);}

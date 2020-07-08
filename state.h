@@ -5,6 +5,7 @@
 #include "ship.h"
 #include "ship_TTU.h"
 #include "parse.h"
+#include "map.h"
 
 typedef struct resources obj_resources;
 struct resources{
@@ -17,6 +18,7 @@ struct resources{
 	int vers;
 	
 	TEMPLATE3(arr,arrStrct,obj_ship) shipTemplates;
+	obj_map map;
 	};
 
 obj_resources* resourcesFinalize(obj_resources* this);
@@ -28,5 +30,7 @@ obj_resources* resourcesCopy(obj_resources* this);
 int resourcesParse(obj_resources* this, json_stream* js);
 
 int resources_Dump(obj_resources* this);
+
+
 
 #endif // _STATE_H

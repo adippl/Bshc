@@ -73,6 +73,12 @@ int skipToArrEnd(json_stream* js);
 
 
 
+#define parseOBJ(Z,X,Y) if(strcmp(#Y,str)==0){ \
+		if(json_next(Z)==JSON_OBJECT){ \
+			X(&this->Y,Z); \
+			continue;} \
+		else{PARSE_EMSG(Z,"value is not an obj ");}}
+
 
 
 #define parseARR_SKIP(Z,Y) if(strcmp(#Y,str)==0){ \

@@ -46,6 +46,8 @@ TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest){
 	STRUCTCOPPIER(dest,this,ap);
 	STRUCTCOPPIER(dest,this,apGen);
 	STRUCTCOPPIER(dest,this,external);
+	STRUCTCOPPIER(dest,this,curr_hp);
+	STRUCTCOPPIER(dest,this,curr_armor);
 	return;}
 
 
@@ -62,6 +64,8 @@ TEMPLATE(obj_smodule,print)(obj_smodule* this){
 	DUMP_STRUCT_int(this,powergen);
 	DUMP_STRUCT_int(this,hitChance);
 	DUMP_STRUCT_int(this,ap);
+	DUMP_STRUCT_int(this,curr_hp);
+	DUMP_STRUCT_int(this,curr_armor);
 	fprintf(stderr,"\textermal %d\n",this->external);
 	
 	return(NULL);}
@@ -119,15 +123,6 @@ smoduleParse(obj_smodule* this, json_stream* js){
 			
 			parseVarINT(js,curr_hp)
 			parseVarINT(js,curr_armor)
-			parseVarINT(js,curr_powergen)
-			parseVarINT(js,curr_hitChance)
-			parseVarINT(js,curr_ap)
-			parseVarINT(js,curr_apGen)
 			}
-
 		}
-		
-	
 	return(1);}
-
-

@@ -6,7 +6,7 @@ TEMPLATE(obj_map,finalize)(obj_map* this){
 	this->chunksy=0;
 	this->mapsx=0;
 	this->mapsy=0;
-	this->total=0;
+	this->chtotal=0;
 	this->mapName=calloc(SSTRLENG,sizeof(char));
 	TEMPLATE3(arr,Finalize,obj_mapChunk)(&this->chunks);
 	return(this);}
@@ -28,7 +28,7 @@ TEMPLATE(obj_map,copyTo)(obj_map* this, obj_map* dest){
 	STRUCTCOPPIER(dest,this,chunksy);
 	STRUCTCOPPIER(dest,this,mapsx);
 	STRUCTCOPPIER(dest,this,mapsy);
-	STRUCTCOPPIER(dest,this,total);
+	STRUCTCOPPIER(dest,this,chtotal);
 	TEMPLATE3(arr,Copyto,obj_mapChunk)(&this->chunks, &dest->chunks);
 	return;}
 
@@ -42,7 +42,7 @@ TEMPLATE(obj_map,print)(obj_map* this){
 	DUMP_STRUCT_int(this,chunksy);
 	DUMP_STRUCT_int(this,mapsx);
 	DUMP_STRUCT_int(this,mapsy);
-	DUMP_STRUCT_int(this,total);
+	DUMP_STRUCT_int(this,chtotal);
 	fprintf(stderr,"chunks arr at %p:\n",(void*)&this->chunks);
 	TEMPLATE3(arr,dump,obj_mapChunk)(&this->chunks);
 	fprintf(stderr,"\nEND of obj_map %p\n",(void*)this);
@@ -87,6 +87,7 @@ mapParse(obj_map* this, json_stream* js){
 				return(1);
 			case JSON_OBJECT_END:
 				fprintf(stderr,"SHIP END l=%ld\n",json_get_lineno(js));
+				mapGenerateChunkIndexes(this);
 				return(0);}
 		if(var){
 			parseVarUINT(js,chunksx)
@@ -104,8 +105,31 @@ mapParse(obj_map* this, json_stream* js){
 void
 mapUpdateSize(obj_map* this){
 	NULL_P_CHECK(this);
-	if(this->total)return;
+	if(this->chtotal)return;
 	this->mapsx=this->chunksx*MAP_CHUNK_SIZE;
 	this->mapsy=this->chunksy*MAP_CHUNK_SIZE;
+	this->chtotal=this->chunksx*this->chunksy;
+	
+	TEMPLATE3(arr,extendBy,obj_mapChunk)(&this->chunks,this->chtotal);
+	this->chunks.end=this->chunks.start+this->chtotal;
+
 	return;}
 
+void
+mapGenerateChunkIndexes(obj_map* this){
+	mapUpdateSize(this);
+	obj_mapChunk* chunk=NULL;
+	TEMPLATE3(arr,iterResetStart,obj_mapChunk)(&this->chunks);
+	for(unsigned int y=0;y<this->chunksy;y++){
+		for(unsigned int x=0;x<this->chunksx;x++){
+			if((chunk=TEMPLATE3(arr,iterNext,obj_mapChunk)(&this->chunks))){
+				chunk->posx=x;
+				chunk->posy=y;}
+			else{
+				#ifdef DEBUG
+				fprintf(stderr,"error %s arr iterNext returned NULL, probably  out of bounds",__func__);
+				#endif
+				return;}
+			}
+		}
+}
