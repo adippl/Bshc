@@ -17,6 +17,7 @@ struct ship{
 	
 	int shipTemplateID;
 	char* sname;
+	char* sclass;
 	int sizex;
 	int sizey;
 	int centerx;

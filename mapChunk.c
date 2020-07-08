@@ -50,3 +50,50 @@ TEMPLATE(obj_mapChunk,print)(void* ap_obj){
 	DUMP_STRUCT_int(this,posy);
 	fprintf(stderr,"\nEND of obj_mapChunk %p\n",(void*)this);
 	return(NULL);}
+
+
+
+int
+mapChunkParse(obj_mapChunk* this, json_stream* js){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(js);
+	enum json_type type;
+	const char* str=json_get_string(js,NULL);
+	bool var=false;
+	printf("FIRST STRING %s\n",str);
+	while(true){
+		type=json_next(js);
+		switch(type){
+			case JSON_ERROR:
+				PARSE_EMSG(js,json_typename[type]);
+				fprintf(stderr,"JSON ERR %s\n",\
+					json_get_error(js));
+				break;
+			case JSON_NULL:
+			case JSON_TRUE:
+			case JSON_FALSE:
+			case JSON_NUMBER:
+				exit(3);
+			case JSON_STRING:
+				var=true;
+			    break;
+			case JSON_ARRAY:
+			case JSON_OBJECT:
+			case JSON_DONE:
+				PARSE_EMSG(js,json_typename[type]);
+			    break;
+			case JSON_ARRAY_END:
+				PARSE_EMSG(js,json_typename[type]);
+				return(1);
+			case JSON_OBJECT_END:
+				fprintf(stderr,"SMODULE END l=%ld\n",json_get_lineno(js));
+				return(0);}
+		if(var){
+			parseVarINT(js,posx)
+			parseVarINT(js,posy)
+			}
+
+		}
+		
+	
+	return(1);}

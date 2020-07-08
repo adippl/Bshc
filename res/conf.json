@@ -4,7 +4,8 @@
 		"shipTemplates":[
 			{
 				"shipTemplateID":1,
-				"sname":"corvete",
+				"sname":"Basic Corvette (FS)",
+				"sclass":"FS",
 				"sizex":1,
 				"sizey":2,
 				"centerx":0,
@@ -46,7 +47,8 @@
 			},
 			{
 				"shipTemplateID":2,
-				"sname":"DD",
+				"sname":"Basic Destroyer (DD)",
+				"sclass":"DD",
 				"sizex":1,
 				"sizey":3,
 				"centerx":0,

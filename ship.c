@@ -12,6 +12,7 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	
 	this->shipTemplateID=0;
 	this->sname=calloc(SSTRLENG,sizeof(char));
+	this->sclass=calloc(SSTRLENG,sizeof(char));
 	//this->hp=0;
 	//this->water=0;
 	//this->drag=0;
@@ -36,6 +37,7 @@ TEMPLATE(obj_ship,clean)(obj_ship* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
 	free(this->sname);
+	free(this->sclass);
 	return;}
 
 obj_ship*
@@ -87,12 +89,14 @@ TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
 
 	return(dest);}
 
-void* TEMPLATE(obj_ship,print)(void* ap_obj){
+void*
+TEMPLATE(obj_ship,print)(void* ap_obj){
 	NULL_P_CHECK(ap_obj);
 	obj_ship* this=(obj_ship*) ap_obj;
 	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
 	DUMP_STRUCT_int(this,shipTemplateID);
 	DUMP_STRUCT_string(this,sname);
+	DUMP_STRUCT_string(this,sclass);
 	DUMP_STRUCT_int(this,sizex);
 	DUMP_STRUCT_int(this,sizey);
 	DUMP_STRUCT_int(this,centerx);
@@ -165,6 +169,7 @@ shipParse(obj_ship* this, json_stream* js){
 			parseVarINT(js,ap)
 			parseVarINT(js,visibility)
 			parseVarSTR(js,sname)
+			parseVarSTR(js,sclass)
 			
 			parseVarINT(js,curr_hp)
 			parseVarINT(js,curr_armor)
@@ -178,14 +183,10 @@ shipParse(obj_ship* this, json_stream* js){
 			//parseARR_SKIP(js,sname)
 			parseARRobj(js,modules,obj_smodule,smoduleParse,&this->modules);
 			}
-
 			//fprintf(stderr,"json %s found invalid key %s ",__func__,str);
 			//type=json_next(js);
- 			//fprintf(stderr,"with value %s\n",str);
-
+			//fprintf(stderr,"with value %s\n",str);
 		}
-		
-	
 	return(1);}
 
 
