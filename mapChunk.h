@@ -14,8 +14,8 @@ struct mapTile{
 
 typedef struct mapChunk obj_mapChunk;
 struct mapChunk{
-	int posx;
-	int posy;
+	unsigned int posx;
+	unsigned int posy;
 	struct mapTile map2d[MAP_CHUNK_SIZE][MAP_CHUNK_SIZE];
 	//union{
 	//	struct mapTile map2d[MAP_CHUNK_CHUNK_SIZE][MAP_CHUNK_CHUNK_SIZE];
@@ -29,6 +29,14 @@ void	TEMPLATE(obj_mapChunk,clean)(obj_mapChunk* this);
 
 obj_mapChunk* TEMPLATE(obj_mapChunk,copyTo)(obj_mapChunk* this,obj_mapChunk* dest);
 void*	TEMPLATE(obj_mapChunk,print)(void* ap_obj);
+
+
+struct mapTile*
+mapChunkGetTile(obj_mapChunk* this, unsigned int globalx, unsigned int globaly);
+
+
+
+
 #endif // _MAP_CHUNK_H
 
 

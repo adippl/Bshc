@@ -97,3 +97,17 @@ mapChunkParse(obj_mapChunk* this, json_stream* js){
 		
 	
 	return(1);}
+
+struct mapTile*
+mapChunkGetTile(
+		obj_mapChunk* this,
+		unsigned int globalx,
+		unsigned int globaly){
+	NULL_P_CHECK(this);
+	if(globalx<MAP_CHUNK_SIZE*this->posx||globalx>=MAP_CHUNK_SIZE*(this->posx+1)||
+		globaly<MAP_CHUNK_SIZE*this->posy||globaly>=MAP_CHUNK_SIZE*(this->posy+1)){
+		#ifdef DEBUG
+		fprintf(stderr,"DEBUG %s args out of bounds globalx=%u globaly=%u\n",__func__,globalx,globaly);
+		#endif
+		return(NULL);}
+	return(&this->map2d[globaly-this->posy*MAP_CHUNK_SIZE][globalx-this->posx*MAP_CHUNK_SIZE]);}

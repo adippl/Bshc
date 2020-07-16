@@ -30,6 +30,11 @@ TEMPLATE(obj_map,copyTo)(obj_map* this, obj_map* dest){
 	STRUCTCOPPIER(dest,this,mapsy);
 	STRUCTCOPPIER(dest,this,chtotal);
 	TEMPLATE3(arr,Copyto,obj_mapChunk)(&this->chunks, &dest->chunks);
+	//obj_mapChunk *p_tmp=NULL;
+	//TEMPLATE3(arr,iterResetStart,obj_mapChunk)(&this->chunks);
+	//while((p_tmp=TEMPLATE3(arr,iterNext,obj_mapChunk)(&this->chunks))){
+	//	obj_mapChunk_copyTo(p_tmp,TEMPLATE3(arr,append,obj_mapChunk)(&dest->chunks));
+	//	}
 	return;}
 
 
@@ -56,8 +61,8 @@ mapParse(obj_map* this, json_stream* js){
 	
 	enum json_type type;
 	const char* str=json_get_string(js,NULL);
-	bool arrloop=true;
-	obj_mapChunk* obj_mapChunk=NULL;
+	//bool arrloop=true;
+	//obj_mapChunk* obj_mapChunk=NULL;
 	printf("FIRST %s	 STRING %s\n",__func__,str);
 
 	bool var=false;
@@ -132,4 +137,60 @@ mapGenerateChunkIndexes(obj_map* this){
 				return;}
 			}
 		}
-}
+	}
+
+/*
+ * struct mapTile*
+ * mapChunkGetTile(obj_mapChunk* this,
+ * 				unsigned int globalx,
+ * 				unsigned int globaly){
+ * 	NULL_P_CHECK(this);
+ * 	if(!(globalx>=MAP_CHUNK_SIZE*this->posx&&globalx<MAP_CHUNK_SIZE*(this->posx+1))){
+ * 		#ifdef DEBUG
+ * 		fprintf(stderr,"DEBUG %s args out of bounds globalx=%u globaly=%u\n",__func__,globalx,globaly);
+ * 		#endif
+ * 		return(NULL);}
+ * 	return(&this->map2d[globaly-this->posy*MAP_CHUNK_SIZE][globalx-this->posx*MAP_CHUNK_SIZE]);}
+ */
+
+obj_mapChunk*
+mapGetPtrToChunk(
+		obj_map* this,
+		unsigned int globalx,
+		unsigned int globaly){
+	NULL_P_CHECK(this);
+
+	if(globalx>=this->mapsx||globaly>=this->mapsy){
+		#ifdef DEBUG
+		fprintf(stderr,"DEBUG %s args out of bounds globalx=%u globaly=%u\n",__func__,globalx,globaly);
+		#endif
+		return(NULL);}
+		unsigned int pos=globalx/MAP_CHUNK_SIZE+globaly/MAP_CHUNK_SIZE*this->chunksx;//calculated chunk pos
+	return(TEMPLATE3(arr,indexToPtr,obj_mapChunk)(&this->chunks,pos));}
+	
+struct mapTile*
+mapGetPtrTo_mapTile(
+		obj_map* this,
+		unsigned int globalx,
+		unsigned int globaly){
+	NULL_P_CHECK(this);
+	
+	if(globalx>=this->mapsx||globaly>=this->mapsy){
+		#ifdef DEBUG
+		fprintf(stderr,"DEBUG %s args out of bounds globalx=%u globaly=%u\n",__func__,globalx,globaly);
+		#endif
+		return(NULL);}
+	obj_mapChunk* chunk=mapGetPtrToChunk(this,globalx,globaly);
+	//NULL_P_CHECK(chunk);
+	return(mapChunkGetTile(chunk,globalx,globaly));}
+
+
+
+
+
+
+
+	
+
+
+

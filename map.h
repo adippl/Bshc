@@ -26,4 +26,7 @@ int	mapParse(obj_map* this, json_stream* js);
 void	mapUpdateSize(obj_map* this);
 void	mapGenerateChunkIndexes(obj_map* this);
 
+obj_mapChunk* mapGetPtrToChunk(obj_map* this, unsigned int globalx, unsigned int globaly);
+struct mapTile* mapGetPtrTo_mapTile(obj_map* this, unsigned int globalx, unsigned int globaly);
+
 #endif // _MAP_H
