@@ -1,7 +1,7 @@
 #ifndef _MAP_CHUNK_TLU_H_
 #define _MAP_CHUNK_TLU_H_
 
-#include "mapChunk.h"
+#include "encMapChunk.h"
 
 #ifdef T
 #undef T

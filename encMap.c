@@ -1,4 +1,4 @@
-#include "map.h"
+#include "encMap.h"
 
 obj_map*
 TEMPLATE(obj_map,finalize)(obj_map* this){

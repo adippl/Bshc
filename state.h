@@ -5,7 +5,7 @@
 #include "ship.h"
 #include "ship_TTU.h"
 #include "parse.h"
-#include "map.h"
+#include "encMap.h"
 
 typedef struct resources obj_resources;
 struct resources{

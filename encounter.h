@@ -2,7 +2,7 @@
 #define _ENCOUNTER_H
 
 #include "conf.h"
-#include "map.h"
+#include "encMap.h"
 #include "encPlayer.h"
 
 

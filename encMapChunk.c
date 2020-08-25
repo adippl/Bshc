@@ -1,4 +1,4 @@
-#include "mapChunk.h"
+#include "encMapChunk.h"
 
 void*
 TEMPLATE(mapTile,print)(void* this){

@@ -1,7 +1,7 @@
 #ifndef _MAP_H
 #define _MAP_H
 
-#include "mapChunk_TTU.h"
+#include "encMapChunk_TTU.h"
 
 #define MAP(Z,Y,X) Z->chunksx*(Y)+(X)
 
