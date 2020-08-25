@@ -47,9 +47,8 @@ struct ship{
 obj_ship* TEMPLATE(obj_ship,finalize)(obj_ship* this);
 void TEMPLATE(obj_ship,free)(obj_ship* this);
 void TEMPLATE(obj_ship,clean)(obj_ship* this);
-obj_ship* TEMPLATE(obj_ship,copy)(obj_ship* this);
 
-obj_ship* TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest);
+obj_ship* TEMPLATE(obj_ship,copy)(obj_ship* this, obj_ship* dest);
 
 int shipParse(obj_ship* this, json_stream* js);
 

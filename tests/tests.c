@@ -129,8 +129,9 @@ int
 test_ship(){
 	obj_ship* obj=calloc(1,sizeof(obj_ship));
 	obj_ship_finalize(obj);
-	obj_ship* objCopy=obj_ship_copy(obj);
-	obj_ship_copyTo(obj,objCopy);
+	obj_ship* objCopy=calloc(1,sizeof(obj_ship));
+	obj_ship_finalize(objCopy);
+	obj_ship_copy(obj,objCopy);
 	obj_ship_free(obj);
 	obj_ship_free(objCopy);
 	return(0);}
@@ -141,26 +142,21 @@ test_map(){
 	obj_map map={0};
 	obj_map mapCopy={0};
 	TEMPLATE(obj_map,finalize)(&map);
-	/*
-	obj_mapChunk* chunk=TEMPLATE3(arr,append,obj_mapChunk)(&map.chunks);
-	chunk->posx=0;
-	chunk->posy=0;
-	chunk=TEMPLATE3(arr,append,obj_mapChunk)(&map.chunks);
-	chunk->posx=1;
-	chunk->posy=0;
-	*/
+	TEMPLATE(obj_map,finalize)(&mapCopy);
 	map.chunksx=10;
 	map.chunksy=10;
-	mapUpdateSize(&map);
+
 	mapGenerateChunkIndexes(&map);
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,0,0,(void*)mapGetPtrTo_mapTile(&map,0,0));
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,10,10,(void*)mapGetPtrTo_mapTile(&map,10,10));
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,300,300,(void*)mapGetPtrTo_mapTile(&map,300,300));
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,319,319,(void*)mapGetPtrTo_mapTile(&map,319,319));
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,320,320,(void*)mapGetPtrTo_mapTile(&map,320,320));
-	TEMPLATE(obj_map,finalize)(&mapCopy);
+
 	TEMPLATE(obj_map,copyTo)(&map, &mapCopy);
+	printf("\nDumping map\n");
 	TEMPLATE(obj_map,print)(&map);
+	printf("\nDumping mapCopy\n");
 	TEMPLATE(obj_map,print)(&mapCopy);
 	TEMPLATE(obj_map,clean)(&map);
 	TEMPLATE(obj_map,clean)(&mapCopy);

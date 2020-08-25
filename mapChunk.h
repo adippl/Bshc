@@ -27,7 +27,7 @@ void*	TEMPLATE(mapTile,print)(void* this);
 obj_mapChunk* TEMPLATE(obj_mapChunk,finalize)(obj_mapChunk* this);
 void	TEMPLATE(obj_mapChunk,clean)(obj_mapChunk* this);
 
-obj_mapChunk* TEMPLATE(obj_mapChunk,copyTo)(obj_mapChunk* this,obj_mapChunk* dest);
+obj_mapChunk* TEMPLATE(obj_mapChunk,copy)(obj_mapChunk* this,obj_mapChunk* dest);
 void*	TEMPLATE(obj_mapChunk,print)(void* ap_obj);
 
 

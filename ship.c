@@ -5,7 +5,7 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	this->finalize=TEMPLATE(obj_ship,finalize);
 	this->free=TEMPLATE(obj_ship,free);
 	this->clean=TEMPLATE(obj_ship,clean);
-	this->copy=TEMPLATE(obj_ship,copy);
+	//this->copy=TEMPLATE(obj_ship,copy);
 	this->copyTo=NULL;
 	this->objSize=sizeof(obj_ship);
 	//uint16_t objName;
@@ -41,28 +41,7 @@ TEMPLATE(obj_ship,clean)(obj_ship* this){
 	return;}
 
 obj_ship*
-TEMPLATE(obj_ship,copy)(obj_ship* this){
-	NULL_P_CHECK(this);
-	obj_ship* ptr=calloc(1,sizeof(obj_ship));
-	this->finalize(ptr);
-	STRUCTCOPPIER(ptr,this,shipTemplateID);
-	STRUCTCOPPIER(ptr,this,sizex);
-	STRUCTCOPPIER(ptr,this,sizey);
-	STRUCTCOPPIER(ptr,this,centerx);
-	STRUCTCOPPIER(ptr,this,centery);
-	STRUCTCOPPIER(ptr,this,hp);
-	STRUCTCOPPIER(ptr,this,water);
-	STRUCTCOPPIER(ptr,this,drag);
-	STRUCTCOPPIER(ptr,this,power);
-	STRUCTCOPPIER(ptr,this,manuver);
-	STRUCTCOPPIER(ptr,this,ap);
-	STRUCTCOPPIER(ptr,this,view);
-	strncpy(ptr->sname,this->sname,SSTRLENG);
-	TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&ptr->modules);
-	return(ptr);}
-
-obj_ship*
-TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
+TEMPLATE(obj_ship,copy)(obj_ship* this,obj_ship* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	STRUCTCOPPIER(dest,this,shipTemplateID);
@@ -78,14 +57,15 @@ TEMPLATE(obj_ship,copyTo)(obj_ship* this,obj_ship* dest){
 	STRUCTCOPPIER(dest,this,ap);
 	STRUCTCOPPIER(dest,this,view);
 	strncpy(dest->sname,this->sname,SSTRLENG);
+	TEMPLATE3(arr,Copyto_memcpy,obj_smodule)(&this->modules,&dest->modules);
 	//TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&dest->modules);
 	
 	//obj_smodule*	TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest);
-	obj_smodule *p_tmp=NULL;
-	TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
-	while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
-		obj_smodule_copyTo(p_tmp,TEMPLATE3(arr,append,obj_smodule)(&dest->modules));
-		}
+	//obj_smodule *p_tmp=NULL;
+	//TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
+	//while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
+	//	obj_smodule_copyTo(p_tmp,TEMPLATE3(arr,append,obj_smodule)(&dest->modules));
+	//	}
 
 	return(dest);}
 

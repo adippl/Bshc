@@ -17,14 +17,6 @@ TEMPLATE(obj_mapChunk,finalize)(obj_mapChunk* this){
 	#endif
 	return(this);}
 
-//void
-//TEMPLATE(obj_mapChunk,free)(obj_mapChunk* this){
-//	NULL_P_CHECK(this);
-//	#ifdef DEBUG
-//		fprintf(stderr,"DEBUG %s calling empty destructor on %p\n",__func__,(void*)this);
-//	#endif
-//	return;}
-
 void
 TEMPLATE(obj_mapChunk,clean)(obj_mapChunk* this){
 	NULL_P_CHECK(this);
@@ -34,7 +26,7 @@ TEMPLATE(obj_mapChunk,clean)(obj_mapChunk* this){
 	return;}
 
 obj_mapChunk*
-TEMPLATE(obj_mapChunk,copyTo)(obj_mapChunk* this,obj_mapChunk* dest){
+TEMPLATE(obj_mapChunk,copy)(obj_mapChunk* this, obj_mapChunk* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	memcpy(dest,this,sizeof(obj_mapChunk));
@@ -50,8 +42,6 @@ TEMPLATE(obj_mapChunk,print)(void* ap_obj){
 	DUMP_STRUCT_int(this,posy);
 	fprintf(stderr,"\nEND of obj_mapChunk %p\n",(void*)this);
 	return(NULL);}
-
-
 
 int
 mapChunkParse(obj_mapChunk* this, json_stream* js){

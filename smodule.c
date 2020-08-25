@@ -5,7 +5,7 @@ TEMPLATE(obj_smodule,finalize)(obj_smodule* this){
 	this->finalize=TEMPLATE(obj_smodule,finalize);
 	this->free=TEMPLATE(obj_smodule,free);
 	this->clean=TEMPLATE(obj_smodule,clean);
-	this->copy=TEMPLATE(obj_smodule,copy);
+	//this->copy=TEMPLATE(obj_smodule,copy);
 	this->objSize=sizeof(obj_smodule);
 	//uint16_t objName;
 	this->smodType=0;
@@ -25,16 +25,8 @@ TEMPLATE(obj_smodule,clean)(obj_smodule* this){
 	return;}
 
 
-
-obj_smodule*
-TEMPLATE(obj_smodule,copy)(obj_smodule* this){
-	NULL_P_CHECK(this);
-	obj_smodule* ptr=calloc(1,sizeof(obj_smodule));
-	NULL_P_CHECK(ptr);
-	return(ptr);}
-
 void
-TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest){
+TEMPLATE(obj_smodule,copy)(obj_smodule* this, obj_smodule* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->name,this->name,SSTRLENG);

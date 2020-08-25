@@ -139,20 +139,6 @@ mapGenerateChunkIndexes(obj_map* this){
 		}
 	}
 
-/*
- * struct mapTile*
- * mapChunkGetTile(obj_mapChunk* this,
- * 				unsigned int globalx,
- * 				unsigned int globaly){
- * 	NULL_P_CHECK(this);
- * 	if(!(globalx>=MAP_CHUNK_SIZE*this->posx&&globalx<MAP_CHUNK_SIZE*(this->posx+1))){
- * 		#ifdef DEBUG
- * 		fprintf(stderr,"DEBUG %s args out of bounds globalx=%u globaly=%u\n",__func__,globalx,globaly);
- * 		#endif
- * 		return(NULL);}
- * 	return(&this->map2d[globaly-this->posy*MAP_CHUNK_SIZE][globalx-this->posx*MAP_CHUNK_SIZE]);}
- */
-
 obj_mapChunk*
 mapGetPtrToChunk(
 		obj_map* this,
@@ -167,7 +153,7 @@ mapGetPtrToChunk(
 		return(NULL);}
 		unsigned int pos=globalx/MAP_CHUNK_SIZE+globaly/MAP_CHUNK_SIZE*this->chunksx;//calculated chunk pos
 	return(TEMPLATE3(arr,indexToPtr,obj_mapChunk)(&this->chunks,pos));}
-	
+
 struct mapTile*
 mapGetPtrTo_mapTile(
 		obj_map* this,
@@ -183,14 +169,5 @@ mapGetPtrTo_mapTile(
 	obj_mapChunk* chunk=mapGetPtrToChunk(this,globalx,globaly);
 	//NULL_P_CHECK(chunk);
 	return(mapChunkGetTile(chunk,globalx,globaly));}
-
-
-
-
-
-
-
-	
-
 
 

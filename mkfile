@@ -65,5 +65,12 @@ nk: cl pdjsoncl
 wc:
 	wc -l *.{c,h} submod/libctfb/*.{c,h} submod/libctfb/cstl/tmpl/arr.*
 
+ctags:
+	ctags -R .
+cleartags:
+	rm tags
+clearswap:
+	ls .*.swp
+
 
 # vim : set ft=make:
