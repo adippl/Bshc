@@ -22,7 +22,7 @@ TEMPLATE(obj_encPlayer,clean)(obj_encPlayer* this){
 	return;}
 
 void
-TEMPLATE(obj_encPlayer,copyTo)(obj_encPlayer* this, obj_encPlayer* dest){
+TEMPLATE(obj_encPlayer,copy)(obj_encPlayer* this, obj_encPlayer* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->playerName,this->playerName,SSTRLENG);

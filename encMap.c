@@ -20,7 +20,7 @@ TEMPLATE(obj_encMap,clean)(obj_encMap* this){
 
 
 void
-TEMPLATE(obj_encMap,copyTo)(obj_encMap* this, obj_encMap* dest){
+TEMPLATE(obj_encMap,copy)(obj_encMap* this, obj_encMap* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->mapName,this->mapName,SSTRLENG);

@@ -153,7 +153,7 @@ test_encMap(){
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,319,319,(void*)mapGetPtrTo_mapTile(&map,319,319));
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,320,320,(void*)mapGetPtrTo_mapTile(&map,320,320));
 
-	TEMPLATE(obj_encMap,copyTo)(&map, &mapCopy);
+	TEMPLATE(obj_encMap,copy)(&map, &mapCopy);
 	printf("\nDumping map\n");
 	TEMPLATE(obj_encMap,print)(&map);
 	printf("\nDumping mapCopy\n");
@@ -171,7 +171,7 @@ test_encPlayer(){
 	obj_encPlayer playerCopy={0};
 	TEMPLATE(obj_encPlayer,finalize)(&player);
 	TEMPLATE(obj_encPlayer,finalize)(&playerCopy);
-	TEMPLATE(obj_encPlayer,copyTo)(&player, &playerCopy);
+	TEMPLATE(obj_encPlayer,copy)(&player, &playerCopy);
 	TEMPLATE(obj_encPlayer,print)(&player);
 	TEMPLATE(obj_encPlayer,print)(&playerCopy);
 	TEMPLATE(obj_encPlayer,clean)(&player);
@@ -180,10 +180,26 @@ test_encPlayer(){
 	return(0);}
 
 int
+test_encounter(){
+	printf("obj_encounter TEST\n");
+	obj_encounter encounter={0};
+	obj_encounter encounterCopy={0};
+	TEMPLATE(obj_encounter,finalize)(&encounter);
+	TEMPLATE(obj_encounter,finalize)(&encounterCopy);
+	TEMPLATE(obj_encounter,copy)(&encounter, &encounterCopy);
+	TEMPLATE(obj_encounter,print)(&encounter);
+	TEMPLATE(obj_encounter,print)(&encounterCopy);
+	TEMPLATE(obj_encounter,clean)(&encounter);
+	TEMPLATE(obj_encounter,clean)(&encounterCopy);
+	printf("obj_encounter END OF TEST\n");
+	return(0);}
+
+int
 main(){
 	test_ship();
 	test_encMap();
 	test_encPlayer();
+	test_encounter();
 	test_resources();
 	test_resourcesReadConfig();
 	return(EXIT_SUCCESS);}

@@ -18,7 +18,7 @@ struct map{
 
 obj_encMap*	TEMPLATE(obj_encMap,finalize)(obj_encMap* this);
 void		TEMPLATE(obj_encMap,clean)(obj_encMap* this);
-void		TEMPLATE(obj_encMap,copyTo)(obj_encMap* this, obj_encMap* dest);
+void		TEMPLATE(obj_encMap,copy)(obj_encMap* this, obj_encMap* dest);
 obj_encMap*	TEMPLATE(obj_encMap,print)(obj_encMap* this);
 
 int	mapParse(obj_encMap* this, json_stream* js);
