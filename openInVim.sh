@@ -49,6 +49,9 @@ vim -s <(echo '
 :call OpenCTab("mapChunk")
 :call OpenCTab("mapChunk_TTU")
 :call OpenCTab("map")
+:call OpenCTab("encounter")
+:call OpenCTab("encPlayer")
+:call OpenCTab("encPlayerTTU")
 
 
 
