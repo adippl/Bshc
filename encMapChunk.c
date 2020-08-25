@@ -9,8 +9,8 @@ TEMPLATE(mapTile,print)(void* this){
 		return(NULL);}
 
 
-obj_mapChunk*
-TEMPLATE(obj_mapChunk,finalize)(obj_mapChunk* this){
+obj_encMapChunk*
+TEMPLATE(obj_encMapChunk,finalize)(obj_encMapChunk* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty constructor on %p\n",__func__,(void*)this);
@@ -18,33 +18,33 @@ TEMPLATE(obj_mapChunk,finalize)(obj_mapChunk* this){
 	return(this);}
 
 void
-TEMPLATE(obj_mapChunk,clean)(obj_mapChunk* this){
+TEMPLATE(obj_encMapChunk,clean)(obj_encMapChunk* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty destructor on %p\n",__func__,(void*)this);
 	#endif
 	return;}
 
-obj_mapChunk*
-TEMPLATE(obj_mapChunk,copy)(obj_mapChunk* this, obj_mapChunk* dest){
+obj_encMapChunk*
+TEMPLATE(obj_encMapChunk,copy)(obj_encMapChunk* this, obj_encMapChunk* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
-	memcpy(dest,this,sizeof(obj_mapChunk));
+	memcpy(dest,this,sizeof(obj_encMapChunk));
 
 	return(dest);}
 
 void*
-TEMPLATE(obj_mapChunk,print)(void* ap_obj){
+TEMPLATE(obj_encMapChunk,print)(void* ap_obj){
 	NULL_P_CHECK(ap_obj);
-	obj_mapChunk* this=(obj_mapChunk*) ap_obj;
-	fprintf(stderr,"\ndumping obj_mapChunk %p\n",(void*)this);
+	obj_encMapChunk* this=(obj_encMapChunk*) ap_obj;
+	fprintf(stderr,"\ndumping obj_encMapChunk %p\n",(void*)this);
 	DUMP_STRUCT_int(this,posx);
 	DUMP_STRUCT_int(this,posy);
-	fprintf(stderr,"\nEND of obj_mapChunk %p\n",(void*)this);
+	fprintf(stderr,"\nEND of obj_encMapChunk %p\n",(void*)this);
 	return(NULL);}
 
 int
-mapChunkParse(obj_mapChunk* this, json_stream* js){
+mapChunkParse(obj_encMapChunk* this, json_stream* js){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(js);
 	enum json_type type;
@@ -90,7 +90,7 @@ mapChunkParse(obj_mapChunk* this, json_stream* js){
 
 struct mapTile*
 mapChunkGetTile(
-		obj_mapChunk* this,
+		obj_encMapChunk* this,
 		unsigned int globalx,
 		unsigned int globaly){
 	NULL_P_CHECK(this);

@@ -1,26 +1,26 @@
 #include "encMap.h"
 
-obj_map*
-TEMPLATE(obj_map,finalize)(obj_map* this){
+obj_encMap*
+TEMPLATE(obj_encMap,finalize)(obj_encMap* this){
 	this->chunksx=0;
 	this->chunksy=0;
 	this->mapsx=0;
 	this->mapsy=0;
 	this->chtotal=0;
 	this->mapName=calloc(SSTRLENG,sizeof(char));
-	TEMPLATE3(arr,Finalize,obj_mapChunk)(&this->chunks);
+	TEMPLATE3(arr,Finalize,obj_encMapChunk)(&this->chunks);
 	return(this);}
 
 void
-TEMPLATE(obj_map,clean)(obj_map* this){
+TEMPLATE(obj_encMap,clean)(obj_encMap* this){
 	//NULL_P_CHECK(this);
 	free(this->mapName);
-	TEMPLATE3(arr,Clean,obj_mapChunk)(&this->chunks);
+	TEMPLATE3(arr,Clean,obj_encMapChunk)(&this->chunks);
 	return;}
 
 
 void
-TEMPLATE(obj_map,copyTo)(obj_map* this, obj_map* dest){
+TEMPLATE(obj_encMap,copyTo)(obj_encMap* this, obj_encMap* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->mapName,this->mapName,SSTRLENG);
@@ -29,19 +29,19 @@ TEMPLATE(obj_map,copyTo)(obj_map* this, obj_map* dest){
 	STRUCTCOPPIER(dest,this,mapsx);
 	STRUCTCOPPIER(dest,this,mapsy);
 	STRUCTCOPPIER(dest,this,chtotal);
-	TEMPLATE3(arr,Copyto,obj_mapChunk)(&this->chunks, &dest->chunks);
-	//obj_mapChunk *p_tmp=NULL;
-	//TEMPLATE3(arr,iterResetStart,obj_mapChunk)(&this->chunks);
-	//while((p_tmp=TEMPLATE3(arr,iterNext,obj_mapChunk)(&this->chunks))){
-	//	obj_mapChunk_copyTo(p_tmp,TEMPLATE3(arr,append,obj_mapChunk)(&dest->chunks));
+	TEMPLATE3(arr,Copyto,obj_encMapChunk)(&this->chunks, &dest->chunks);
+	//obj_encMapChunk *p_tmp=NULL;
+	//TEMPLATE3(arr,iterResetStart,obj_encMapChunk)(&this->chunks);
+	//while((p_tmp=TEMPLATE3(arr,iterNext,obj_encMapChunk)(&this->chunks))){
+	//	obj_encMapChunk_copyTo(p_tmp,TEMPLATE3(arr,append,obj_encMapChunk)(&dest->chunks));
 	//	}
 	return;}
 
 
-obj_map*
-TEMPLATE(obj_map,print)(obj_map* this){
+obj_encMap*
+TEMPLATE(obj_encMap,print)(obj_encMap* this){
 	NULL_P_CHECK(this);
-	fprintf(stderr,"\ndumping obj_map\n");
+	fprintf(stderr,"\ndumping obj_encMap\n");
 	DUMP_STRUCT_string(this,mapName);
 	DUMP_STRUCT_int(this,chunksx);
 	DUMP_STRUCT_int(this,chunksy);
@@ -49,20 +49,20 @@ TEMPLATE(obj_map,print)(obj_map* this){
 	DUMP_STRUCT_int(this,mapsy);
 	DUMP_STRUCT_int(this,chtotal);
 	fprintf(stderr,"chunks arr at %p:\n",(void*)&this->chunks);
-	TEMPLATE3(arr,dump,obj_mapChunk)(&this->chunks);
-	fprintf(stderr,"\nEND of obj_map %p\n",(void*)this);
+	TEMPLATE3(arr,dump,obj_encMapChunk)(&this->chunks);
+	fprintf(stderr,"\nEND of obj_encMap %p\n",(void*)this);
 	
 	return(NULL);}
 
 int
-mapParse(obj_map* this, json_stream* js){
+mapParse(obj_encMap* this, json_stream* js){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(js);
 	
 	enum json_type type;
 	const char* str=json_get_string(js,NULL);
 	//bool arrloop=true;
-	//obj_mapChunk* obj_mapChunk=NULL;
+	//obj_encMapChunk* obj_encMapChunk=NULL;
 	printf("FIRST %s	 STRING %s\n",__func__,str);
 
 	bool var=false;
@@ -99,7 +99,7 @@ mapParse(obj_map* this, json_stream* js){
 			parseVarUINT(js,chunksy)
 			parseVarSTR(js,mapName);
 			
-			//parseARRobj(js,chunks,obj_mapChunks,mapChunkParse,&this->chunks);
+			//parseARRobj(js,chunks,obj_encMapChunks,mapChunkParse,&this->chunks);
 			}
 			//fprintf(stderr,"json %s found invalid key %s ",__func__,str);
 			//type=json_next(js);
@@ -108,26 +108,26 @@ mapParse(obj_map* this, json_stream* js){
 	return(1);}
 
 void
-mapUpdateSize(obj_map* this){
+mapUpdateSize(obj_encMap* this){
 	NULL_P_CHECK(this);
 	if(this->chtotal)return;
 	this->mapsx=this->chunksx*MAP_CHUNK_SIZE;
 	this->mapsy=this->chunksy*MAP_CHUNK_SIZE;
 	this->chtotal=this->chunksx*this->chunksy;
 	
-	TEMPLATE3(arr,extendBy,obj_mapChunk)(&this->chunks,this->chtotal);
+	TEMPLATE3(arr,extendBy,obj_encMapChunk)(&this->chunks,this->chtotal);
 	this->chunks.end=this->chunks.start+this->chtotal;
 
 	return;}
 
 void
-mapGenerateChunkIndexes(obj_map* this){
+mapGenerateChunkIndexes(obj_encMap* this){
 	mapUpdateSize(this);
-	obj_mapChunk* chunk=NULL;
-	TEMPLATE3(arr,iterResetStart,obj_mapChunk)(&this->chunks);
+	obj_encMapChunk* chunk=NULL;
+	TEMPLATE3(arr,iterResetStart,obj_encMapChunk)(&this->chunks);
 	for(unsigned int y=0;y<this->chunksy;y++){
 		for(unsigned int x=0;x<this->chunksx;x++){
-			if((chunk=TEMPLATE3(arr,iterNext,obj_mapChunk)(&this->chunks))){
+			if((chunk=TEMPLATE3(arr,iterNext,obj_encMapChunk)(&this->chunks))){
 				chunk->posx=x;
 				chunk->posy=y;}
 			else{
@@ -139,9 +139,9 @@ mapGenerateChunkIndexes(obj_map* this){
 		}
 	}
 
-obj_mapChunk*
+obj_encMapChunk*
 mapGetPtrToChunk(
-		obj_map* this,
+		obj_encMap* this,
 		unsigned int globalx,
 		unsigned int globaly){
 	NULL_P_CHECK(this);
@@ -152,11 +152,11 @@ mapGetPtrToChunk(
 		#endif
 		return(NULL);}
 		unsigned int pos=globalx/MAP_CHUNK_SIZE+globaly/MAP_CHUNK_SIZE*this->chunksx;//calculated chunk pos
-	return(TEMPLATE3(arr,indexToPtr,obj_mapChunk)(&this->chunks,pos));}
+	return(TEMPLATE3(arr,indexToPtr,obj_encMapChunk)(&this->chunks,pos));}
 
 struct mapTile*
 mapGetPtrTo_mapTile(
-		obj_map* this,
+		obj_encMap* this,
 		unsigned int globalx,
 		unsigned int globaly){
 	NULL_P_CHECK(this);
@@ -166,7 +166,7 @@ mapGetPtrTo_mapTile(
 		fprintf(stderr,"DEBUG %s args out of bounds globalx=%u globaly=%u\n",__func__,globalx,globaly);
 		#endif
 		return(NULL);}
-	obj_mapChunk* chunk=mapGetPtrToChunk(this,globalx,globaly);
+	obj_encMapChunk* chunk=mapGetPtrToChunk(this,globalx,globaly);
 	//NULL_P_CHECK(chunk);
 	return(mapChunkGetTile(chunk,globalx,globaly));}
 

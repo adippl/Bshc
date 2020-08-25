@@ -12,7 +12,7 @@ struct mapTile{
 	/*char terr; more to add later */
 	};
 
-typedef struct mapChunk obj_mapChunk;
+typedef struct mapChunk obj_encMapChunk;
 struct mapChunk{
 	unsigned int posx;
 	unsigned int posy;
@@ -24,15 +24,15 @@ struct mapChunk{
 	};
 
 void*	TEMPLATE(mapTile,print)(void* this);
-obj_mapChunk* TEMPLATE(obj_mapChunk,finalize)(obj_mapChunk* this);
-void	TEMPLATE(obj_mapChunk,clean)(obj_mapChunk* this);
+obj_encMapChunk* TEMPLATE(obj_encMapChunk,finalize)(obj_encMapChunk* this);
+void	TEMPLATE(obj_encMapChunk,clean)(obj_encMapChunk* this);
 
-obj_mapChunk* TEMPLATE(obj_mapChunk,copy)(obj_mapChunk* this,obj_mapChunk* dest);
-void*	TEMPLATE(obj_mapChunk,print)(void* ap_obj);
+obj_encMapChunk* TEMPLATE(obj_encMapChunk,copy)(obj_encMapChunk* this,obj_encMapChunk* dest);
+void*	TEMPLATE(obj_encMapChunk,print)(void* ap_obj);
 
 
 struct mapTile*
-mapChunkGetTile(obj_mapChunk* this, unsigned int globalx, unsigned int globaly);
+mapChunkGetTile(obj_encMapChunk* this, unsigned int globalx, unsigned int globaly);
 
 
 

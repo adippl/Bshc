@@ -138,11 +138,11 @@ test_ship(){
 
 int
 test_map(){
-	printf("obj_map TEST\n");
-	obj_map map={0};
-	obj_map mapCopy={0};
-	TEMPLATE(obj_map,finalize)(&map);
-	TEMPLATE(obj_map,finalize)(&mapCopy);
+	printf("obj_encMap TEST\n");
+	obj_encMap map={0};
+	obj_encMap mapCopy={0};
+	TEMPLATE(obj_encMap,finalize)(&map);
+	TEMPLATE(obj_encMap,finalize)(&mapCopy);
 	map.chunksx=10;
 	map.chunksy=10;
 
@@ -153,14 +153,14 @@ test_map(){
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,319,319,(void*)mapGetPtrTo_mapTile(&map,319,319));
 	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,320,320,(void*)mapGetPtrTo_mapTile(&map,320,320));
 
-	TEMPLATE(obj_map,copyTo)(&map, &mapCopy);
+	TEMPLATE(obj_encMap,copyTo)(&map, &mapCopy);
 	printf("\nDumping map\n");
-	TEMPLATE(obj_map,print)(&map);
+	TEMPLATE(obj_encMap,print)(&map);
 	printf("\nDumping mapCopy\n");
-	TEMPLATE(obj_map,print)(&mapCopy);
-	TEMPLATE(obj_map,clean)(&map);
-	TEMPLATE(obj_map,clean)(&mapCopy);
-	printf("obj_map END OF TEST\n");
+	TEMPLATE(obj_encMap,print)(&mapCopy);
+	TEMPLATE(obj_encMap,clean)(&map);
+	TEMPLATE(obj_encMap,clean)(&mapCopy);
+	printf("obj_encMap END OF TEST\n");
 	return(0);
 }
 

@@ -18,7 +18,7 @@ struct resources{
 	int vers;
 	
 	TEMPLATE3(arr,arrStrct,obj_ship) shipTemplates;
-	obj_map map;
+	obj_encMap map;
 	};
 
 obj_resources* resourcesFinalize(obj_resources* this);

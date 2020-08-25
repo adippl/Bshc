@@ -58,7 +58,7 @@ pdjsoncl:
 
 cl: testcl
 	rm -f *.o *.gch
-nk: cl pdjsoncl
+nk: cl pdjsoncl 
 	rm -f $EXEC
 	rm -f $LIBSO $LIBA
 
@@ -67,10 +67,8 @@ wc:
 
 ctags:
 	ctags -R .
-cleartags:
-	rm tags
 clearswap:
-	ls .*.swp
+	rm .*.swp
 
 
 # vim : set ft=make:

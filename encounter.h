@@ -9,7 +9,7 @@
 typedef struct encounter obj_encounter;
 struct encounter{
 	char* encounterName;
-	obj_map map;
+	obj_encMap map;
 	};
 
 obj_encounter*	TEMPLATE(obj_encounter,finalize)(obj_encounter* this);
