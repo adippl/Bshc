@@ -137,7 +137,7 @@ test_ship(){
 	return(0);}
 
 int
-test_map(){
+test_encMap(){
 	printf("obj_encMap TEST\n");
 	obj_encMap map={0};
 	obj_encMap mapCopy={0};
@@ -161,14 +161,29 @@ test_map(){
 	TEMPLATE(obj_encMap,clean)(&map);
 	TEMPLATE(obj_encMap,clean)(&mapCopy);
 	printf("obj_encMap END OF TEST\n");
-	return(0);
-}
+	return(0);}
 
+
+int
+test_encPlayer(){
+	printf("obj_encPlayer TEST\n");
+	obj_encPlayer player={0};
+	obj_encPlayer playerCopy={0};
+	TEMPLATE(obj_encPlayer,finalize)(&player);
+	TEMPLATE(obj_encPlayer,finalize)(&playerCopy);
+	TEMPLATE(obj_encPlayer,copyTo)(&player, &playerCopy);
+	TEMPLATE(obj_encPlayer,print)(&player);
+	TEMPLATE(obj_encPlayer,print)(&playerCopy);
+	TEMPLATE(obj_encPlayer,clean)(&player);
+	TEMPLATE(obj_encPlayer,clean)(&playerCopy);
+	printf("obj_encPlayer END OF TEST\n");
+	return(0);}
 
 int
 main(){
 	test_ship();
-	test_map();
+	test_encMap();
+	test_encPlayer();
 	test_resources();
 	test_resourcesReadConfig();
 	return(EXIT_SUCCESS);}
