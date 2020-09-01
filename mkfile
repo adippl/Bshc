@@ -58,7 +58,7 @@ pdjsoncl:
 
 cl: testcl
 	rm -f *.o *.gch
-nk: cl pdjsoncl 
+nk: cl pdjsoncl cleartags
 	rm -f $EXEC
 	rm -f $LIBSO $LIBA
 
@@ -67,6 +67,8 @@ wc:
 
 ctags:
 	ctags -R .
+cleartags:
+	rm -f tags
 clearswap:
 	rm .*.swp
 
