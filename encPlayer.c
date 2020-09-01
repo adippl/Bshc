@@ -2,7 +2,7 @@
 
 
 obj_encPlayer*
-TEMPLATE(obj_encPlayer,finalize)(obj_encPlayer* this){
+OBJF(obj_encPlayer,finalize)(obj_encPlayer* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty constructor on %p\n",__func__,(void*)this);
@@ -12,7 +12,7 @@ TEMPLATE(obj_encPlayer,finalize)(obj_encPlayer* this){
 	return(this);}
 
 void
-TEMPLATE(obj_encPlayer,clean)(obj_encPlayer* this){
+OBJF(obj_encPlayer,clean)(obj_encPlayer* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty destructor on %p\n",__func__,(void*)this);
@@ -22,14 +22,14 @@ TEMPLATE(obj_encPlayer,clean)(obj_encPlayer* this){
 	return;}
 
 void
-TEMPLATE(obj_encPlayer,copy)(obj_encPlayer* this, obj_encPlayer* dest){
+OBJF(obj_encPlayer,copy)(obj_encPlayer* this, obj_encPlayer* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->playerName,this->playerName,SSTRLENG);
 	TEMPLATE3(arr,Copyto,obj_ship)(&this->ships,&dest->ships);}
 	
 void
-TEMPLATE(obj_encPlayer,print)(obj_encPlayer* this){
+OBJF(obj_encPlayer,print)(obj_encPlayer* this){
 	NULL_P_CHECK(this);
 	fprintf(stderr,"\ndumping obj_encPlayer %p\n",(void*)this);
 	DUMP_STRUCT_string(this,playerName);

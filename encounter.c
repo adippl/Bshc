@@ -1,7 +1,7 @@
 #include "encounter.h"
 
 obj_encounter*
-TEMPLATE(obj_encounter,finalize)(obj_encounter* this){
+OBJF(obj_encounter,finalize)(obj_encounter* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty constructor on %p\n",__func__,(void*)this);
@@ -9,40 +9,40 @@ TEMPLATE(obj_encounter,finalize)(obj_encounter* this){
 	this->encounterName=calloc(SSTRLENG,sizeof(char));
 
 
-	TEMPLATE(obj_encMap,finalize)(&this->map);
+	OBJF(obj_encMap,finalize)(&this->map);
 
 	TEMPLATE3(arr,Finalize,obj_encPlayer)(&this->players);
 	return(this);}
 
 void
-TEMPLATE(obj_encounter,clean)(obj_encounter* this){
+OBJF(obj_encounter,clean)(obj_encounter* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty destructor on %p\n",__func__,(void*)this);
 	#endif
 	free(this->encounterName);
 	
-	TEMPLATE(obj_encMap,clean)(&this->map);
+	OBJF(obj_encMap,clean)(&this->map);
 	
 	TEMPLATE3(arr,Finalize,obj_encPlayer)(&this->players);
 	return;}
 
 void
-TEMPLATE(obj_encounter,copy)(obj_encounter* this, obj_encounter* dest){
+OBJF(obj_encounter,copy)(obj_encounter* this, obj_encounter* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->encounterName,this->encounterName,SSTRLENG);
 	
-	TEMPLATE(obj_encMap,copy)(&this->map,&dest->map);
+	OBJF(obj_encMap,copy)(&this->map,&dest->map);
 	
 	TEMPLATE3(arr,Copyto,obj_encPlayer)(&this->players,&dest->players);}
 	
 void
-TEMPLATE(obj_encounter,print)(obj_encounter* this){
+OBJF(obj_encounter,print)(obj_encounter* this){
 	NULL_P_CHECK(this);
 	fprintf(stderr,"\ndumping obj_encounter %p\n",(void*)this);
 	DUMP_STRUCT_string(this,encounterName);
-	TEMPLATE(obj_encMap,print)(&this->map);
+	OBJF(obj_encMap,print)(&this->map);
 	TEMPLATE3(arr,dump,obj_encPlayer)(&this->players);
 	fprintf(stderr,"\nEND of obj_encounter %p\n",(void*)this);
 	}

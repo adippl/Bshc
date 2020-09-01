@@ -1,11 +1,11 @@
 #include "smodule.h"
 
 obj_smodule*
-TEMPLATE(obj_smodule,finalize)(obj_smodule* this){
-	this->finalize=TEMPLATE(obj_smodule,finalize);
-	this->free=TEMPLATE(obj_smodule,free);
-	this->clean=TEMPLATE(obj_smodule,clean);
-	//this->copy=TEMPLATE(obj_smodule,copy);
+OBJF(obj_smodule,finalize)(obj_smodule* this){
+	this->finalize=OBJF(obj_smodule,finalize);
+	this->free=OBJF(obj_smodule,free);
+	this->clean=OBJF(obj_smodule,clean);
+	//this->copy=OBJF(obj_smodule,copy);
 	this->objSize=sizeof(obj_smodule);
 	//uint16_t objName;
 	this->smodType=0;
@@ -13,20 +13,20 @@ TEMPLATE(obj_smodule,finalize)(obj_smodule* this){
 	return(this);}
 
 void
-TEMPLATE(obj_smodule,free)(obj_smodule* this){
+OBJF(obj_smodule,free)(obj_smodule* this){
 	NULL_P_CHECK(this);
 	free(this);
 	return;}
 
 void
-TEMPLATE(obj_smodule,clean)(obj_smodule* this){
+OBJF(obj_smodule,clean)(obj_smodule* this){
 	//NULL_P_CHECK(this);
 	free(this->name);
 	return;}
 
 
 void
-TEMPLATE(obj_smodule,copy)(obj_smodule* this, obj_smodule* dest){
+OBJF(obj_smodule,copy)(obj_smodule* this, obj_smodule* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->name,this->name,SSTRLENG);
@@ -44,7 +44,7 @@ TEMPLATE(obj_smodule,copy)(obj_smodule* this, obj_smodule* dest){
 
 
 obj_smodule*
-TEMPLATE(obj_smodule,print)(obj_smodule* this){
+OBJF(obj_smodule,print)(obj_smodule* this){
 	NULL_P_CHECK(this);
 	fprintf(stderr,"\ndumping smodule\n");
 	DUMP_STRUCT_int(this,smodType);

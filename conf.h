@@ -16,6 +16,15 @@
 #include "submod/libctfb/ctfb.h"
 
 
+/*
+ * #include "submod/cstl/tmpl/tmpl.h"
+ *
+ * macroc copied stright from headerfile. include didn't work 
+ */
+#define _CAT(X,Y) X##_##Y
+#define OBJF(X,Y) _CAT(X,Y)
+
+
 //#define STRUCTCOPPIER(X,Y,Z) ((X)->(Z))=((Y)->(Z))
 #define STRUCTCOPPIER(X,Y,Z) (X->Z)=(Y->Z)
 #define _STRUCTCOPPIER_E(X,Y,Z) (X->Z)=(Y.Z)

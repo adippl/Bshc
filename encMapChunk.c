@@ -1,7 +1,7 @@
 #include "encMapChunk.h"
 
 void*
-TEMPLATE(mapTile,print)(void* this){
+OBJF(mapTile,print)(void* this){
 		fprintf(stderr,"\t mapTile %p points to ship %p (name %s) \n",
 			(void*)this,
 			(void*)(((struct mapTile*)this)->ship),
@@ -10,7 +10,7 @@ TEMPLATE(mapTile,print)(void* this){
 
 
 obj_encMapChunk*
-TEMPLATE(obj_encMapChunk,finalize)(obj_encMapChunk* this){
+OBJF(obj_encMapChunk,finalize)(obj_encMapChunk* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty constructor on %p\n",__func__,(void*)this);
@@ -18,7 +18,7 @@ TEMPLATE(obj_encMapChunk,finalize)(obj_encMapChunk* this){
 	return(this);}
 
 void
-TEMPLATE(obj_encMapChunk,clean)(obj_encMapChunk* this){
+OBJF(obj_encMapChunk,clean)(obj_encMapChunk* this){
 	NULL_P_CHECK(this);
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty destructor on %p\n",__func__,(void*)this);
@@ -26,7 +26,7 @@ TEMPLATE(obj_encMapChunk,clean)(obj_encMapChunk* this){
 	return;}
 
 obj_encMapChunk*
-TEMPLATE(obj_encMapChunk,copy)(obj_encMapChunk* this, obj_encMapChunk* dest){
+OBJF(obj_encMapChunk,copy)(obj_encMapChunk* this, obj_encMapChunk* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	memcpy(dest,this,sizeof(obj_encMapChunk));
@@ -34,7 +34,7 @@ TEMPLATE(obj_encMapChunk,copy)(obj_encMapChunk* this, obj_encMapChunk* dest){
 	return(dest);}
 
 void*
-TEMPLATE(obj_encMapChunk,print)(void* ap_obj){
+OBJF(obj_encMapChunk,print)(void* ap_obj){
 	NULL_P_CHECK(ap_obj);
 	obj_encMapChunk* this=(obj_encMapChunk*) ap_obj;
 	fprintf(stderr,"\ndumping obj_encMapChunk %p\n",(void*)this);

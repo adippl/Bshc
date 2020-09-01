@@ -10,9 +10,9 @@ struct encPlayer{
 	TEMPLATE3(arr,arrStrct,obj_ship) ships;
 	};
 
-obj_encPlayer*	TEMPLATE(obj_encPlayer,finalize)(obj_encPlayer* this);
-void		TEMPLATE(obj_encPlayer,clean)(obj_encPlayer* this);
-void		TEMPLATE(obj_encPlayer,copy)(obj_encPlayer* this, obj_encPlayer* dest);
-void	TEMPLATE(obj_encPlayer,print)(obj_encPlayer* this);
+obj_encPlayer*	OBJF(obj_encPlayer,finalize)(obj_encPlayer* this);
+void		OBJF(obj_encPlayer,clean)(obj_encPlayer* this);
+void		OBJF(obj_encPlayer,copy)(obj_encPlayer* this, obj_encPlayer* dest);
+void	OBJF(obj_encPlayer,print)(obj_encPlayer* this);
 
 #endif // _ENCOUNTER_PLAYER_H

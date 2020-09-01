@@ -23,12 +23,12 @@ struct mapChunk{
 	//	};
 	};
 
-void*	TEMPLATE(mapTile,print)(void* this);
-obj_encMapChunk* TEMPLATE(obj_encMapChunk,finalize)(obj_encMapChunk* this);
-void	TEMPLATE(obj_encMapChunk,clean)(obj_encMapChunk* this);
+void*	OBJF(mapTile,print)(void* this);
+obj_encMapChunk* OBJF(obj_encMapChunk,finalize)(obj_encMapChunk* this);
+void	OBJF(obj_encMapChunk,clean)(obj_encMapChunk* this);
 
-obj_encMapChunk* TEMPLATE(obj_encMapChunk,copy)(obj_encMapChunk* this,obj_encMapChunk* dest);
-void*	TEMPLATE(obj_encMapChunk,print)(void* ap_obj);
+obj_encMapChunk* OBJF(obj_encMapChunk,copy)(obj_encMapChunk* this,obj_encMapChunk* dest);
+void*	OBJF(obj_encMapChunk,print)(void* ap_obj);
 
 
 struct mapTile*

@@ -19,7 +19,7 @@ resourcesFinalize(obj_resources* this){
 	this->vers=1;
 	
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->shipTemplates);
-	TEMPLATE(obj_encMap,finalize)(&this->map);
+	OBJF(obj_encMap,finalize)(&this->map);
 	return(this);}
 
 void
@@ -34,7 +34,7 @@ void
 resourcesClean(obj_resources* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_ship)(&this->shipTemplates);
-	TEMPLATE(obj_encMap,clean)(&this->map);
+	OBJF(obj_encMap,clean)(&this->map);
 	return;}
 
 obj_resources*
@@ -100,6 +100,6 @@ resources_Dump(obj_resources* this){
 	fprintf(stderr,"vers: %d\n",this->vers);
 	fprintf(stderr,"shipTemplates arr at %p:\n",(void*)&this->shipTemplates);
 	TEMPLATE3(arr,dump,obj_ship)(&this->shipTemplates);
-	TEMPLATE(obj_encMap,print)(&this->map);
+	OBJF(obj_encMap,print)(&this->map);
 	fprintf(stderr,"\nEND of obj_resources at %p :\n",(void*)this);
 	return(0);}

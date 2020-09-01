@@ -1,7 +1,7 @@
 #include "encMap.h"
 
 obj_encMap*
-TEMPLATE(obj_encMap,finalize)(obj_encMap* this){
+OBJF(obj_encMap,finalize)(obj_encMap* this){
 	this->chunksx=0;
 	this->chunksy=0;
 	this->mapsx=0;
@@ -12,7 +12,7 @@ TEMPLATE(obj_encMap,finalize)(obj_encMap* this){
 	return(this);}
 
 void
-TEMPLATE(obj_encMap,clean)(obj_encMap* this){
+OBJF(obj_encMap,clean)(obj_encMap* this){
 	//NULL_P_CHECK(this);
 	free(this->mapName);
 	TEMPLATE3(arr,Clean,obj_encMapChunk)(&this->chunks);
@@ -20,7 +20,7 @@ TEMPLATE(obj_encMap,clean)(obj_encMap* this){
 
 
 void
-TEMPLATE(obj_encMap,copy)(obj_encMap* this, obj_encMap* dest){
+OBJF(obj_encMap,copy)(obj_encMap* this, obj_encMap* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->mapName,this->mapName,SSTRLENG);
@@ -39,7 +39,7 @@ TEMPLATE(obj_encMap,copy)(obj_encMap* this, obj_encMap* dest){
 
 
 obj_encMap*
-TEMPLATE(obj_encMap,print)(obj_encMap* this){
+OBJF(obj_encMap,print)(obj_encMap* this){
 	NULL_P_CHECK(this);
 	fprintf(stderr,"\ndumping obj_encMap\n");
 	DUMP_STRUCT_string(this,mapName);

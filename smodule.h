@@ -29,12 +29,12 @@ struct smodule{
 	int curr_armor;
 	};
 
-obj_smodule*	TEMPLATE(obj_smodule,finalize)(obj_smodule* this);
-void		TEMPLATE(obj_smodule,free)(obj_smodule* this);
-void		TEMPLATE(obj_smodule,clean)(obj_smodule* this);
-/*obj_smodule*	TEMPLATE(obj_smodule,copy)(obj_smodule* this);*/
-void		TEMPLATE(obj_smodule,copy)(obj_smodule* this, obj_smodule* dest);
-obj_smodule*	TEMPLATE(obj_smodule,print)(obj_smodule* this);
+obj_smodule*	OBJF(obj_smodule,finalize)(obj_smodule* this);
+void		OBJF(obj_smodule,free)(obj_smodule* this);
+void		OBJF(obj_smodule,clean)(obj_smodule* this);
+/*obj_smodule*	OBJF(obj_smodule,copy)(obj_smodule* this);*/
+void		OBJF(obj_smodule,copy)(obj_smodule* this, obj_smodule* dest);
+obj_smodule*	OBJF(obj_smodule,print)(obj_smodule* this);
 
 int smoduleParse(obj_smodule* this, json_stream* js);
 #endif // _MODULE_H

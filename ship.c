@@ -1,11 +1,11 @@
 #include "ship.h"
 
 obj_ship*
-TEMPLATE(obj_ship,finalize)(obj_ship* this){
-	this->finalize=TEMPLATE(obj_ship,finalize);
-	this->free=TEMPLATE(obj_ship,free);
-	this->clean=TEMPLATE(obj_ship,clean);
-	//this->copy=TEMPLATE(obj_ship,copy);
+OBJF(obj_ship,finalize)(obj_ship* this){
+	this->finalize=OBJF(obj_ship,finalize);
+	this->free=OBJF(obj_ship,free);
+	this->clean=OBJF(obj_ship,clean);
+	//this->copy=OBJF(obj_ship,copy);
 	this->copyTo=NULL;
 	this->objSize=sizeof(obj_ship);
 	//uint16_t objName;
@@ -26,14 +26,14 @@ TEMPLATE(obj_ship,finalize)(obj_ship* this){
 	return(this);}
 
 void
-TEMPLATE(obj_ship,free)(obj_ship* this){
+OBJF(obj_ship,free)(obj_ship* this){
 	NULL_P_CHECK(this);
-	TEMPLATE(obj_ship,clean)(this);
+	OBJF(obj_ship,clean)(this);
 	free(this);
 	return;}
 
 void
-TEMPLATE(obj_ship,clean)(obj_ship* this){
+OBJF(obj_ship,clean)(obj_ship* this){
 	NULL_P_CHECK(this);
 	TEMPLATE3(arr,Clean,obj_smodule)(&this->modules);
 	free(this->sname);
@@ -41,7 +41,7 @@ TEMPLATE(obj_ship,clean)(obj_ship* this){
 	return;}
 
 obj_ship*
-TEMPLATE(obj_ship,copy)(obj_ship* this,obj_ship* dest){
+OBJF(obj_ship,copy)(obj_ship* this,obj_ship* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	STRUCTCOPPIER(dest,this,shipTemplateID);
@@ -60,7 +60,7 @@ TEMPLATE(obj_ship,copy)(obj_ship* this,obj_ship* dest){
 	TEMPLATE3(arr,Copyto_memcpy,obj_smodule)(&this->modules,&dest->modules);
 	//TEMPLATE3(arr,Copyto,obj_smodule)(&this->modules,&dest->modules);
 	
-	//obj_smodule*	TEMPLATE(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest);
+	//obj_smodule*	OBJF(obj_smodule,copyTo)(obj_smodule* this, obj_smodule* dest);
 	//obj_smodule *p_tmp=NULL;
 	//TEMPLATE3(arr,iterResetStart,obj_smodule)(&this->modules);
 	//while((p_tmp=TEMPLATE3(arr,iterNext,obj_smodule)(&this->modules))){
@@ -70,7 +70,7 @@ TEMPLATE(obj_ship,copy)(obj_ship* this,obj_ship* dest){
 	return(dest);}
 
 void*
-TEMPLATE(obj_ship,print)(void* ap_obj){
+OBJF(obj_ship,print)(void* ap_obj){
 	NULL_P_CHECK(ap_obj);
 	obj_ship* this=(obj_ship*) ap_obj;
 	fprintf(stderr,"\ndumping obj_ship %p\n",(void*)this);
