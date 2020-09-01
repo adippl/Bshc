@@ -46,10 +46,10 @@ vim -s <(echo '
 :call OpenCTab("smodule")
 :call OpenCTab("smodule_TTU")
 :call OpenCTab("ui_term")
+:call OpenCTab("encounter")
+:call OpenCTab("encMap")
 :call OpenCTab("encMapChunk")
 :call OpenCTab("encMapChunk_TTU")
-:call OpenCTab("encMap")
-:call OpenCTab("encounter")
 :call OpenCTab("encPlayer")
 :call OpenCTab("encPlayerTTU")
 
