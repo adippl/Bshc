@@ -47,11 +47,9 @@ vim -s <(echo '
 :call OpenCTab("smodule_TTU")
 :call OpenCTab("ui_term")
 :call OpenCTab("encounter")
-:call OpenCTab("encMap")
-:call OpenCTab("encMapChunk")
-:call OpenCTab("encMapChunk_TTU")
-:call OpenCTab("encPlayer")
-:call OpenCTab("encPlayerTTU")
+:call OpenCTab("map")
+:call OpenCTab("player")
+:call OpenCTab("playerTTU")
 
 
 

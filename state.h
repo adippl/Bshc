@@ -5,7 +5,7 @@
 #include "ship.h"
 #include "ship_TTU.h"
 #include "parse.h"
-#include "encMap.h"
+#include "map.h"
 
 typedef struct resources obj_resources;
 struct resources{
@@ -18,7 +18,7 @@ struct resources{
 	int vers;
 	
 	TEMPLATE3(arr,arrStrct,obj_ship) shipTemplates;
-	obj_encMap map;
+	obj_map map;
 	};
 
 obj_resources* resourcesFinalize(obj_resources* this);

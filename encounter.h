@@ -3,16 +3,16 @@
 
 #include "conf.h"
 #include "parse.h"
-#include "encMap.h"
-#include "encPlayer.h"
-#include "encPlayerTTU.h"
+#include "map.h"
+#include "player.h"
+#include "playerTTU.h"
 
 
 typedef struct encounter obj_encounter;
 struct encounter{
 	char* encounterName;
-	obj_encMap map;
-	TEMPLATE3(arr,arrStrct,obj_encPlayer) players;
+	obj_map map;
+	TEMPLATE3(arr,arrStrct,obj_player) players;
 	};
 
 obj_encounter*	OBJF(obj_encounter,finalize)(obj_encounter* this);

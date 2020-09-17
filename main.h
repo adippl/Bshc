@@ -13,11 +13,10 @@
 #include	"smodule_TTU.h"
 
 #include	"encounter.h"
-#include	"encMapChunk.h"
-#include	"encMapChunk_TTU.h"
-#include	"encMap.h"
-#include	"encPlayer.h"
-#include	"encPlayerTTU.h"
+
+#include	"map.h"
+#include	"player.h"
+#include	"playerTTU.h"
 
 
 

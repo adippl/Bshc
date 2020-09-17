@@ -137,46 +137,36 @@ test_ship(){
 	return(0);}
 
 int
-test_encMap(){
-	printf("obj_encMap TEST\n");
-	obj_encMap map={0};
-	obj_encMap mapCopy={0};
-	OBJF(obj_encMap,finalize)(&map);
-	OBJF(obj_encMap,finalize)(&mapCopy);
-	map.chunksx=10;
-	map.chunksy=10;
-
-	mapGenerateChunkIndexes(&map);
-	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,0,0,(void*)mapGetPtrTo_mapTile(&map,0,0));
-	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,10,10,(void*)mapGetPtrTo_mapTile(&map,10,10));
-	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,300,300,(void*)mapGetPtrTo_mapTile(&map,300,300));
-	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,319,319,(void*)mapGetPtrTo_mapTile(&map,319,319));
-	printf("mapGetPtrTo_mapTile(%p,%u,%u) returned %p\n",(void*)&map,320,320,(void*)mapGetPtrTo_mapTile(&map,320,320));
-
-	OBJF(obj_encMap,copy)(&map, &mapCopy);
+test_map(){
+	printf("obj_map TEST\n");
+	obj_map map={0};
+	obj_map mapCopy={0};
+	OBJF(obj_map,finalize)(&map);
+	OBJF(obj_map,finalize)(&mapCopy);
+	OBJF(obj_map,copy)(&map, &mapCopy);
 	printf("\nDumping map\n");
-	OBJF(obj_encMap,print)(&map);
+	OBJF(obj_map,print)(&map);
 	printf("\nDumping mapCopy\n");
-	OBJF(obj_encMap,print)(&mapCopy);
-	OBJF(obj_encMap,clean)(&map);
-	OBJF(obj_encMap,clean)(&mapCopy);
-	printf("obj_encMap END OF TEST\n");
+	OBJF(obj_map,print)(&mapCopy);
+	OBJF(obj_map,clean)(&map);
+	OBJF(obj_map,clean)(&mapCopy);
+	printf("obj_map END OF TEST\n");
 	return(0);}
 
 
 int
-test_encPlayer(){
-	printf("obj_encPlayer TEST\n");
-	obj_encPlayer player={0};
-	obj_encPlayer playerCopy={0};
-	OBJF(obj_encPlayer,finalize)(&player);
-	OBJF(obj_encPlayer,finalize)(&playerCopy);
-	OBJF(obj_encPlayer,copy)(&player, &playerCopy);
-	OBJF(obj_encPlayer,print)(&player);
-	OBJF(obj_encPlayer,print)(&playerCopy);
-	OBJF(obj_encPlayer,clean)(&player);
-	OBJF(obj_encPlayer,clean)(&playerCopy);
-	printf("obj_encPlayer END OF TEST\n");
+test_player(){
+	printf("obj_player TEST\n");
+	obj_player player={0};
+	obj_player playerCopy={0};
+	OBJF(obj_player,finalize)(&player);
+	OBJF(obj_player,finalize)(&playerCopy);
+	OBJF(obj_player,copy)(&player, &playerCopy);
+	OBJF(obj_player,print)(&player);
+	OBJF(obj_player,print)(&playerCopy);
+	OBJF(obj_player,clean)(&player);
+	OBJF(obj_player,clean)(&playerCopy);
+	printf("obj_player END OF TEST\n");
 	return(0);}
 
 int
@@ -197,8 +187,8 @@ test_encounter(){
 int
 main(){
 	test_ship();
-	test_encMap();
-	test_encPlayer();
+	test_map();
+	test_player();
 	test_encounter();
 	test_resources();
 	test_resourcesReadConfig();

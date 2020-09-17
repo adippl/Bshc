@@ -67,6 +67,8 @@ void objFree(void* p_obj);	//generic destructor
 
 #define DUMP_STRUCT_int(X,Y) fprintf(stderr,"\t%s %d\n",#Y,X->Y)
 #define DUMP_STRUCT_uint(X,Y) fprintf(stderr,"\t%s %u\n",#Y,X->Y)
+#define DUMP_STRUCT_int64(X,Y) fprintf(stderr,"\t%s %ld\n",#Y,X->Y)
+#define DUMP_STRUCT_uint(X,Y) fprintf(stderr,"\t%s %u\n",#Y,X->Y)
 #define DUMP_STRUCT_char(X,Y) fprintf(stderr,"\t%s %c\n",#Y,X->Y)
 #define DUMP_STRUCT_string(X,Y) fprintf(stderr,"\t%s %s\n",#Y,X->Y)
 
