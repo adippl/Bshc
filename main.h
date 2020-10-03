@@ -15,9 +15,12 @@
 #include	"encounter.h"
 
 #include	"map.h"
+#include	"mapCpoint.h"
+
 #include	"player.h"
 #include	"playerTTU.h"
 
+#include	"vec2double.h"
 
 
 #endif // _MAIN_H

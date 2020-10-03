@@ -2,7 +2,7 @@
 #define _MAP_H
 
 #include "conf.h"
-#include "ship_TTU.h"
+#include "mapCpointTTU.h"
 #include "parse.h"
 
 typedef struct map obj_map;
@@ -10,7 +10,7 @@ struct map{
 	char* mapName;
 	int64_t mapsx;
 	int64_t mapsy;
-	TEMPLATE3(arr,arrStrct,obj_ship) ships;
+	TEMPLATE3(arr,arrStrct,obj_mapCpoint) cpoints;
 	};
 
 obj_map*	OBJF(obj_map,finalize)(obj_map* this);

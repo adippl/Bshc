@@ -48,8 +48,11 @@ vim -s <(echo '
 :call OpenCTab("ui_term")
 :call OpenCTab("encounter")
 :call OpenCTab("map")
+:call OpenCTab("mapCpoint")
+:call OpenCTab("mapCpointTTU")
 :call OpenCTab("player")
 :call OpenCTab("playerTTU")
+:call OpenCTab("vec2double")
 
 
 

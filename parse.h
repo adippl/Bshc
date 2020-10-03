@@ -23,6 +23,12 @@ int skipToArrEnd(json_stream* js);
 			continue;} \
 		else{PARSE_EMSG(X,"value is not a number\n");}}
 
+#define parseVarint64_t(X,Y) if(strcmp(#Y,str)==0){ \
+		if(json_next(X)==JSON_NUMBER){ \
+			this->Y=(int64_t)json_get_number(X); \
+			continue;} \
+		else{PARSE_EMSG(X,"value is not a number\n");}}
+
 #define parseVarUINT(X,Y) if(strcmp(#Y,str)==0){ \
 		if(json_next(X)==JSON_NUMBER){ \
 			this->Y=(unsigned int)json_get_number(X); \

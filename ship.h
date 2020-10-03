@@ -42,6 +42,10 @@ struct ship{
 	int curr_view;
 	int curr_visibility;
 	TEMPLATE3(arr,arrStrct,obj_smodule) modules;
+	
+	/* map */
+	int refObjId;
+
 	};
 
 obj_ship* OBJF(obj_ship,finalize)(obj_ship* this);

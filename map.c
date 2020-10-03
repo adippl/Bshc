@@ -6,13 +6,13 @@ OBJF(obj_map,finalize)(obj_map* this){
 	this->mapsy=0;
 	/* solar system radius 143730642000000.0 m */
 	this->mapName=calloc(SSTRLENG,sizeof(char));
-	TEMPLATE3(arr,Finalize,obj_ship)(&this->ships);
+	TEMPLATE3(arr,Finalize,obj_mapCpoint)(&this->cpoints);
 	return(this);}
 
 void
 OBJF(obj_map,clean)(obj_map* this){
 	//NULL_P_CHECK(this);
-	TEMPLATE3(arr,Clean,obj_ship)(&this->ships);
+	TEMPLATE3(arr,Clean,obj_mapCpoint)(&this->cpoints);
 	free(this->mapName);
 	return;}
 
@@ -22,7 +22,7 @@ OBJF(obj_map,copy)(obj_map* this, obj_map* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	strncpy(dest->mapName,this->mapName,SSTRLENG);
-	TEMPLATE3(arr,Copyto_memcpy,obj_ship)(&this->ships,&dest->ships);
+	TEMPLATE3(arr,Copyto_memcpy,obj_mapCpoint)(&this->cpoints,&dest->cpoints);
 	STRUCTCOPPIER(dest,this,mapsx);
 	STRUCTCOPPIER(dest,this,mapsy);
 	return;}
@@ -35,7 +35,7 @@ OBJF(obj_map,print)(obj_map* this){
 	DUMP_STRUCT_string(this,mapName);
 	DUMP_STRUCT_int64(this,mapsx);
 	DUMP_STRUCT_int64(this,mapsy);
-	TEMPLATE3(arr,dump,obj_ship)(&this->ships);
+	TEMPLATE3(arr,dump,obj_mapCpoint)(&this->cpoints);
 	return(NULL);}
 
 int
@@ -49,6 +49,8 @@ mapParse(obj_map* this, json_stream* js){
 	printf("FIRST %s	 STRING %s\n",__func__,str);
 
 	bool var=false;
+	bool arrloop=true;
+	obj_mapCpoint* obj_mapCpoint=NULL;
 	while(true){
 		type=json_next(js);
 		switch(type){
@@ -78,6 +80,9 @@ mapParse(obj_map* this, json_stream* js){
 				return(0);}
 		if(var){
 			parseVarSTR(js,mapName);
+			parseVarint64_t(js,mapsx);
+			parseVarint64_t(js,mapsy);
+			parseARRobj(js,cpoints,obj_mapCpoint,mapCpointParse,&this->cpoints);
 			}
 		}
 	return(1);}

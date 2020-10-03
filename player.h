@@ -7,6 +7,8 @@
 typedef struct player obj_player;
 struct player{
 	char*	playerName;
+	int		playerId;
+
 	TEMPLATE3(arr,arrStrct,obj_ship) ships;
 	};
 

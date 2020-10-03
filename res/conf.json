@@ -90,8 +90,20 @@
 			}
 		],
 		"map":{
-			"chunksx":10,
-			"chunksy":10
+			"mapName":"Sol",
+			"mapsx":143730642000000,
+			"mapsy":143730642000000,
+			"cpoints":[
+				{
+					"mapCpointName":"earth1",
+					"mapCpointsx":0,
+					"mapCpointsy":0,
+					"ships":[
+						]
+				}
+				
+			]
+			
 		}
 	}
 }

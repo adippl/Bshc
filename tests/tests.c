@@ -137,6 +137,23 @@ test_ship(){
 	return(0);}
 
 int
+test_mapCpoint(){
+	printf("obj_mapCpoint TEST\n");
+	obj_mapCpoint mapCpoint={0};
+	obj_mapCpoint mapCpointCopy={0};
+	OBJF(obj_mapCpoint,finalize)(&mapCpoint);
+	OBJF(obj_mapCpoint,finalize)(&mapCpointCopy);
+	OBJF(obj_mapCpoint,copy)(&mapCpoint, &mapCpointCopy);
+	printf("\nDumping mapCpoint\n");
+	OBJF(obj_mapCpoint,print)(&mapCpoint);
+	printf("\nDumping mapCpointCopy\n");
+	OBJF(obj_mapCpoint,print)(&mapCpointCopy);
+	OBJF(obj_mapCpoint,clean)(&mapCpoint);
+	OBJF(obj_mapCpoint,clean)(&mapCpointCopy);
+	printf("obj_mapCpoint END OF TEST\n");
+	return(0);}
+
+int
 test_map(){
 	printf("obj_map TEST\n");
 	obj_map map={0};
@@ -187,6 +204,7 @@ test_encounter(){
 int
 main(){
 	test_ship();
+	test_mapCpoint();
 	test_map();
 	test_player();
 	test_encounter();

@@ -7,6 +7,7 @@ OBJF(obj_player,finalize)(obj_player* this){
 	#ifdef DEBUG
 		fprintf(stderr,"DEBUG %s calling empty constructor on %p\n",__func__,(void*)this);
 	#endif
+	this->playerId=-1;
 	this->playerName=calloc(SSTRLENG,sizeof(char));
 	TEMPLATE3(arr,Finalize,obj_ship)(&this->ships);
 	return(this);}
