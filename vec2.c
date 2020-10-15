@@ -1,4 +1,4 @@
-#include "vec2double.h"
+#include "vec2.h"
 
 void
 vec2llSum(vec2ll* a, vec2ll* b){

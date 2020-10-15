@@ -52,7 +52,8 @@ vim -s <(echo '
 :call OpenCTab("mapCpointTTU")
 :call OpenCTab("player")
 :call OpenCTab("playerTTU")
-:call OpenCTab("vec2double")
+:call OpenCTab("vec2")
+:call OpenCTab("cmenu")
 
 
 

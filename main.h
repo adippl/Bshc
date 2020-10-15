@@ -20,7 +20,11 @@
 #include	"player.h"
 #include	"playerTTU.h"
 
-#include	"vec2double.h"
+#include	"vec2.h"
+
+#include	"cmenu.h"
+
+#define CFG_RES_FILE "res/res.json"
 
 
 #endif // _MAIN_H
