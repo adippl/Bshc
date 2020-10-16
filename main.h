@@ -2,8 +2,8 @@
 #define _MAIN_H
 
 #include	"conf.h"
-#include	"state.h"
-#include	"state.h"
+#include	"resources.h"
+#include	"resources.h"
 #include	"ui_term.h"
 #include	"parse.h"
 

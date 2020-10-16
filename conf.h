@@ -11,6 +11,7 @@
 #include <wchar.h>
 #include <unistd.h>
 #include <math.h>
+#include <unistd.h>
 
 #include "submod/pdjson/pdjson.h"
 #include "submod/libctfb/ctfb.h"
@@ -71,6 +72,18 @@ void objFree(void* p_obj);	//generic destructor
 #define DUMP_STRUCT_uint(X,Y) fprintf(stderr,"\t%s %u\n",#Y,X->Y)
 #define DUMP_STRUCT_char(X,Y) fprintf(stderr,"\t%s %c\n",#Y,X->Y)
 #define DUMP_STRUCT_string(X,Y) fprintf(stderr,"\t%s %s\n",#Y,X->Y)
+
+
+/* TODO move to separate file*/
+#ifndef NO_TERM
+	#include <termios.h>
+	#include <fcntl.h>
+	struct termios termSettingBackup;
+	void termUnbuff();
+	void termUnbuffRestore();
+	void termNonBlocking();
+	void termBlocking();
+	#endif
 
 #endif // CONF_H
 

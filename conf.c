@@ -20,3 +20,25 @@ objFree(void* p_obj){	//generic destructor
 	free(p_obj);
 	p_obj=NULL;
 	return;}
+
+
+
+#ifndef NO_TERM
+void
+termUnbuff(){
+	tcgetattr(STDIN_FILENO,&termSettingBackup);
+	termSettingBackup.c_lflag &=(~ICANON & ~ECHO);
+	tcsetattr(STDIN_FILENO,TCSANOW,&termSettingBackup);}
+
+void
+termUnbuffRestore(){
+	tcsetattr(STDIN_FILENO,TCSANOW,&termSettingBackup);}
+
+void
+termNonBlocking(){
+	fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) | O_NONBLOCK);}
+void
+termBlocking(){
+	fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL) ^ O_NONBLOCK);}
+#endif
+

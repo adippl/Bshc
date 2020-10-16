@@ -23,8 +23,7 @@ mainLoadRes(obj_resources* ptr){
 		resourcesParse(ptr,&JS);
 		if(error){
 			fprintf(stderr,"PARISING ERROR %s\n",__func__);}
-		resources_Dump(ptr);
-		resourcesClean(ptr);
+		//resources_Dump(ptr); //debugDUMP
 		json_close(&JS);
 		fclose(res_conf_json);
 		return(0);}}
@@ -41,7 +40,8 @@ main(int argc, char **argv){
 	obj_resources resources={0};
 	resourcesFinalize(&resources);
 	mainLoadRes(&resources);
-	
+		
+	tuiInit();
 	
 	
 	
