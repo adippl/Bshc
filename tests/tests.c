@@ -1,52 +1,6 @@
 #include "tests.h"
 
 /*
-void
-test_struct_inits(){
-	printf("\n");
-	
-	struct ctfb* kkk=ctfb_fb_init(FSIZE_X,FSIZE_Y);
-	kkk->delete(&kkk);
-	printf("ctfb %p\n",(void*)kkk);
-
-	struct ship* k=ship(3,(void*)0x0);
-	k->free(&k);
-	printf("ship %p \n",(void*)kkk);
-	
-	struct fld* f=fld(2);
-	f->free(&f);
-	printf("fld %p \n",(void*)f);
-
-	struct ply* pl=ply(1);
-	pl->free(&pl);
-	printf("ply %p \n",(void*)pl);
-
-	struct state* st=state(2);
-	st->free(&st);
-	printf("state %p \n",(void*)st);
-	
-	struct shot* shot_objCopy=shot(10);
-	shot_objCopy->free(&shot_objCopy);
-}
-void
-test_shot(){
-	wchar_t c=0;
-	struct shot* a=NULL;
-	
-	do{
-		//gotoxy(1,SIZE_Y*2+3);
-		//screen_clear_area(0,52,FSIZE_X,FSIZE_Y-52);	//FIXIT
-		fprintf(stdout,"shell spread test, enter q to exit");
-		a=shot_gen(5);
-		a->free(&a);
-		c=getchar();
-	}while(c!='q');
-}
-
-
-void lol(state* str_p, ship* ship_p, void* arg){
-	fprintf(stdin, "shsize=%d", ship_p->shsize);
-}
 void test_ang(){
 	vec p2={.x=0,.y=0};
 	float angle=vec_angle(&p2)*(180/3.14);
@@ -98,15 +52,6 @@ test_resourcesReadConfig(){
 		
 		if(error){
 			fprintf(stderr,"PARISING ERROR %s\n",__func__);}
-
-		/* test copy to real ship */
-		//obj_shipReal* shipReal=calloc(1,sizeof(obj_shipReal));
-		//obj_shipReal_finalize(shipReal);
-		//obj_shipReal_initShipBase(shipReal,TEMPLATE3(arr,indexToPtr,obj_ship)(&obj.shipTemplates,0));
-		//OBJF(obj_shipReal,print)(shipReal);
-		//obj_shipReal_clean(shipReal);
-		//free(shipReal);
-		
 		resources_Dump(&obj);
 		resourcesClean(&obj);
 	
@@ -116,24 +61,26 @@ test_resourcesReadConfig(){
 		return(0);}
 	}
 
-//int
-//test_smodule(){
-//	obj_smodule* obj=calloc(1,sizeof(obj_smodule));
-//	smoduleFinalize(obj);
-//	obj_smodule* objCopy=smoduleCopy(obj);
-//	smoduleFree(obj);
-//	smoduleFree(objCopy);
-//	return(0);}
+int
+test_smodule(){
+	obj_smodule* obj=calloc(1,sizeof(obj_smodule));
+	OBJF(obj_smodule,finalize)(obj);
+	obj_smodule* objCopy=calloc(1,sizeof(obj_smodule));
+	OBJF(obj_smodule,finalize)(objCopy);
+	OBJF(obj_smodule,copy)(obj,objCopy);
+	OBJF(obj_smodule,free)(obj);
+	OBJF(obj_smodule,free)(objCopy);
+	return(0);}
 
 int
 test_ship(){
 	obj_ship* obj=calloc(1,sizeof(obj_ship));
-	obj_ship_finalize(obj);
+	OBJF(obj_ship,finalize)(obj);
 	obj_ship* objCopy=calloc(1,sizeof(obj_ship));
-	obj_ship_finalize(objCopy);
-	obj_ship_copy(obj,objCopy);
-	obj_ship_free(obj);
-	obj_ship_free(objCopy);
+	OBJF(obj_ship,finalize)(objCopy);
+	OBJF(obj_ship,copy)(obj,objCopy);
+	OBJF(obj_ship,free)(obj);
+	OBJF(obj_ship,free)(objCopy);
 	return(0);}
 
 int
@@ -203,6 +150,7 @@ test_encounter(){
 
 int
 main(){
+	test_smodule();
 	test_ship();
 	test_mapCpoint();
 	test_map();

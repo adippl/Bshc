@@ -45,6 +45,7 @@ vim -s <(echo '
 :call OpenCTab("ship_TTU")
 :call OpenCTab("smodule")
 :call OpenCTab("smodule_TTU")
+:call OpenCTab("cmenu")
 :call OpenCTab("ui_term")
 :call OpenCTab("encounter")
 :call OpenCTab("map")
@@ -53,9 +54,8 @@ vim -s <(echo '
 :call OpenCTab("player")
 :call OpenCTab("playerTTU")
 :call OpenCTab("vec2")
-:call OpenCTab("cmenu")
-
-
+:call OpenCTab("genericTypes")
+:call OpenCTab("genericTypesTTU")
 
 	'|sed 's/\t//')
 # sed in the last line removes tabs which caused problems to vim. 

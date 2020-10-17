@@ -18,6 +18,10 @@ struct ship{
 	int shipTemplateID;
 	char* sname;
 	char* sclass;
+	
+	int factionID;
+	int playerID;
+	
 	int sizex;
 	int sizey;
 	int centerx;

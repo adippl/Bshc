@@ -45,6 +45,8 @@ OBJF(obj_ship,copy)(obj_ship* this,obj_ship* dest){
 	NULL_P_CHECK(this);
 	NULL_P_CHECK(dest);
 	STRUCTCOPPIER(dest,this,shipTemplateID);
+	STRUCTCOPPIER(dest,this,factionID);
+	STRUCTCOPPIER(dest,this,playerID);
 	STRUCTCOPPIER(dest,this,sizex);
 	STRUCTCOPPIER(dest,this,sizey);
 	STRUCTCOPPIER(dest,this,centerx);
@@ -77,6 +79,8 @@ OBJF(obj_ship,print)(void* ap_obj){
 	DUMP_STRUCT_int(this,shipTemplateID);
 	DUMP_STRUCT_string(this,sname);
 	DUMP_STRUCT_string(this,sclass);
+	DUMP_STRUCT_int(this,factionID);
+	DUMP_STRUCT_int(this,playerID);
 	DUMP_STRUCT_int(this,sizex);
 	DUMP_STRUCT_int(this,sizey);
 	DUMP_STRUCT_int(this,centerx);
@@ -144,6 +148,8 @@ shipParse(obj_ship* this, json_stream* js){
 				return(0);}
 		if(var){
 			parseVarINT(js,shipTemplateID)
+			parseVarINT(js,factionID);
+			parseVarINT(js,playerID);
 			parseVarINT(js,sizex);
 			parseVarINT(js,sizey);
 			parseVarINT(js,centerx);

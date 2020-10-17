@@ -41,7 +41,7 @@ tuiInit(){
 			rc=-1;
 			break;
 		default:
-			/* incase sth bad happens */
+			/* in case sth bad happens */
 			printf("%s internal error menu returned %i, exiting...",__func__,rc);
 			exit(EXIT_FAILURE);}}
 		

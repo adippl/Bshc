@@ -34,6 +34,7 @@ cmenuPromptUser(obj_cmenu* menu){
 		if(rcRead<1)
 			continue;
 		printf("\033[2J");
+		/* in my tests on linux read string ends with \n, this line replaces it with NULL */
 		bugger[rcRead-1]='\0';
 		
 		if( 0<menu->entryCount && !strncmp(bugger,menu->entry[0],CMENU_KEY_SIZE)){
