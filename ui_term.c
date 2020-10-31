@@ -20,22 +20,26 @@ tuiInit(){
 	
 	strncpy((char*)&mainMenu.entry[3],"exit",CMENU_KEY_SIZE);
 	strncpy((char*)&mainMenu.entryDescription[3],"game back to terminal",SSTRLENG);
+
+	mainMenu.mode=1;
 	
 	while(rc!=-1){
 		switch(cmenuPromptUser(&mainMenu)){
-		case(0):
+		case(1):
 			/* init new game */
+			printf("NEWGAME\n");
 			//worldNewGame();
 			break;
-		case(1):
+		case(2):
 			/* load save selection screen */
+			printf("LOADGAME\n");
 			//worldLoadGameSelectSave();
 			break;
-		case(2):
+		case(3):
 			/* displayInfo */
 			printf("test main menu.\n type help and confirm with enter to display basic usage info \n"); 
 			break;
-		case(3):
+		case(4):
 			/* exit */
 			printf("exiting...\n"); 
 			rc=-1;
@@ -46,4 +50,8 @@ tuiInit(){
 			exit(EXIT_FAILURE);}}
 		
 	termBlocking();
+	
+	/* fuckIt */
+	system("reset");
+	
 	return(rc);}

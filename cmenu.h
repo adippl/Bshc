@@ -9,6 +9,7 @@
 /* suimple menu */
 typedef struct cmenu{
 	char title[SSTRLENG];
+	int mode;
 	int entryCount;
 	char entry[CMENU_MAX_SIZE][CMENU_KEY_SIZE];
 	char entryDescription[CMENU_MAX_SIZE][SSTRLENG];
