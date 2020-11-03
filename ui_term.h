@@ -11,4 +11,7 @@
 //int inputBlocking;
 //int inputNonBlocking; 
 
+
+int tuiInit();
+
 #endif	// _TUI_H

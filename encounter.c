@@ -59,7 +59,8 @@ encounterParse(obj_encounter* this, json_stream* js){
 
 	printf("FIRST %s	 STRING %s\n",__func__,str);
 
-	bool var=false, arrloop=false;
+	bool var=false;
+	//bool arrloop=false;
 	while(true){
 		type=json_next(js);
 		switch(type){

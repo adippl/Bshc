@@ -20,8 +20,8 @@ EXEC=a.out
 #LIBSO=$NAME.so
 #LIBA=$NAME.a
 
-run: output
-	./$EXEC
+#run: output
+#	./$EXEC
 
 #test: lib-shared
 #	gcc test.c -o test.out

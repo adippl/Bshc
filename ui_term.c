@@ -2,6 +2,9 @@
 
 int
 tuiInit(){
+	struct termios termSettings;
+	tcgetattr(STDIN_FILENO,&termSettings);
+	//termSettings.c_lflag &=(~ICANON & ~ECHO);
 	termNonBlocking();
 	
 	obj_cmenu mainMenu={0};
@@ -49,9 +52,9 @@ tuiInit(){
 			printf("%s internal error menu returned %i, exiting...",__func__,rc);
 			exit(EXIT_FAILURE);}}
 		
-	termBlocking();
+	tcsetattr(STDIN_FILENO,TCSANOW,&termSettings);
 	
 	/* fuckIt */
-	system("reset");
+	//system("reset");
 	
 	return(rc);}

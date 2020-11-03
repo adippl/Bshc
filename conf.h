@@ -67,11 +67,22 @@
 void objFree(void* p_obj);	//generic destructor
 
 #define DUMP_STRUCT_int(X,Y) fprintf(stderr,"\t%s %d\n",#Y,X->Y)
+#define DUMP_STRUCT_size_t(X,Y) fprintf(stderr,"\t%s %ld\n",#Y,X->Y)
 #define DUMP_STRUCT_uint(X,Y) fprintf(stderr,"\t%s %u\n",#Y,X->Y)
 #define DUMP_STRUCT_int64(X,Y) fprintf(stderr,"\t%s %ld\n",#Y,X->Y)
 #define DUMP_STRUCT_uint(X,Y) fprintf(stderr,"\t%s %u\n",#Y,X->Y)
 #define DUMP_STRUCT_char(X,Y) fprintf(stderr,"\t%s %c\n",#Y,X->Y)
 #define DUMP_STRUCT_string(X,Y) fprintf(stderr,"\t%s %s\n",#Y,X->Y)
+#define DUMP_STRUCT_voidPtr(X,Y) fprintf(stderr,"\t%s %p\n",#Y,(void*)X->Y)
+
+/*
+#define DUMP_STRUCT_GEN(X,Y) _Generic((Y), \
+	int: fprintf(stderr,"\t%s %d\n",#Y,X->Y), \
+	size_t: fprintf(stderr,"\t%s %d\n",#Y,X->Y), \
+	void*: fprintf(stderr,"\t%s %d\n",#Y,X->Y), \
+	char*: fprintf(stderr,"\t%s %d\n",#Y,X->Y), \
+	default: fprintf(stderr,"\t DUMP_STRUCT UNSUPPORTED_TYPE %s\n",#Y))
+*/
 
 
 /* TODO move to separate file*/
@@ -83,7 +94,7 @@ void objFree(void* p_obj);	//generic destructor
 	void termUnbuffRestore();
 	void termNonBlocking();
 	void termBlocking();
-	#endif
+#endif // NO_TERM
 
 #endif // CONF_H
 
