@@ -2,7 +2,7 @@
 #define _GENERIC_TYPES_TTU_H_
 
 #include "conf.h"
-#include "genericTypes.h"
+#include "genTypes.h"
 
 #ifdef T
 #undef T

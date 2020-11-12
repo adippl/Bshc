@@ -23,6 +23,7 @@
 #include	"vec2.h"
 
 #include	"cmenu.h"
+#include	"cvlarr.h"
 
 #define CFG_RES_FILE "res/res.json"
 

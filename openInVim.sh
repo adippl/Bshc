@@ -55,8 +55,8 @@ vim -s <(echo '
 :call OpenCTab("player")
 :call OpenCTab("playerTTU")
 :call OpenCTab("vec2")
-:call OpenCTab("genericTypes")
-:call OpenCTab("genericTypesTTU")
+:call OpenCTab("genTypes")
+:call OpenCTab("genTypesTTU")
 :call OpenCTab("cvlarr")
 
 

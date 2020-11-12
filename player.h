@@ -3,7 +3,7 @@
 
 #include "conf.h"
 #include "ship_TTU.h"
-#include "genericTypesTTU.h"
+#include "genTypesTTU.h"
 
 /* obj_player holds 2 arrays
  *
