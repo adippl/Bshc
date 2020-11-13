@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -23,7 +24,9 @@
  * macroc copied stright from headerfile. include didn't work 
  */
 #define _CAT(X,Y) X##_##Y
+//#define _CAT3(X,Y) X##_##Y##_##Z
 #define OBJF(X,Y) _CAT(X,Y)
+#define OBF(X,Y) _CAT3(obj,X,Y)
 
 
 //#define STRUCTCOPPIER(X,Y,Z) ((X)->(Z))=((Y)->(Z))
