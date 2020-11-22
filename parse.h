@@ -17,9 +17,16 @@ int skipToArrEnd(json_stream* js);
 			this->Y=(int)json_get_number(X);} \
 		else{PARSE_EMSG(X,"value of "##X##" is not a number"\n);}}
 */
+
 #define parseVarINT(X,Y) if(strcmp(#Y,str)==0){ \
 		if(json_next(X)==JSON_NUMBER){ \
 			this->Y=(int)json_get_number(X); \
+			continue;} \
+		else{PARSE_EMSG(X,"value is not a number\n");}}
+
+#define parseVarSIZE_T(X,Y) if(strcmp(#Y,str)==0){ \
+		if(json_next(X)==JSON_NUMBER){ \
+			this->Y=(size_t)json_get_number(X); \
 			continue;} \
 		else{PARSE_EMSG(X,"value is not a number\n");}}
 

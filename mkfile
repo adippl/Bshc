@@ -6,7 +6,7 @@ CC=cc
 #CC=gcc
 #CCXX=g++
 _CCARG= -g -Wall -Wextra -pedantic -fpie
-CCARG= -std=c99  -DDEBUG $_CCARG $CCX
+CCARG= -std=c99 -D_GNU_SOURCE -DDEBUG $_CCARG $CCX
 #CCXXARG= -std=c++2a -g -Wall -pedantic -fPIC $CXXEXTRA
 LDARG= $LDX
 

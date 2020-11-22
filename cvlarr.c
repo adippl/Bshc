@@ -4,10 +4,10 @@ obj_cvlarr*
 OBF(cvlarr,finalize)(obj_cvlarr* this){
 	NULL_P_CHECK(this);
 	this->mem=calloc(CVLARR_DEF_ALLOC_SIZE,sizeof(char));
-	this->memSize=CVLARR_DEF_ALLOC_SIZE;
+	this->memSize=CVLARR_DEF_ALLOC_SIZE*sizeof(char);
 	this->endOfLastString=0;
 	this->indexArr=calloc(CVLARR_DEF_SIZE,sizeof(size_t));
-	this->indexArrSize=CVLARR_DEF_SIZE;
+	this->indexArrSize=CVLARR_DEF_SIZE*sizeof(size_t);
 	this->noStrings=0;
 	this->iterPos=0;
 	#ifdef DEBUG
@@ -53,7 +53,7 @@ int
 obj_cvlarr__resize_mem(obj_cvlarr* this, size_t by){
 	if((this->mem=realloc(this->mem,this->memSize+by))==NULL)
 		return(1);
-	memset(this->mem+this->memSize,0,by);
+	memset(this->mem+this->memSize/sizeof(char),0,by);
 	this->memSize+=by;
 	#ifdef DEBUG
 		this->_debug_resizeCount++;
@@ -62,9 +62,12 @@ obj_cvlarr__resize_mem(obj_cvlarr* this, size_t by){
 
 int
 obj_cvlarr__resize_indexArr(obj_cvlarr* this, size_t by){
-	if((this->indexArr=realloc(this->indexArr,(this->indexArrSize+by)*sizeof(size_t)))==NULL)
+	size_t* reallocPtr=NULL;
+	if((reallocPtr=realloc(this->indexArr,this->indexArrSize+by))==NULL)
 		return(1);
-	//memset(this->indexArr+this->indexArrSize,0,by);
+	this->indexArr=reallocPtr;
+	/* TODO memset is broken, NOT sure why */
+	//memset(this->indexArr+this->indexArrSize/sizeof(size_t),0,by);
 	this->indexArrSize+=by;
 	#ifdef DEBUG
 		this->_debug_resizeCount++;
@@ -73,8 +76,8 @@ obj_cvlarr__resize_indexArr(obj_cvlarr* this, size_t by){
 
 int
 obj_cvlarr__autoExtend(obj_cvlarr* this, size_t nextString){
-	if(this->noStrings>=this->indexArrSize)
-		if(obj_cvlarr__resize_indexArr(this,this->indexArrSize+CVLARR_DEF_SIZE)){
+	if((this->noStrings+1)*sizeof(size_t)>=this->indexArrSize)
+		if(obj_cvlarr__resize_indexArr(this,this->indexArrSize+CVLARR_DEF_SIZE*sizeof(size_t))){
 			#ifdef DEBUG
 				fprintf(stderr,"ERR %s failed to reallocate this->\n",__func__);
 				#endif
@@ -83,8 +86,8 @@ obj_cvlarr__autoExtend(obj_cvlarr* this, size_t nextString){
 	if(nextString<1||nextString>CVLARR_STRL_MAX)
 		return(1);
 	/* memsize - (freespace-strlen) */
-	if(this->memSize-(this->endOfLastString+nextString)<=0){	
-		if(obj_cvlarr__resize_mem(this,this->memSize+nextString+1)){
+	if(this->memSize-(this->endOfLastString+nextString*sizeof(char))<=0){	
+		if(obj_cvlarr__resize_mem(this,this->memSize+(nextString+1)*sizeof(char))){
 			#ifdef DEBUG
 				fprintf(stderr,"ERR %s failed to reallocate this->mem\n",__func__);
 				#endif
@@ -92,15 +95,15 @@ obj_cvlarr__autoExtend(obj_cvlarr* this, size_t nextString){
 	return(0);}
 
 int
-obj_cvlarr_resize(obj_cvlarr* this, size_t charArrSize, size_t indexArrSize){
+obj_cvlarr_resize(obj_cvlarr* this, unsigned int charArrSize, unsigned int indexArrSize){
 	NULL_P_CHECK(this);
 	int ret=0;
 	size_t newSize;
-	if((newSize=charArrSize-this->memSize)>0)
+	if((newSize=charArrSize*sizeof(char)-this->memSize)>0)
 		obj_cvlarr__resize_mem(this,newSize);
 	else
 		ret=1;
-	if((newSize=indexArrSize-this->indexArrSize)>0)
+	if((newSize=indexArrSize*sizeof(size_t)-(this->indexArrSize))>0)
 		obj_cvlarr__resize_indexArr(this, newSize);
 	else
 		ret=1;
@@ -135,7 +138,7 @@ obj_cvlarr_insert(obj_cvlarr* this, char* string){
 	if(obj_cvlarr__autoExtend(this,strl))
 		return(NULL);
 
-	retptr=(this->mem+this->endOfLastString+1);
+	retptr=(this->mem+this->endOfLastString+1*sizeof(char));
 	*(this->indexArr+this->noStrings)=retptr-this->mem;
 	fprintf(stderr,"retptr-this->mem=%lu\n",retptr-this->mem);
 	this->noStrings++;
@@ -186,3 +189,79 @@ OBF(cvlarr,print)(obj_cvlarr* this){
 			this->iterPos-1,p_str,p_str,this->mem+*(this->indexArr+(this->iterPos-1)));}
 	fprintf(stderr,"\nEND of obj_cvlarr %p\n",(void*)this);}
 
+// TODO UNFINISHED UNTESTED
+int
+cvlarrParse(obj_cvlarr* this, json_stream* js){
+	NULL_P_CHECK(this);
+	NULL_P_CHECK(js);
+	
+	enum json_type type;
+	const char* str=json_get_string(js,NULL);
+	bool var=false;
+	bool arrLoop=true;
+
+	while(true){
+		type=json_next(js);
+		switch(type){
+			case JSON_ERROR:
+				PARSE_EMSG(js,json_typename[type]);
+				fprintf(stderr,"JSON ERR %s\n",\
+					json_get_error(js));
+				break;
+			case JSON_NULL:
+			case JSON_TRUE:
+			case JSON_FALSE:
+			case JSON_NUMBER:
+				break;
+			case JSON_STRING:
+				var=true;
+			    break;
+			case JSON_ARRAY:
+			case JSON_OBJECT:
+			case JSON_DONE:
+				PARSE_EMSG(js,json_typename[type]);
+			    break;
+			case JSON_ARRAY_END:
+				PARSE_EMSG(js,json_typename[type]);
+				return(1);
+			case JSON_OBJECT_END:
+				fprintf(stderr,"SHIP END l=%ld\n",json_get_lineno(js));
+				return(0);}
+		if(var){
+			var=false;
+			if(strcmp("_clvarr_size",str)==0){
+				if(json_next(js)==JSON_STRING){
+					OBF(cvlarr,resize)(this,(size_t)json_get_number(js),0);
+					continue;}}
+			if(strcmp("arr",str)==0){
+				while(arrLoop){
+					type=json_next(js);
+					switch(type){
+						case JSON_ERROR:
+							PARSE_EMSG(js,json_typename[type]);
+							fprintf(stderr,"JSON ERR %s\n",\
+								json_get_error(js));
+							break;
+						case JSON_NULL:
+						case JSON_TRUE:
+						case JSON_FALSE:
+						case JSON_NUMBER:
+							break;
+						case JSON_STRING:
+							/* cast cause arg is cons char* */
+							OBF(cvlarr,insert)(this,(char*)str);
+							break;
+						case JSON_ARRAY:
+						case JSON_OBJECT_END:
+						case JSON_OBJECT:
+						case JSON_DONE:
+							PARSE_EMSG(js,json_typename[type]);
+							break;
+						case JSON_ARRAY_END:
+							arrLoop=false;
+							break;}}}
+			//fprintf(stderr,"json %s found invalid key %s ",__func__,str);
+			//type=json_next(js);
+			//fprintf(stderr,"with value %s\n",str);
+		}}
+	return(1);}

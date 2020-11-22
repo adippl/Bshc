@@ -3,6 +3,8 @@
 
 #include "conf.h"
 
+#include "parse.h"
+
 #ifndef CVLARR_DEF_ALLOC_SIZE
 	#define CVLARR_DEF_ALLOC_SIZE 128
 	#endif 
@@ -40,7 +42,13 @@ void			OBF(cvlarr,copy)(obj_cvlarr* this, obj_cvlarr* dest);
 void			OBF(cvlarr,print)(obj_cvlarr* this);
 
 char*	obj_cvlarr_getStr(obj_cvlarr* this, unsigned int index);
-int		obj_cvlarr_resize(obj_cvlarr* this, size_t charArrSize, size_t indexArrSize);
+int		obj_cvlarr_resize(obj_cvlarr* this, unsigned int charArrSize, unsigned int indexArrSize);
 char*	obj_cvlarr_insert(obj_cvlarr* this, char* string);
+
+/*
+int		obj_cvlarr__resize_mem(obj_cvlarr* this, size_t by);
+int		obj_cvlarr__resize_indexArr(obj_cvlarr* this, size_t by);
+int		obj_cvlarr__autoExtend(obj_cvlarr* this, size_t nextString);
+*/
 
 #endif // _CVLARR_H_

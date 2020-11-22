@@ -28,34 +28,34 @@ test_cvlarr(){
 	char* s3="zxcvbn";
 	obj_cvlarr obj={0};
 	obj_cvlarr objCopy={0};
-	OBJF(obj_cvlarr,finalize)(&obj);
-	OBJF(obj_cvlarr,insert)(&obj,s1);
-	OBJF(obj_cvlarr,insert)(&obj,s2);
-	OBJF(obj_cvlarr,insert)(&obj,s3);
-	OBJF(obj_cvlarr,insert)(&obj,s1);
-	OBJF(obj_cvlarr,insert)(&obj,s2);
-	OBJF(obj_cvlarr,insert)(&obj,s3);
-	OBJF(obj_cvlarr,insert)(&obj,s1);
-	OBJF(obj_cvlarr,insert)(&obj,s2);
-	OBJF(obj_cvlarr,insert)(&obj,s3);
-	OBJF(obj_cvlarr,insert)(&obj,s1);
-	OBJF(obj_cvlarr,insert)(&obj,s2);
-	OBJF(obj_cvlarr,insert)(&obj,s3);
+	OBF(cvlarr,finalize)(&obj);
+	OBF(cvlarr,insert)(&obj,s1);
+	OBF(cvlarr,insert)(&obj,s2);
+	OBF(cvlarr,insert)(&obj,s3);
+	OBF(cvlarr,insert)(&obj,s1);
+	OBF(cvlarr,insert)(&obj,s2);
+	OBF(cvlarr,insert)(&obj,s3);
+	OBF(cvlarr,insert)(&obj,s1);
+	OBF(cvlarr,insert)(&obj,s2);
+	OBF(cvlarr,insert)(&obj,s3);
+	OBF(cvlarr,insert)(&obj,s1);
+	OBF(cvlarr,insert)(&obj,s2);
+	OBF(cvlarr,insert)(&obj,s3);
 	
 	for(unsigned int i=0;i<15;i++){
 		tmpPtr=OBF(cvlarr,getStr)(&obj,i);
 		printf("%s getStr index %d = %s at %p\n",__func__,i,tmpPtr,tmpPtr);}
 	
 	
-	OBJF(obj_cvlarr,print)(&obj);
+	OBF(cvlarr,print)(&obj);
 	OBF(cvlarr,resize)(&obj,512,25);
-	OBJF(obj_cvlarr,print)(&obj);
+	OBF(cvlarr,print)(&obj);
 
-	OBJF(obj_cvlarr,finalize)(&objCopy);
-	OBJF(obj_cvlarr,copy)(&obj, &objCopy);
-	OBJF(obj_cvlarr,print)(&objCopy);
-	OBJF(obj_cvlarr,clean)(&obj);
-	OBJF(obj_cvlarr,clean)(&objCopy);
+	OBF(cvlarr,finalize)(&objCopy);
+	OBF(cvlarr,copy)(&obj, &objCopy);
+	OBF(cvlarr,print)(&objCopy);
+	OBF(cvlarr,clean)(&obj);
+	OBF(cvlarr,clean)(&objCopy);
 
 	return(0);}
 
