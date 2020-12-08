@@ -1,0 +1,47 @@
+#generic universal c/c++ mkfile 
+NAME=cstl_tests
+
+CC=gcc
+#CCXX=g++
+CCARG= -std=c18 -g -Wall -Wextra -pedantic -fPIC -DDEBUG $CEXTRA
+#CCXXARG= -std=c++2a -g -Wall -pedantic -fPIC $CXXEXTRA
+LDARG= -fPIE $LDEXTRA
+
+#SRC=`{ls -1 *.cpp|sed 's/....$//'; ls -1 *.c|sed 's/..$//'; }
+#OBJ=`{ls -1 *.cpp|sed 's/....$/.o/'; ls -1 *.c|sed 's/..$/.o/'; }
+SRC=`{ls -1 *.c|sed 's/..$//'; }
+OBJ=`{ls -1 *.c|sed 's/..$/.o/'; }
+
+EXEC=a.out
+LIBSO=$NAME.so
+LIBA=$NAME.a
+
+run: output
+	./$EXEC
+
+#test: lib-shared
+#	gcc test.c -o test.out
+
+output: $OBJ
+	$CC $LDARG $OBJ -o $EXEC
+
+libstatic: $OBJ
+#	DARG=-static
+#	k output
+	ar rcs $LIBA $OBJ
+libshared: $OBJ
+	$CC -shared -o $LIBSO $OBJ
+
+%.o:	%.cpp
+	$CCXX $CCXXARG -c $prereq -o $target
+%.o:	%.c
+	$CC $CCARG -c $prereq -o $target
+
+cl:
+	rm -f *.o *.gch
+nk: cl
+	rm -f $EXEC
+	rm -f $LIBSO $LIBA
+
+
+# vim : set ft=make:

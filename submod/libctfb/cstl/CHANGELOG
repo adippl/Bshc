@@ -1,0 +1,15 @@
+v0.01
+	arr and it's functions
+		(arr,Init,T)
+		(arr,Copy,T)
+		(arr,Free,T)
+		(arr,_resize,T)
+		(arr,_autoextend,T)
+		(arr,extendBy,T)
+		(arr,indexToPtr,T)
+		(arr,append,T)
+		(arr,execOnAll,T)
+		(arr,iterResetStart,T)
+		(arr,iterResetEnd,T)
+		(arr,iterNext,T)
+		(arr,iterPrev,T)

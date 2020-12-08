@@ -1,0 +1,30 @@
+#CC=gcc	
+
+CC=gcc	
+CC_ARG= -std=c18 -g -Wall -Werror -pedantic	-march=westmere -mtune=skylake
+DESTDIR=/usr/local/lib
+
+output:	 conf.o term.o ui.o ctfb.o
+	ar rcs libctfb.a conf.o term.o ui.o ctfb.h.gch
+
+conf.o:	conf.c
+	$(CC) $(CC_ARG)  -c conf.c
+term.o:	term.c
+	$(CC) $(CC_ARG)  -c term.c
+ui.o:	ui.c
+	$(CC) $(CC_ARG)  -c ui.c
+ctfb.o:	ctfb.h
+	$(CC) $(CC_ARG)  -c ctfb.h
+
+inc_test: output
+	gcc inc_test.c -o a.out libctfb.a
+	
+inc_test_cl:
+	rm a.out
+
+cl:
+	rm *.gch
+	rm *.o
+nk:	cl inc_test_cl
+	*.so
+	*.a

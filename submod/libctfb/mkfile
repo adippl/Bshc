@@ -1,0 +1,47 @@
+NAME=libctfb
+
+CC=cc
+#CCXX=g++
+CCARG= -std=c99 -g -Wall -Wextra -pedantic -fPIC -DDEBUG $CEXTRA
+#CCXXARG= -std=c++2a -g -Wall -pedantic -fPIC $CXXEXTRA
+LDARG= -fPIE libctfb.a $LDEXTRA
+
+#SRC=`{ls -1 *.cpp|sed 's/....$//'; ls -1 *.c|sed 's/..$//'; }
+#OBJ=`{ls -1 *.cpp|sed 's/....$/.o/'; ls -1 *.c|sed 's/..$/.o/'; }
+SRC=`{ls -1 *.c|sed 's/..$//'; }
+OBJ=`{ls -1 *.c|sed 's/..$/.o/'; }
+
+EXEC=a.out
+LIBSO=$NAME.so
+LIBA=$NAME.a
+
+build: libstatic
+	
+r: test
+	./$EXEC
+
+test: libstatic
+	$CC $CCARG test/test.c $LDARG
+
+output: $OBJ
+	$CC $LDARG $OBJ -o $EXEC
+
+libstatic: $OBJ
+	ar rcs $LIBA $OBJ
+libshared: $OBJ
+	$CC -shared -o $LIBSO $OBJ
+
+%.o:	%.cpp
+	$CCXX $CCXXARG -c $prereq -o $target
+%.o:	%.c
+	$CC $CCARG -c $prereq -o $target
+
+cl:
+	rm -f *.o *.gch
+nk: cl
+	rm -f $EXEC
+	rm -f $LIBSO $LIBA
+	rm -f err.ign
+
+
+# vim : set ft=make:

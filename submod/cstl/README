@@ -1,0 +1,63 @@
+cstl - C standard template library
+
+>Is this a joke? 
+Yes
+
+>How do I use it?
+
+* include basic macros,
+
+#include path/to/cstl/templ/templ.h
+
+* create separate transalation unit to compile templates
+
+In your templateTU .h file
+#ifdef T
+#undef T /*safety*/
+#endif
+#define T my_custom_one_word_type
+#include "path/to/cstl/templ/harr.h"
+
+in .c file
+#ifdef T
+#undef T /*safety*/
+#endif
+#define T my_custom_one_word_type
+#include "path/to/cstl/templ/harr.c"
+
+* include templateTU in your progrm
+
+#include <templateTU.h>
+
+Init data structure and use
+
+TERMPLATE3(arr,strct,int8fast_t) *myHarr=TERMPLATE3(arr,init,int8fast_t)();
+^^^^^^^^^^^^^^^^^^^                      ^^^^^^^^^^^^^
+    Type glued together                    Function name glued together
+
+first TEMPLATE macro creates arr_strct_int8fast_t
+second TEMPLATE macro creates arr_init_int8fast_t
+
+
+Full list of avalibe methods/functions is avalible in specific headerfiles.
+Example usage in test.c.
+
+
+>Are you insane?
+Ye
+
+>Is it safe?
+No idea, probably not
+
+>Which compilers support this madness?
+gcc 9.2 seem to support it. 
+clan 9.0.1
+tcc
+
+
+>currently avalible templates?
+* arr simple dynamic array (usable,unfinished, WIP)
+* harr - hybrid array-linked list data structure with variable data allocation units (unfinished, WIP)
+
+>why
+I wanted a slower std::vector with name which makes sense.
